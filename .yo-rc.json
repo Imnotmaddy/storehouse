@@ -1,0 +1,38 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.itechart.studlab.app",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "5.8.2",
+    "applicationType": "monolith",
+    "baseName": "storeHouse",
+    "packageName": "com.itechart.studlab.app",
+    "packageFolder": "com/itechart/studlab/app",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "elasticsearch",
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "ODU5MTZjMmRjMTliNjA2NmU1OTkyMDU1Nzc4ZmIwZDIxYjllOTBjOTA5ZDk4ZWY3NmUyMTZhMWYxZjQwNTEyMzIzZWRkYzQ5NmRjNDdlMDM4MGFkMTI5YTQ4M2YwZTBjNDNlOWFkNmUyYmMwODQ0MjNmNDg0OTgxM2I1NWFkMTg=",
+    "clientFramework": "react",
+    "useSass": false,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": ["en", "ru"]
+  }
+}
