@@ -45,3 +45,11 @@ export const Home = props => (
     </NavLink>
   </NavItem>
 );
+
+export const Ttn = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/addTtn" className="d-flex align-items-center">
+      <span>TTN</span>
+    </NavLink>
+  </NavItem>
+);
