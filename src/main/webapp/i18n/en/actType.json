@@ -1,0 +1,12 @@
+{
+  "storeHouseApp": {
+    "ActType": {
+      "null": "",
+      "THEFT": "THEFT",
+      "INCONSISTENCE": "INCONSISTENCE",
+      "LOSS": "LOSS",
+      "SHORTAGE": "SHORTAGE",
+      "WRITE_OFF": "WRITE_OFF"
+    }
+  }
+}

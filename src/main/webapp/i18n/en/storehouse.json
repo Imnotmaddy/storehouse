@@ -1,0 +1,27 @@
+{
+  "storeHouseApp": {
+    "storehouse": {
+      "home": {
+        "title": "Storehouses",
+        "createLabel": "Create a new Storehouse",
+        "createOrEditLabel": "Create or edit a Storehouse",
+        "search": "Search for Storehouse"
+      },
+      "created": "A new Storehouse is created with identifier {{ param }}",
+      "updated": "A Storehouse is updated with identifier {{ param }}",
+      "deleted": "A Storehouse is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Storehouse {{ id }}?"
+      },
+      "detail": {
+        "title": "Storehouse"
+      },
+      "owner": "Owner",
+      "administrator": "Administrator",
+      "dispatcher": "Dispatcher",
+      "manager": "Manager",
+      "supervisor": "Supervisor",
+      "rooms": "Rooms"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+    "name": "StorageRoom",
+    "fields": [
+        {
+            "fieldName": "amountOfDistinctProducts",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "Facility",
+            "fieldValues": "REFRIGERATOR,OPEN_SPACE,HEATED_SPACE,ORDINARY_ROOM"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "storehouse",
+            "otherEntityRelationshipName": "rooms",
+            "relationshipName": "storehouse",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190521164121",
+    "entityTableName": "storage_room",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

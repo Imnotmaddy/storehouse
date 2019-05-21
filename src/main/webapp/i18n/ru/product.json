@@ -1,0 +1,28 @@
+{
+  "storeHouseApp": {
+    "product": {
+      "home": {
+        "title": "Products",
+        "createLabel": "Создать новый Product",
+        "createOrEditLabel": "Создать или отредактировать Product",
+        "search": "Найти Product"
+      },
+      "created": "Новый Product создан с идентификатором {{ param }}",
+      "updated": "Product обновлен с идентификатором {{ param }}",
+      "deleted": "Product удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Product {{ id }}?"
+      },
+      "detail": {
+        "title": "Product"
+      },
+      "state": "State",
+      "daysInStorage": "Days In Storage",
+      "cost": "Cost",
+      "requiredFacility": "Required Facility",
+      "weight": "Weight",
+      "name": "Name",
+      "tTN": "T TN"
+    }
+  }
+}

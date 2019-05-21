@@ -1,0 +1,22 @@
+{
+  "storeHouseApp": {
+    "transporter": {
+      "home": {
+        "title": "Transporters",
+        "createLabel": "Создать новый Transporter",
+        "createOrEditLabel": "Создать или отредактировать Transporter",
+        "search": "Найти Transporter"
+      },
+      "created": "Новый Transporter создан с идентификатором {{ param }}",
+      "updated": "Transporter обновлен с идентификатором {{ param }}",
+      "deleted": "Transporter удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Transporter {{ id }}?"
+      },
+      "detail": {
+        "title": "Transporter"
+      },
+      "companyName": "Company Name"
+    }
+  }
+}
