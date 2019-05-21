@@ -7,6 +7,17 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
+        "driver": "Driver",
+        "transporter": "Transporter",
+        "recipient": "Recipient",
+        "sender": "Sender",
+        "storehouse": "Storehouse",
+        "storageRoom": "Storage Room",
+        "address": "Address",
+        "appUser": "App User",
+        "product": "Product",
+        "transport": "Transport",
+        "ttn": "TTN",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
