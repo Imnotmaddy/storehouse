@@ -154,8 +154,7 @@ AppUser{user} to User,
 Act{user} to AppUser
 }
 
-dto Driver, AppUser with mapstruct
-service Driver with serviceClass
-service AppUser with serviceImpl
+dto * with mapstruct
+service * with serviceClass
 
 
