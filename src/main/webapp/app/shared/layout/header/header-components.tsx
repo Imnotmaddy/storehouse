@@ -48,7 +48,7 @@ export const Home = props => (
 
 export const Ttn = props => (
   <NavItem>
-    <NavLink tag={Link} to="/addTtn" className="d-flex align-items-center">
+    <NavLink tag={Link} to="/entity/ttn" className="d-flex align-items-center">
       <span>TTN</span>
     </NavLink>
   </NavItem>

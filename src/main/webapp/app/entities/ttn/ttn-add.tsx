@@ -111,14 +111,6 @@ export const TTNAdd = props => (
               <option value="" key="0" />
             </AvInput>
           </AvGroup>
-          <Button tag={Link} id="cancel-save" to="/entity/ttn" replace color="info">
-            <FontAwesomeIcon icon="arrow-left" />
-            &nbsp;
-            <span className="d-none d-md-inline">
-              <Translate contentKey="entity.action.back">Back</Translate>
-            </span>
-          </Button>
-          &nbsp;
           <Button color="primary" id="save-entity" type="submit">
             <FontAwesomeIcon icon="save" />
             &nbsp;
