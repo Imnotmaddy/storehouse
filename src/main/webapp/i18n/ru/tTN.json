@@ -1,0 +1,36 @@
+{
+  "storeHouseApp": {
+    "tTN": {
+      "home": {
+        "title": "TTNS",
+        "createLabel": "Создать новый TTN",
+        "createOrEditLabel": "Создать или отредактировать TTN",
+        "search": "Найти TTN"
+      },
+      "created": "Новый TTN создан с идентификатором {{ param }}",
+      "updated": "TTN обновлен с идентификатором {{ param }}",
+      "deleted": "TTN удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить TTN {{ id }}?"
+      },
+      "detail": {
+        "title": "TTN"
+      },
+      "serialNumber": "Serial Number",
+      "dateOfCreation": "Date Of Creation",
+      "description": "Description",
+      "productsAmount": "Products Amount",
+      "numberOfProductEntries": "Number Of Product Entries",
+      "dateTimeOfRegistration": "Date Time Of Registration",
+      "isAccepted": "Is Accepted",
+      "storehouseDispatcher": "Storehouse Dispatcher",
+      "manager": "Manager",
+      "sender": "Sender",
+      "transport": "Transport",
+      "transporter": "Transporter",
+      "driver": "Driver",
+      "recipient": "Recipient",
+      "products": "Products"
+    }
+  }
+}

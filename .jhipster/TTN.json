@@ -1,0 +1,109 @@
+{
+    "name": "TTN",
+    "fields": [
+        {
+            "fieldName": "serialNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateOfCreation",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "productsAmount",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "numberOfProductEntries",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dateTimeOfRegistration",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "isAccepted",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "appUser",
+            "otherEntityRelationshipName": "tTN",
+            "relationshipName": "storehouseDispatcher",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "appUser",
+            "otherEntityRelationshipName": "tTN",
+            "relationshipName": "manager",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "appUser",
+            "otherEntityRelationshipName": "tTN",
+            "relationshipValidateRules": "required",
+            "relationshipName": "sender",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "transport",
+            "otherEntityRelationshipName": "tTN",
+            "relationshipValidateRules": "required",
+            "relationshipName": "transport",
+            "otherEntityField": "facility",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "transporter",
+            "otherEntityRelationshipName": "tTN",
+            "relationshipValidateRules": "required",
+            "relationshipName": "transporter",
+            "otherEntityField": "companyName",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "driver",
+            "otherEntityRelationshipName": "tTN",
+            "relationshipName": "driver",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "recipient",
+            "otherEntityRelationshipName": "tTN",
+            "relationshipName": "recipient",
+            "otherEntityField": "companyName",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "tTN",
+            "relationshipName": "products"
+        }
+    ],
+    "changelogDate": "20190521164128",
+    "entityTableName": "ttn",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

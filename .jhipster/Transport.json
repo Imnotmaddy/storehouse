@@ -1,0 +1,33 @@
+{
+    "name": "Transport",
+    "fields": [
+        {
+            "fieldName": "vehicleNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "wagonsNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryType",
+            "fieldType": "DeliveryType",
+            "fieldValues": "Auto,Train"
+        },
+        {
+            "fieldName": "facility",
+            "fieldType": "Facility",
+            "fieldValues": "REFRIGERATOR,OPEN_SPACE,HEATED_SPACE,ORDINARY_ROOM"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190521164127",
+    "entityTableName": "transport",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

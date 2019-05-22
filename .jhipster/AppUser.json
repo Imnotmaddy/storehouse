@@ -1,0 +1,43 @@
+{
+    "name": "AppUser",
+    "fields": [
+        {
+            "fieldName": "birthdate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "isSuspended",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "money",
+            "fieldType": "Double"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "appUser",
+            "relationshipName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "address",
+            "otherEntityRelationshipName": "user",
+            "relationshipName": "address",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20190521164123",
+    "entityTableName": "app_user",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

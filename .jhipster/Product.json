@@ -1,0 +1,48 @@
+{
+    "name": "Product",
+    "fields": [
+        {
+            "fieldName": "state",
+            "fieldType": "ProductState",
+            "fieldValues": "REGISTRATED,APPROVED,STORED,LOST_BY_TRANSPORTER,GONE_FROM_STORAGE,STOLEN_FROM_STORAGE,TRANSPORTER_SHORTAGE,CONFISCATED,RECYCLED,UNSTORED,READY_TO_LEAVE,REMOVED_FROM_STORAGE"
+        },
+        {
+            "fieldName": "daysInStorage",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "cost",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "requiredFacility",
+            "fieldType": "Facility",
+            "fieldValues": "REFRIGERATOR,OPEN_SPACE,HEATED_SPACE,ORDINARY_ROOM"
+        },
+        {
+            "fieldName": "weight",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "tTN",
+            "otherEntityName": "tTN",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190521164125",
+    "entityTableName": "product",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

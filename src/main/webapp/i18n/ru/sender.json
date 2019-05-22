@@ -1,0 +1,22 @@
+{
+  "storeHouseApp": {
+    "sender": {
+      "home": {
+        "title": "Senders",
+        "createLabel": "Создать новый Sender",
+        "createOrEditLabel": "Создать или отредактировать Sender",
+        "search": "Найти Sender"
+      },
+      "created": "Новый Sender создан с идентификатором {{ param }}",
+      "updated": "Sender обновлен с идентификатором {{ param }}",
+      "deleted": "Sender удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Sender {{ id }}?"
+      },
+      "detail": {
+        "title": "Sender"
+      },
+      "companyName": "Company Name"
+    }
+  }
+}

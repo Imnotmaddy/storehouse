@@ -21,10 +21,6 @@ import transporter, {
   TransporterState
 } from 'app/entities/transporter/transporter.reducer';
 // prettier-ignore
-import recipient, {
-  RecipientState
-} from 'app/entities/recipient/recipient.reducer';
-// prettier-ignore
 import sender, {
   SenderState
 } from 'app/entities/sender/sender.reducer';
@@ -45,9 +41,17 @@ import appUser, {
   AppUserState
 } from 'app/entities/app-user/app-user.reducer';
 // prettier-ignore
+import act, {
+  ActState
+} from 'app/entities/act/act.reducer';
+// prettier-ignore
 import product, {
   ProductState
 } from 'app/entities/product/product.reducer';
+// prettier-ignore
+import recipient, {
+  RecipientState
+} from 'app/entities/recipient/recipient.reducer';
 // prettier-ignore
 import transport, {
   TransportState
@@ -71,13 +75,14 @@ export interface IRootState {
   readonly settings: SettingsState;
   readonly driver: DriverState;
   readonly transporter: TransporterState;
-  readonly recipient: RecipientState;
   readonly sender: SenderState;
   readonly storehouse: StorehouseState;
   readonly storageRoom: StorageRoomState;
   readonly address: AddressState;
   readonly appUser: AppUserState;
+  readonly act: ActState;
   readonly product: ProductState;
+  readonly recipient: RecipientState;
   readonly transport: TransportState;
   readonly tTN: TTNState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
@@ -97,13 +102,14 @@ const rootReducer = combineReducers<IRootState>({
   settings,
   driver,
   transporter,
-  recipient,
   sender,
   storehouse,
   storageRoom,
   address,
   appUser,
+  act,
   product,
+  recipient,
   transport,
   tTN,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */

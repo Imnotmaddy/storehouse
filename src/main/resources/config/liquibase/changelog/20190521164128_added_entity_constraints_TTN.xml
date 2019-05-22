@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity TTN.
+    -->
+    <changeSet id="20190521164128-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="storehouse_dispatcher_id"
+                                 baseTableName="ttn"
+                                 constraintName="fk_ttn_storehouse_dispatcher_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="app_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="manager_id"
+                                 baseTableName="ttn"
+                                 constraintName="fk_ttn_manager_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="app_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="sender_id"
+                                 baseTableName="ttn"
+                                 constraintName="fk_ttn_sender_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="app_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="transport_id"
+                                 baseTableName="ttn"
+                                 constraintName="fk_ttn_transport_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transport"/>
+
+        <addForeignKeyConstraint baseColumnNames="transporter_id"
+                                 baseTableName="ttn"
+                                 constraintName="fk_ttn_transporter_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transporter"/>
+
+        <addForeignKeyConstraint baseColumnNames="driver_id"
+                                 baseTableName="ttn"
+                                 constraintName="fk_ttn_driver_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="driver"/>
+
+        <addForeignKeyConstraint baseColumnNames="recipient_id"
+                                 baseTableName="ttn"
+                                 constraintName="fk_ttn_recipient_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="recipient"/>
+
+    </changeSet>
+</databaseChangeLog>

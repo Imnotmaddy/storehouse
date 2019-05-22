@@ -18,11 +18,6 @@ export const EntitiesMenu = props => (
       &nbsp;
       <Translate contentKey="global.menu.entities.transporter" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/recipient">
-      <FontAwesomeIcon icon="asterisk" fixedWidth />
-      &nbsp;
-      <Translate contentKey="global.menu.entities.recipient" />
-    </DropdownItem>
     <DropdownItem tag={Link} to="/entity/sender">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
@@ -48,10 +43,20 @@ export const EntitiesMenu = props => (
       &nbsp;
       <Translate contentKey="global.menu.entities.appUser" />
     </DropdownItem>
+    <DropdownItem tag={Link} to="/entity/act">
+      <FontAwesomeIcon icon="asterisk" fixedWidth />
+      &nbsp;
+      <Translate contentKey="global.menu.entities.act" />
+    </DropdownItem>
     <DropdownItem tag={Link} to="/entity/product">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.product" />
+    </DropdownItem>
+    <DropdownItem tag={Link} to="/entity/recipient">
+      <FontAwesomeIcon icon="asterisk" fixedWidth />
+      &nbsp;
+      <Translate contentKey="global.menu.entities.recipient" />
     </DropdownItem>
     <DropdownItem tag={Link} to="/entity/transport">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
