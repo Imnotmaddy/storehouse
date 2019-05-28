@@ -21,6 +21,7 @@ auto-refreshes when files change on your hard drive.
 
     ./mvnw(or run the project in your IDE)
     npm start
+ To use your mySql database go to resources/config/application-dev(prod).yml and set your login and password in datasource segment.
 
 Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
 specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
