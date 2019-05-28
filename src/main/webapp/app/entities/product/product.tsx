@@ -85,6 +85,12 @@ export class Product extends React.Component<IProductProps, IProductState> {
                   <Translate contentKey="global.field.id">ID</Translate>
                 </th>
                 <th>
+                  <Translate contentKey="storeHouseApp.product.name">Name</Translate>
+                </th>
+                <th>
+                  <Translate contentKey="storeHouseApp.product.quantity">Quantity</Translate>
+                </th>
+                <th>
                   <Translate contentKey="storeHouseApp.product.state">State</Translate>
                 </th>
                 <th>
@@ -100,10 +106,7 @@ export class Product extends React.Component<IProductProps, IProductState> {
                   <Translate contentKey="storeHouseApp.product.weight">Weight</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="storeHouseApp.product.name">Name</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.product.tTN">T TN</Translate>
+                  <Translate contentKey="storeHouseApp.product.tTN">TTN</Translate>
                 </th>
                 <th />
               </tr>
@@ -116,6 +119,8 @@ export class Product extends React.Component<IProductProps, IProductState> {
                       {product.id}
                     </Button>
                   </td>
+                  <td>{product.name}</td>
+                  <td>{product.quantity}</td>
                   <td>
                     <Translate contentKey={`storeHouseApp.ProductState.${product.state}`} />
                   </td>
@@ -125,7 +130,6 @@ export class Product extends React.Component<IProductProps, IProductState> {
                     <Translate contentKey={`storeHouseApp.Facility.${product.requiredFacility}`} />
                   </td>
                   <td>{product.weight}</td>
-                  <td>{product.name}</td>
                   <td>{product.tTNId ? <Link to={`ttn/${product.tTNId}`}>{product.tTNId}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">

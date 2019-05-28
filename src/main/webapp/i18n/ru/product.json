@@ -19,6 +19,7 @@
       "state": "State",
       "daysInStorage": "Days In Storage",
       "cost": "Cost",
+      "quantity": "Количество",
       "requiredFacility": "Required Facility",
       "weight": "Weight",
       "name": "Name",

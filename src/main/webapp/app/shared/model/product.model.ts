@@ -29,6 +29,7 @@ export interface IProduct {
   weight?: number;
   name?: string;
   tTNId?: number;
+  quantity?: number;
 }
 
 export const defaultValue: Readonly<IProduct> = {};

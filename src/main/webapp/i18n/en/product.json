@@ -20,6 +20,7 @@
       "daysInStorage": "Days In Storage",
       "cost": "Cost",
       "requiredFacility": "Required Facility",
+      "quantity": "Quantity",
       "weight": "Weight",
       "name": "Name",
       "tTN": "T TN"

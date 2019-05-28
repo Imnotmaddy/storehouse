@@ -96,65 +96,16 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                   </AvGroup>
                 ) : null}
                 <AvGroup>
-                  <Label id="stateLabel">
-                    <Translate contentKey="storeHouseApp.product.state">State</Translate>
-                  </Label>
-                  <AvInput
-                    id="product-state"
-                    type="select"
-                    className="form-control"
-                    name="state"
-                    value={(!isNew && productEntity.state) || 'REGISTRATED'}
-                  >
-                    <option value="REGISTRATED">
-                      <Translate contentKey="storeHouseApp.ProductState.REGISTRATED" />
-                    </option>
-                    <option value="APPROVED">
-                      <Translate contentKey="storeHouseApp.ProductState.APPROVED" />
-                    </option>
-                    <option value="STORED">
-                      <Translate contentKey="storeHouseApp.ProductState.STORED" />
-                    </option>
-                    <option value="LOST_BY_TRANSPORTER">
-                      <Translate contentKey="storeHouseApp.ProductState.LOST_BY_TRANSPORTER" />
-                    </option>
-                    <option value="GONE_FROM_STORAGE">
-                      <Translate contentKey="storeHouseApp.ProductState.GONE_FROM_STORAGE" />
-                    </option>
-                    <option value="STOLEN_FROM_STORAGE">
-                      <Translate contentKey="storeHouseApp.ProductState.STOLEN_FROM_STORAGE" />
-                    </option>
-                    <option value="TRANSPORTER_SHORTAGE">
-                      <Translate contentKey="storeHouseApp.ProductState.TRANSPORTER_SHORTAGE" />
-                    </option>
-                    <option value="CONFISCATED">
-                      <Translate contentKey="storeHouseApp.ProductState.CONFISCATED" />
-                    </option>
-                    <option value="RECYCLED">
-                      <Translate contentKey="storeHouseApp.ProductState.RECYCLED" />
-                    </option>
-                    <option value="UNSTORED">
-                      <Translate contentKey="storeHouseApp.ProductState.UNSTORED" />
-                    </option>
-                    <option value="READY_TO_LEAVE">
-                      <Translate contentKey="storeHouseApp.ProductState.READY_TO_LEAVE" />
-                    </option>
-                    <option value="REMOVED_FROM_STORAGE">
-                      <Translate contentKey="storeHouseApp.ProductState.REMOVED_FROM_STORAGE" />
-                    </option>
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label id="daysInStorageLabel" for="daysInStorage">
-                    <Translate contentKey="storeHouseApp.product.daysInStorage">Days In Storage</Translate>
-                  </Label>
-                  <AvField id="product-daysInStorage" type="string" className="form-control" name="daysInStorage" />
-                </AvGroup>
-                <AvGroup>
                   <Label id="costLabel" for="cost">
                     <Translate contentKey="storeHouseApp.product.cost">Cost</Translate>
                   </Label>
                   <AvField id="product-cost" type="string" className="form-control" name="cost" />
+                </AvGroup>
+                <AvGroup>
+                  <Label id="quantityLabel" for="quantity">
+                    <Translate contentKey="storeHouseApp.product.quantity">Quantity</Translate>
+                  </Label>
+                  <AvField id="product-quantity" type="number" className="form-control" name="quantity" />
                 </AvGroup>
                 <AvGroup>
                   <Label id="requiredFacilityLabel">
@@ -192,21 +143,6 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                     <Translate contentKey="storeHouseApp.product.name">Name</Translate>
                   </Label>
                   <AvField id="product-name" type="text" name="name" />
-                </AvGroup>
-                <AvGroup>
-                  <Label for="tTN.id">
-                    <Translate contentKey="storeHouseApp.product.tTN">T TN</Translate>
-                  </Label>
-                  <AvInput id="product-tTN" type="select" className="form-control" name="tTNId">
-                    <option value="" key="0" />
-                    {tTNS
-                      ? tTNS.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
                 </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/product" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
