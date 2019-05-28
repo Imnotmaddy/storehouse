@@ -23,8 +23,17 @@ public class ProductDTO implements Serializable {
 
     private String name;
 
+    private Integer quantity;
 
     private Long tTNId;
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 
     public Long getId() {
         return id;
@@ -120,6 +129,7 @@ public class ProductDTO implements Serializable {
             ", cost=" + getCost() +
             ", requiredFacility='" + getRequiredFacility() + "'" +
             ", weight=" + getWeight() +
+            ", quantity=" + getQuantity() +
             ", name='" + getName() + "'" +
             ", tTN=" + getTTNId() +
             "}";

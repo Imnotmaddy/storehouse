@@ -8,6 +8,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -25,7 +26,7 @@ import com.itechart.studlab.app.domain.enumeration.Facility;
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,6 +50,9 @@ public class Product implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "quantity")
+    private Integer quantity;
 
     @ManyToOne
     @JsonIgnoreProperties("products")
@@ -83,6 +87,14 @@ public class Product implements Serializable {
     public Product daysInStorage(Integer daysInStorage) {
         this.daysInStorage = daysInStorage;
         return this;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public void setDaysInStorage(Integer daysInStorage) {
@@ -184,6 +196,7 @@ public class Product implements Serializable {
             ", cost=" + getCost() +
             ", requiredFacility='" + getRequiredFacility() + "'" +
             ", weight=" + getWeight() +
+            ", quantity=" + getQuantity() +
             ", name='" + getName() + "'" +
             "}";
     }
