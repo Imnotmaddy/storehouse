@@ -1,0 +1,44 @@
+{
+    "name": "StorageRoom",
+    "fields": [
+        {
+            "fieldName": "roomNumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "Facility",
+            "fieldValues": "REFRIGERATOR,OPEN_SPACE,HEATED_SPACE,ORDINARY_ROOM",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "storageRoom",
+            "relationshipName": "products"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "storehouse",
+            "otherEntityRelationshipName": "rooms",
+            "relationshipName": "storehouse",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190530162439",
+    "entityTableName": "storage_room",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,25 @@
+{
+  "storeHouseApp": {
+    "storageRoom": {
+      "home": {
+        "title": "Storage Rooms",
+        "createLabel": "Создать новый Storage Room",
+        "createOrEditLabel": "Создать или отредактировать Storage Room",
+        "search": "Найти Storage Room"
+      },
+      "created": "Новый Storage Room создан с идентификатором {{ param }}",
+      "updated": "Storage Room обновлен с идентификатором {{ param }}",
+      "deleted": "Storage Room удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Storage Room {{ id }}?"
+      },
+      "detail": {
+        "title": "Storage Room"
+      },
+      "roomNumber": "Room Number",
+      "type": "Type",
+      "products": "Products",
+      "storehouse": "Storehouse"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "storeHouseApp": {
+    "storageRoom": {
+      "home": {
+        "title": "Storage Rooms",
+        "createLabel": "Create a new Storage Room",
+        "createOrEditLabel": "Create or edit a Storage Room",
+        "search": "Search for Storage Room"
+      },
+      "created": "A new Storage Room is created with identifier {{ param }}",
+      "updated": "A Storage Room is updated with identifier {{ param }}",
+      "deleted": "A Storage Room is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Storage Room {{ id }}?"
+      },
+      "detail": {
+        "title": "Storage Room"
+      },
+      "roomNumber": "Room Number",
+      "type": "Type",
+      "products": "Products",
+      "storehouse": "Storehouse"
+    }
+  }
+}

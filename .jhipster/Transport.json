@@ -1,0 +1,35 @@
+{
+    "name": "Transport",
+    "fields": [
+        {
+            "fieldName": "vehicleNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryType",
+            "fieldType": "DeliveryType",
+            "fieldValues": "Auto,Train",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "transporter",
+            "otherEntityRelationshipName": "vehicles",
+            "relationshipName": "company",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190530162442",
+    "entityTableName": "transport",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

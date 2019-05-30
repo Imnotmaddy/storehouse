@@ -1,0 +1,29 @@
+{
+    "name": "Transporter",
+    "fields": [
+        {
+            "fieldName": "companyName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "transport",
+            "otherEntityRelationshipName": "company",
+            "relationshipName": "vehicles"
+        }
+    ],
+    "changelogDate": "20190530162441",
+    "entityTableName": "transporter",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

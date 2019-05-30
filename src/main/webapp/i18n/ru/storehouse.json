@@ -1,0 +1,28 @@
+{
+  "storeHouseApp": {
+    "storehouse": {
+      "home": {
+        "title": "Storehouses",
+        "createLabel": "Создать новый Storehouse",
+        "createOrEditLabel": "Создать или отредактировать Storehouse",
+        "search": "Найти Storehouse"
+      },
+      "created": "Новый Storehouse создан с идентификатором {{ param }}",
+      "updated": "Storehouse обновлен с идентификатором {{ param }}",
+      "deleted": "Storehouse удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Storehouse {{ id }}?"
+      },
+      "detail": {
+        "title": "Storehouse"
+      },
+      "name": "Name",
+      "owner": "Owner",
+      "administrator": "Administrator",
+      "dispatcher": "Dispatcher",
+      "manager": "Manager",
+      "supervisor": "Supervisor",
+      "rooms": "Rooms"
+    }
+  }
+}

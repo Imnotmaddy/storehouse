@@ -1,0 +1,24 @@
+{
+  "storeHouseApp": {
+    "transport": {
+      "home": {
+        "title": "Transports",
+        "createLabel": "Создать новый Transport",
+        "createOrEditLabel": "Создать или отредактировать Transport",
+        "search": "Найти Transport"
+      },
+      "created": "Новый Transport создан с идентификатором {{ param }}",
+      "updated": "Transport обновлен с идентификатором {{ param }}",
+      "deleted": "Transport удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Transport {{ id }}?"
+      },
+      "detail": {
+        "title": "Transport"
+      },
+      "vehicleNumber": "Vehicle Number",
+      "deliveryType": "Delivery Type",
+      "company": "Company"
+    }
+  }
+}
