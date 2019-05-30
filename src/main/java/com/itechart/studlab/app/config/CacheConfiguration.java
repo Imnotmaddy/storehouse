@@ -38,6 +38,18 @@ public class CacheConfiguration {
             cm.createCache(com.itechart.studlab.app.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.itechart.studlab.app.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.itechart.studlab.app.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.Act.class.getName(), jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.Act.class.getName() + ".products", jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.Storehouse.class.getName(), jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.Storehouse.class.getName() + ".rooms", jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.StorageRoom.class.getName(), jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.StorageRoom.class.getName() + ".products", jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.Product.class.getName(), jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.Transporter.class.getName(), jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.Transporter.class.getName() + ".vehicles", jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.Transport.class.getName(), jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.TTN.class.getName(), jcacheConfiguration);
+            cm.createCache(com.itechart.studlab.app.domain.TTN.class.getName() + ".products", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
