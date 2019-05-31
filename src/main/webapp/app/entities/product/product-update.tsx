@@ -8,6 +8,10 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { IAct } from 'app/shared/model/act.model';
+import { getEntities as getActs } from 'app/entities/act/act.reducer';
+import { IStorageRoom } from 'app/shared/model/storage-room.model';
+import { getEntities as getStorageRooms } from 'app/entities/storage-room/storage-room.reducer';
 import { ITTN } from 'app/shared/model/ttn.model';
 import { getEntities as getTTns } from 'app/entities/ttn/ttn.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './product.reducer';
@@ -20,6 +24,8 @@ export interface IProductUpdateProps extends StateProps, DispatchProps, RouteCom
 
 export interface IProductUpdateState {
   isNew: boolean;
+  actId: string;
+  storageRoomId: string;
   tTNId: string;
 }
 
@@ -27,6 +33,8 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
   constructor(props) {
     super(props);
     this.state = {
+      actId: '0',
+      storageRoomId: '0',
       tTNId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
@@ -45,6 +53,8 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
       this.props.getEntity(this.props.match.params.id);
     }
 
+    this.props.getActs();
+    this.props.getStorageRooms();
     this.props.getTTns();
   }
 
@@ -69,7 +79,7 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
   };
 
   render() {
-    const { productEntity, tTNS, loading, updating } = this.props;
+    const { productEntity, acts, storageRooms, tTNS, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -95,6 +105,34 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                     <AvInput id="product-id" type="text" className="form-control" name="id" required readOnly />
                   </AvGroup>
                 ) : null}
+                <AvGroup>
+                  <Label id="nameLabel" for="name">
+                    <Translate contentKey="storeHouseApp.product.name">Name</Translate>
+                  </Label>
+                  <AvField
+                    id="product-name"
+                    type="text"
+                    name="name"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label id="quantityLabel" for="quantity">
+                    <Translate contentKey="storeHouseApp.product.quantity">Quantity</Translate>
+                  </Label>
+                  <AvField
+                    id="product-quantity"
+                    type="string"
+                    className="form-control"
+                    name="quantity"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') },
+                      number: { value: true, errorMessage: translate('entity.validation.number') }
+                    }}
+                  />
+                </AvGroup>
                 <AvGroup>
                   <Label id="stateLabel">
                     <Translate contentKey="storeHouseApp.product.state">State</Translate>
@@ -154,7 +192,16 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                   <Label id="costLabel" for="cost">
                     <Translate contentKey="storeHouseApp.product.cost">Cost</Translate>
                   </Label>
-                  <AvField id="product-cost" type="string" className="form-control" name="cost" />
+                  <AvField
+                    id="product-cost"
+                    type="string"
+                    className="form-control"
+                    name="cost"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') },
+                      number: { value: true, errorMessage: translate('entity.validation.number') }
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="requiredFacilityLabel">
@@ -185,13 +232,46 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                   <Label id="weightLabel" for="weight">
                     <Translate contentKey="storeHouseApp.product.weight">Weight</Translate>
                   </Label>
-                  <AvField id="product-weight" type="string" className="form-control" name="weight" />
+                  <AvField
+                    id="product-weight"
+                    type="string"
+                    className="form-control"
+                    name="weight"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') },
+                      number: { value: true, errorMessage: translate('entity.validation.number') }
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="nameLabel" for="name">
-                    <Translate contentKey="storeHouseApp.product.name">Name</Translate>
+                  <Label for="act.id">
+                    <Translate contentKey="storeHouseApp.product.act">Act</Translate>
                   </Label>
-                  <AvField id="product-name" type="text" name="name" />
+                  <AvInput id="product-act" type="select" className="form-control" name="actId">
+                    <option value="" key="0" />
+                    {acts
+                      ? acts.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.id}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
+                <AvGroup>
+                  <Label for="storageRoom.id">
+                    <Translate contentKey="storeHouseApp.product.storageRoom">Storage Room</Translate>
+                  </Label>
+                  <AvInput id="product-storageRoom" type="select" className="form-control" name="storageRoomId">
+                    <option value="" key="0" />
+                    {storageRooms
+                      ? storageRooms.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.id}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
                 </AvGroup>
                 <AvGroup>
                   <Label for="tTN.id">
@@ -231,6 +311,8 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  acts: storeState.act.entities,
+  storageRooms: storeState.storageRoom.entities,
   tTNS: storeState.tTN.entities,
   productEntity: storeState.product.entity,
   loading: storeState.product.loading,
@@ -239,6 +321,8 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getActs,
+  getStorageRooms,
   getTTns,
   getEntity,
   updateEntity,

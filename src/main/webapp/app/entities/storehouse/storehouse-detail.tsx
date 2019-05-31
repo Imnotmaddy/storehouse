@@ -29,25 +29,31 @@ export class StorehouseDetail extends React.Component<IStorehouseDetailProps> {
           </h2>
           <dl className="jh-entity-details">
             <dt>
+              <span id="name">
+                <Translate contentKey="storeHouseApp.storehouse.name">Name</Translate>
+              </span>
+            </dt>
+            <dd>{storehouseEntity.name}</dd>
+            <dt>
               <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
             </dt>
-            <dd>{storehouseEntity.ownerName ? storehouseEntity.ownerName : ''}</dd>
+            <dd>{storehouseEntity.ownerLastName ? storehouseEntity.ownerLastName : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.storehouse.administrator">Administrator</Translate>
             </dt>
-            <dd>{storehouseEntity.administratorName ? storehouseEntity.administratorName : ''}</dd>
+            <dd>{storehouseEntity.administratorLastName ? storehouseEntity.administratorLastName : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.storehouse.dispatcher">Dispatcher</Translate>
             </dt>
-            <dd>{storehouseEntity.dispatcherName ? storehouseEntity.dispatcherName : ''}</dd>
+            <dd>{storehouseEntity.dispatcherLastName ? storehouseEntity.dispatcherLastName : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.storehouse.manager">Manager</Translate>
             </dt>
-            <dd>{storehouseEntity.managerName ? storehouseEntity.managerName : ''}</dd>
+            <dd>{storehouseEntity.managerLastName ? storehouseEntity.managerLastName : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.storehouse.supervisor">Supervisor</Translate>
             </dt>
-            <dd>{storehouseEntity.supervisorName ? storehouseEntity.supervisorName : ''}</dd>
+            <dd>{storehouseEntity.supervisorLastName ? storehouseEntity.supervisorLastName : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/storehouse" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}

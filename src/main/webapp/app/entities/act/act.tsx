@@ -114,7 +114,7 @@ export class Act extends React.Component<IActProps, IActState> {
                   <td>
                     <Translate contentKey={`storeHouseApp.ActType.${act.type}`} />
                   </td>
-                  <td>{act.userId ? <Link to={`app-user/${act.userId}`}>{act.userId}</Link> : ''}</td>
+                  <td>{act.userId ? act.userId : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${act.id}`} color="info" size="sm">

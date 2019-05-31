@@ -16,12 +16,15 @@
       "detail": {
         "title": "Product"
       },
+      "name": "Name",
+      "quantity": "Quantity",
       "state": "State",
       "daysInStorage": "Days In Storage",
       "cost": "Cost",
       "requiredFacility": "Required Facility",
       "weight": "Weight",
-      "name": "Name",
+      "act": "Act",
+      "storageRoom": "Storage Room",
       "tTN": "T TN"
     }
   }

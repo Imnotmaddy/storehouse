@@ -13,17 +13,9 @@ import password, { PasswordState } from 'app/modules/account/password/password.r
 import settings, { SettingsState } from 'app/modules/account/settings/settings.reducer';
 import passwordReset, { PasswordResetState } from 'app/modules/account/password-reset/password-reset.reducer';
 // prettier-ignore
-import driver, {
-  DriverState
-} from 'app/entities/driver/driver.reducer';
-// prettier-ignore
-import transporter, {
-  TransporterState
-} from 'app/entities/transporter/transporter.reducer';
-// prettier-ignore
-import sender, {
-  SenderState
-} from 'app/entities/sender/sender.reducer';
+import act, {
+  ActState
+} from 'app/entities/act/act.reducer';
 // prettier-ignore
 import storehouse, {
   StorehouseState
@@ -33,25 +25,13 @@ import storageRoom, {
   StorageRoomState
 } from 'app/entities/storage-room/storage-room.reducer';
 // prettier-ignore
-import address, {
-  AddressState
-} from 'app/entities/address/address.reducer';
-// prettier-ignore
-import appUser, {
-  AppUserState
-} from 'app/entities/app-user/app-user.reducer';
-// prettier-ignore
-import act, {
-  ActState
-} from 'app/entities/act/act.reducer';
-// prettier-ignore
 import product, {
   ProductState
 } from 'app/entities/product/product.reducer';
 // prettier-ignore
-import recipient, {
-  RecipientState
-} from 'app/entities/recipient/recipient.reducer';
+import transporter, {
+  TransporterState
+} from 'app/entities/transporter/transporter.reducer';
 // prettier-ignore
 import transport, {
   TransportState
@@ -73,16 +53,11 @@ export interface IRootState {
   readonly passwordReset: PasswordResetState;
   readonly password: PasswordState;
   readonly settings: SettingsState;
-  readonly driver: DriverState;
-  readonly transporter: TransporterState;
-  readonly sender: SenderState;
+  readonly act: ActState;
   readonly storehouse: StorehouseState;
   readonly storageRoom: StorageRoomState;
-  readonly address: AddressState;
-  readonly appUser: AppUserState;
-  readonly act: ActState;
   readonly product: ProductState;
-  readonly recipient: RecipientState;
+  readonly transporter: TransporterState;
   readonly transport: TransportState;
   readonly tTN: TTNState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
@@ -100,16 +75,11 @@ const rootReducer = combineReducers<IRootState>({
   passwordReset,
   password,
   settings,
-  driver,
-  transporter,
-  sender,
+  act,
   storehouse,
   storageRoom,
-  address,
-  appUser,
-  act,
   product,
-  recipient,
+  transporter,
   transport,
   tTN,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */

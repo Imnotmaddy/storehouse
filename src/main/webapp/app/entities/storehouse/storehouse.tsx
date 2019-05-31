@@ -85,6 +85,9 @@ export class Storehouse extends React.Component<IStorehouseProps, IStorehouseSta
                   <Translate contentKey="global.field.id">ID</Translate>
                 </th>
                 <th>
+                  <Translate contentKey="storeHouseApp.storehouse.name">Name</Translate>
+                </th>
+                <th>
                   <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
                 </th>
                 <th>
@@ -110,21 +113,12 @@ export class Storehouse extends React.Component<IStorehouseProps, IStorehouseSta
                       {storehouse.id}
                     </Button>
                   </td>
-                  <td>{storehouse.ownerName ? <Link to={`app-user/${storehouse.ownerId}`}>{storehouse.ownerName}</Link> : ''}</td>
-                  <td>
-                    {storehouse.administratorName ? (
-                      <Link to={`app-user/${storehouse.administratorId}`}>{storehouse.administratorName}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>
-                    {storehouse.dispatcherName ? <Link to={`app-user/${storehouse.dispatcherId}`}>{storehouse.dispatcherName}</Link> : ''}
-                  </td>
-                  <td>{storehouse.managerName ? <Link to={`app-user/${storehouse.managerId}`}>{storehouse.managerName}</Link> : ''}</td>
-                  <td>
-                    {storehouse.supervisorName ? <Link to={`app-user/${storehouse.supervisorId}`}>{storehouse.supervisorName}</Link> : ''}
-                  </td>
+                  <td>{storehouse.name}</td>
+                  <td>{storehouse.ownerLastName ? storehouse.ownerLastName : ''}</td>
+                  <td>{storehouse.administratorLastName ? storehouse.administratorLastName : ''}</td>
+                  <td>{storehouse.dispatcherLastName ? storehouse.dispatcherLastName : ''}</td>
+                  <td>{storehouse.managerLastName ? storehouse.managerLastName : ''}</td>
+                  <td>{storehouse.supervisorLastName ? storehouse.supervisorLastName : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${storehouse.id}`} color="info" size="sm">

@@ -39,7 +39,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.itechart.studlab.app.domain.enumeration.DeliveryType;
-import com.itechart.studlab.app.domain.enumeration.Facility;
 /**
  * Test class for the TransportResource REST controller.
  *
@@ -52,14 +51,8 @@ public class TransportResourceIntTest {
     private static final String DEFAULT_VEHICLE_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_VEHICLE_NUMBER = "BBBBBBBBBB";
 
-    private static final String DEFAULT_WAGONS_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_WAGONS_NUMBER = "BBBBBBBBBB";
-
     private static final DeliveryType DEFAULT_DELIVERY_TYPE = DeliveryType.Auto;
     private static final DeliveryType UPDATED_DELIVERY_TYPE = DeliveryType.Train;
-
-    private static final Facility DEFAULT_FACILITY = Facility.REFRIGERATOR;
-    private static final Facility UPDATED_FACILITY = Facility.OPEN_SPACE;
 
     @Autowired
     private TransportRepository transportRepository;
@@ -118,9 +111,7 @@ public class TransportResourceIntTest {
     public static Transport createEntity(EntityManager em) {
         Transport transport = new Transport()
             .vehicleNumber(DEFAULT_VEHICLE_NUMBER)
-            .wagonsNumber(DEFAULT_WAGONS_NUMBER)
-            .deliveryType(DEFAULT_DELIVERY_TYPE)
-            .facility(DEFAULT_FACILITY);
+            .deliveryType(DEFAULT_DELIVERY_TYPE);
         return transport;
     }
 
@@ -146,9 +137,7 @@ public class TransportResourceIntTest {
         assertThat(transportList).hasSize(databaseSizeBeforeCreate + 1);
         Transport testTransport = transportList.get(transportList.size() - 1);
         assertThat(testTransport.getVehicleNumber()).isEqualTo(DEFAULT_VEHICLE_NUMBER);
-        assertThat(testTransport.getWagonsNumber()).isEqualTo(DEFAULT_WAGONS_NUMBER);
         assertThat(testTransport.getDeliveryType()).isEqualTo(DEFAULT_DELIVERY_TYPE);
-        assertThat(testTransport.getFacility()).isEqualTo(DEFAULT_FACILITY);
 
         // Validate the Transport in Elasticsearch
         verify(mockTransportSearchRepository, times(1)).save(testTransport);
@@ -179,6 +168,25 @@ public class TransportResourceIntTest {
 
     @Test
     @Transactional
+    public void checkDeliveryTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transportRepository.findAll().size();
+        // set the field null
+        transport.setDeliveryType(null);
+
+        // Create the Transport, which fails.
+        TransportDTO transportDTO = transportMapper.toDto(transport);
+
+        restTransportMockMvc.perform(post("/api/transports")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(transportDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Transport> transportList = transportRepository.findAll();
+        assertThat(transportList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllTransports() throws Exception {
         // Initialize the database
         transportRepository.saveAndFlush(transport);
@@ -189,9 +197,7 @@ public class TransportResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transport.getId().intValue())))
             .andExpect(jsonPath("$.[*].vehicleNumber").value(hasItem(DEFAULT_VEHICLE_NUMBER.toString())))
-            .andExpect(jsonPath("$.[*].wagonsNumber").value(hasItem(DEFAULT_WAGONS_NUMBER.toString())))
-            .andExpect(jsonPath("$.[*].deliveryType").value(hasItem(DEFAULT_DELIVERY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].facility").value(hasItem(DEFAULT_FACILITY.toString())));
+            .andExpect(jsonPath("$.[*].deliveryType").value(hasItem(DEFAULT_DELIVERY_TYPE.toString())));
     }
     
     @Test
@@ -206,9 +212,7 @@ public class TransportResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(transport.getId().intValue()))
             .andExpect(jsonPath("$.vehicleNumber").value(DEFAULT_VEHICLE_NUMBER.toString()))
-            .andExpect(jsonPath("$.wagonsNumber").value(DEFAULT_WAGONS_NUMBER.toString()))
-            .andExpect(jsonPath("$.deliveryType").value(DEFAULT_DELIVERY_TYPE.toString()))
-            .andExpect(jsonPath("$.facility").value(DEFAULT_FACILITY.toString()));
+            .andExpect(jsonPath("$.deliveryType").value(DEFAULT_DELIVERY_TYPE.toString()));
     }
 
     @Test
@@ -233,9 +237,7 @@ public class TransportResourceIntTest {
         em.detach(updatedTransport);
         updatedTransport
             .vehicleNumber(UPDATED_VEHICLE_NUMBER)
-            .wagonsNumber(UPDATED_WAGONS_NUMBER)
-            .deliveryType(UPDATED_DELIVERY_TYPE)
-            .facility(UPDATED_FACILITY);
+            .deliveryType(UPDATED_DELIVERY_TYPE);
         TransportDTO transportDTO = transportMapper.toDto(updatedTransport);
 
         restTransportMockMvc.perform(put("/api/transports")
@@ -248,9 +250,7 @@ public class TransportResourceIntTest {
         assertThat(transportList).hasSize(databaseSizeBeforeUpdate);
         Transport testTransport = transportList.get(transportList.size() - 1);
         assertThat(testTransport.getVehicleNumber()).isEqualTo(UPDATED_VEHICLE_NUMBER);
-        assertThat(testTransport.getWagonsNumber()).isEqualTo(UPDATED_WAGONS_NUMBER);
         assertThat(testTransport.getDeliveryType()).isEqualTo(UPDATED_DELIVERY_TYPE);
-        assertThat(testTransport.getFacility()).isEqualTo(UPDATED_FACILITY);
 
         // Validate the Transport in Elasticsearch
         verify(mockTransportSearchRepository, times(1)).save(testTransport);
@@ -312,9 +312,7 @@ public class TransportResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transport.getId().intValue())))
             .andExpect(jsonPath("$.[*].vehicleNumber").value(hasItem(DEFAULT_VEHICLE_NUMBER)))
-            .andExpect(jsonPath("$.[*].wagonsNumber").value(hasItem(DEFAULT_WAGONS_NUMBER)))
-            .andExpect(jsonPath("$.[*].deliveryType").value(hasItem(DEFAULT_DELIVERY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].facility").value(hasItem(DEFAULT_FACILITY.toString())));
+            .andExpect(jsonPath("$.[*].deliveryType").value(hasItem(DEFAULT_DELIVERY_TYPE.toString())));
     }
 
     @Test

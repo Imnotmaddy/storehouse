@@ -8,10 +8,14 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Transport and its DTO TransportDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {TransporterMapper.class})
 public interface TransportMapper extends EntityMapper<TransportDTO, Transport> {
 
+    @Mapping(source = "company.id", target = "companyId")
+    TransportDTO toDto(Transport transport);
 
+    @Mapping(source = "companyId", target = "company")
+    Transport toEntity(TransportDTO transportDTO);
 
     default Transport fromId(Long id) {
         if (id == null) {

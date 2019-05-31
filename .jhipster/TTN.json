@@ -3,14 +3,24 @@
     "fields": [
         {
             "fieldName": "serialNumber",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "dateOfCreation",
-            "fieldType": "LocalDate"
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "driverName",
             "fieldType": "String"
         },
         {
@@ -23,7 +33,10 @@
         },
         {
             "fieldName": "dateTimeOfRegistration",
-            "fieldType": "Instant"
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "isAccepted",
@@ -33,27 +46,26 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "appUser",
+            "otherEntityName": "user",
             "otherEntityRelationshipName": "tTN",
-            "relationshipName": "storehouseDispatcher",
-            "otherEntityField": "name",
+            "relationshipName": "dispatcher",
+            "otherEntityField": "lastName",
             "ownerSide": true
         },
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "appUser",
+            "otherEntityName": "user",
             "otherEntityRelationshipName": "tTN",
             "relationshipName": "manager",
-            "otherEntityField": "name",
+            "otherEntityField": "lastName",
             "ownerSide": true
         },
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "appUser",
+            "otherEntityName": "user",
             "otherEntityRelationshipName": "tTN",
-            "relationshipValidateRules": "required",
             "relationshipName": "sender",
-            "otherEntityField": "name",
+            "otherEntityField": "lastName",
             "ownerSide": true
         },
         {
@@ -62,7 +74,7 @@
             "otherEntityRelationshipName": "tTN",
             "relationshipValidateRules": "required",
             "relationshipName": "transport",
-            "otherEntityField": "facility",
+            "otherEntityField": "id",
             "ownerSide": true
         },
         {
@@ -75,29 +87,13 @@
             "ownerSide": true
         },
         {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "driver",
-            "otherEntityRelationshipName": "tTN",
-            "relationshipName": "driver",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "recipient",
-            "otherEntityRelationshipName": "tTN",
-            "relationshipName": "recipient",
-            "otherEntityField": "companyName",
-            "ownerSide": true
-        },
-        {
             "relationshipType": "one-to-many",
             "otherEntityName": "product",
             "otherEntityRelationshipName": "tTN",
             "relationshipName": "products"
         }
     ],
-    "changelogDate": "20190521164128",
+    "changelogDate": "20190530162443",
     "entityTableName": "ttn",
     "dto": "mapstruct",
     "pagination": "no",

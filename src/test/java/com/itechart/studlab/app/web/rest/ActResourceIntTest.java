@@ -175,6 +175,63 @@ public class ActResourceIntTest {
 
     @Test
     @Transactional
+    public void checkDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = actRepository.findAll().size();
+        // set the field null
+        act.setDate(null);
+
+        // Create the Act, which fails.
+        ActDTO actDTO = actMapper.toDto(act);
+
+        restActMockMvc.perform(post("/api/acts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(actDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Act> actList = actRepository.findAll();
+        assertThat(actList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCostIsRequired() throws Exception {
+        int databaseSizeBeforeTest = actRepository.findAll().size();
+        // set the field null
+        act.setCost(null);
+
+        // Create the Act, which fails.
+        ActDTO actDTO = actMapper.toDto(act);
+
+        restActMockMvc.perform(post("/api/acts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(actDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Act> actList = actRepository.findAll();
+        assertThat(actList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = actRepository.findAll().size();
+        // set the field null
+        act.setType(null);
+
+        // Create the Act, which fails.
+        ActDTO actDTO = actMapper.toDto(act);
+
+        restActMockMvc.perform(post("/api/acts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(actDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Act> actList = actRepository.findAll();
+        assertThat(actList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllActs() throws Exception {
         // Initialize the database
         actRepository.saveAndFlush(act);

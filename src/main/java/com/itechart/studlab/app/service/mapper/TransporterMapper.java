@@ -12,6 +12,8 @@ import org.mapstruct.*;
 public interface TransporterMapper extends EntityMapper<TransporterDTO, Transporter> {
 
 
+    @Mapping(target = "vehicles", ignore = true)
+    Transporter toEntity(TransporterDTO transporterDTO);
 
     default Transporter fromId(Long id) {
         if (id == null) {

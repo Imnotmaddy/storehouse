@@ -1,18 +1,18 @@
 package com.itechart.studlab.app.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
 
 import com.itechart.studlab.app.domain.enumeration.DeliveryType;
-
-import com.itechart.studlab.app.domain.enumeration.Facility;
 
 /**
  * A Transport.
@@ -32,16 +32,14 @@ public class Transport implements Serializable {
     @Column(name = "vehicle_number")
     private String vehicleNumber;
 
-    @Column(name = "wagons_number")
-    private String wagonsNumber;
-
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "delivery_type")
+    @Column(name = "delivery_type", nullable = false)
     private DeliveryType deliveryType;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "facility")
-    private Facility facility;
+    @ManyToOne
+    @JsonIgnoreProperties("vehicles")
+    private Transporter company;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -65,19 +63,6 @@ public class Transport implements Serializable {
         this.vehicleNumber = vehicleNumber;
     }
 
-    public String getWagonsNumber() {
-        return wagonsNumber;
-    }
-
-    public Transport wagonsNumber(String wagonsNumber) {
-        this.wagonsNumber = wagonsNumber;
-        return this;
-    }
-
-    public void setWagonsNumber(String wagonsNumber) {
-        this.wagonsNumber = wagonsNumber;
-    }
-
     public DeliveryType getDeliveryType() {
         return deliveryType;
     }
@@ -91,17 +76,17 @@ public class Transport implements Serializable {
         this.deliveryType = deliveryType;
     }
 
-    public Facility getFacility() {
-        return facility;
+    public Transporter getCompany() {
+        return company;
     }
 
-    public Transport facility(Facility facility) {
-        this.facility = facility;
+    public Transport company(Transporter transporter) {
+        this.company = transporter;
         return this;
     }
 
-    public void setFacility(Facility facility) {
-        this.facility = facility;
+    public void setCompany(Transporter transporter) {
+        this.company = transporter;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -130,9 +115,7 @@ public class Transport implements Serializable {
         return "Transport{" +
             "id=" + getId() +
             ", vehicleNumber='" + getVehicleNumber() + "'" +
-            ", wagonsNumber='" + getWagonsNumber() + "'" +
             ", deliveryType='" + getDeliveryType() + "'" +
-            ", facility='" + getFacility() + "'" +
             "}";
     }
 }

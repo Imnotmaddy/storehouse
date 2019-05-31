@@ -1,4 +1,5 @@
 package com.itechart.studlab.app.service.dto;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,6 +10,7 @@ public class TransporterDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private String companyName;
 
 

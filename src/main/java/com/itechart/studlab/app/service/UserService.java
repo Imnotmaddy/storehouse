@@ -10,8 +10,9 @@ import com.itechart.studlab.app.security.AuthoritiesConstants;
 import com.itechart.studlab.app.security.SecurityUtils;
 import com.itechart.studlab.app.service.dto.UserDTO;
 import com.itechart.studlab.app.service.util.RandomUtil;
-import com.itechart.studlab.app.web.rest.errors.*;
-
+import com.itechart.studlab.app.web.rest.errors.EmailAlreadyUsedException;
+import com.itechart.studlab.app.web.rest.errors.InvalidPasswordException;
+import com.itechart.studlab.app.web.rest.errors.LoginAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -146,6 +148,9 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail().toLowerCase());
         user.setImageUrl(userDTO.getImageUrl());
+        user.setAddress(userDTO.getAddress());
+        user.setCountry(userDTO.getCountry());
+        user.setBirthdate(userDTO.getBirthdate());
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
         } else {
@@ -168,6 +173,7 @@ public class UserService {
         userSearchRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
+
         return user;
     }
 
@@ -180,7 +186,8 @@ public class UserService {
      * @param langKey language key
      * @param imageUrl image URL of user
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl,
+                           LocalDate birthdate) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
@@ -189,6 +196,7 @@ public class UserService {
                 user.setEmail(email.toLowerCase());
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
+                user.setBirthdate(birthdate);
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
@@ -213,6 +221,10 @@ public class UserService {
                 user.setLastName(userDTO.getLastName());
                 user.setEmail(userDTO.getEmail().toLowerCase());
                 user.setImageUrl(userDTO.getImageUrl());
+                user.setBirthdate(userDTO.getBirthdate());
+                user.setCountry(userDTO.getCountry());
+                user.setCity(userDTO.getCity());
+                user.setAddress(userDTO.getAddress());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
                 Set<Authority> managedAuthorities = user.getAuthorities();

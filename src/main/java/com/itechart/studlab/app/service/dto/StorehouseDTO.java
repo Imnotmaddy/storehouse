@@ -10,26 +10,29 @@ public class StorehouseDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
+    private String name;
+
 
     private Long ownerId;
 
-    private String ownerName;
+    private String ownerLastName;
 
     private Long administratorId;
 
-    private String administratorName;
+    private String administratorLastName;
 
     private Long dispatcherId;
 
-    private String dispatcherName;
+    private String dispatcherLastName;
 
     private Long managerId;
 
-    private String managerName;
+    private String managerLastName;
 
     private Long supervisorId;
 
-    private String supervisorName;
+    private String supervisorLastName;
 
     public Long getId() {
         return id;
@@ -39,84 +42,92 @@ public class StorehouseDTO implements Serializable {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Long getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(Long appUserId) {
-        this.ownerId = appUserId;
+    public void setOwnerId(Long userId) {
+        this.ownerId = userId;
     }
 
-    public String getOwnerName() {
-        return ownerName;
+    public String getOwnerLastName() {
+        return ownerLastName;
     }
 
-    public void setOwnerName(String appUserName) {
-        this.ownerName = appUserName;
+    public void setOwnerLastName(String userLastName) {
+        this.ownerLastName = userLastName;
     }
 
     public Long getAdministratorId() {
         return administratorId;
     }
 
-    public void setAdministratorId(Long appUserId) {
-        this.administratorId = appUserId;
+    public void setAdministratorId(Long userId) {
+        this.administratorId = userId;
     }
 
-    public String getAdministratorName() {
-        return administratorName;
+    public String getAdministratorLastName() {
+        return administratorLastName;
     }
 
-    public void setAdministratorName(String appUserName) {
-        this.administratorName = appUserName;
+    public void setAdministratorLastName(String userLastName) {
+        this.administratorLastName = userLastName;
     }
 
     public Long getDispatcherId() {
         return dispatcherId;
     }
 
-    public void setDispatcherId(Long appUserId) {
-        this.dispatcherId = appUserId;
+    public void setDispatcherId(Long userId) {
+        this.dispatcherId = userId;
     }
 
-    public String getDispatcherName() {
-        return dispatcherName;
+    public String getDispatcherLastName() {
+        return dispatcherLastName;
     }
 
-    public void setDispatcherName(String appUserName) {
-        this.dispatcherName = appUserName;
+    public void setDispatcherLastName(String userLastName) {
+        this.dispatcherLastName = userLastName;
     }
 
     public Long getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(Long appUserId) {
-        this.managerId = appUserId;
+    public void setManagerId(Long userId) {
+        this.managerId = userId;
     }
 
-    public String getManagerName() {
-        return managerName;
+    public String getManagerLastName() {
+        return managerLastName;
     }
 
-    public void setManagerName(String appUserName) {
-        this.managerName = appUserName;
+    public void setManagerLastName(String userLastName) {
+        this.managerLastName = userLastName;
     }
 
     public Long getSupervisorId() {
         return supervisorId;
     }
 
-    public void setSupervisorId(Long appUserId) {
-        this.supervisorId = appUserId;
+    public void setSupervisorId(Long userId) {
+        this.supervisorId = userId;
     }
 
-    public String getSupervisorName() {
-        return supervisorName;
+    public String getSupervisorLastName() {
+        return supervisorLastName;
     }
 
-    public void setSupervisorName(String appUserName) {
-        this.supervisorName = appUserName;
+    public void setSupervisorLastName(String userLastName) {
+        this.supervisorLastName = userLastName;
     }
 
     @Override
@@ -144,16 +155,17 @@ public class StorehouseDTO implements Serializable {
     public String toString() {
         return "StorehouseDTO{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
             ", owner=" + getOwnerId() +
-            ", owner='" + getOwnerName() + "'" +
+            ", owner='" + getOwnerLastName() + "'" +
             ", administrator=" + getAdministratorId() +
-            ", administrator='" + getAdministratorName() + "'" +
+            ", administrator='" + getAdministratorLastName() + "'" +
             ", dispatcher=" + getDispatcherId() +
-            ", dispatcher='" + getDispatcherName() + "'" +
+            ", dispatcher='" + getDispatcherLastName() + "'" +
             ", manager=" + getManagerId() +
-            ", manager='" + getManagerName() + "'" +
+            ", manager='" + getManagerLastName() + "'" +
             ", supervisor=" + getSupervisorId() +
-            ", supervisor='" + getSupervisorName() + "'" +
+            ", supervisor='" + getSupervisorLastName() + "'" +
             "}";
     }
 }

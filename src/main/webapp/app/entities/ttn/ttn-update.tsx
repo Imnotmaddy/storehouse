@@ -8,16 +8,12 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { IAppUser } from 'app/shared/model/app-user.model';
-import { getEntities as getAppUsers } from 'app/entities/app-user/app-user.reducer';
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { ITransport } from 'app/shared/model/transport.model';
 import { getEntities as getTransports } from 'app/entities/transport/transport.reducer';
 import { ITransporter } from 'app/shared/model/transporter.model';
 import { getEntities as getTransporters } from 'app/entities/transporter/transporter.reducer';
-import { IDriver } from 'app/shared/model/driver.model';
-import { getEntities as getDrivers } from 'app/entities/driver/driver.reducer';
-import { IRecipient } from 'app/shared/model/recipient.model';
-import { getEntities as getRecipients } from 'app/entities/recipient/recipient.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './ttn.reducer';
 import { ITTN } from 'app/shared/model/ttn.model';
 // tslint:disable-next-line:no-unused-variable
@@ -28,26 +24,22 @@ export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteCompone
 
 export interface ITTNUpdateState {
   isNew: boolean;
-  storehouseDispatcherId: string;
+  dispatcherId: string;
   managerId: string;
   senderId: string;
   transportId: string;
   transporterId: string;
-  driverId: string;
-  recipientId: string;
 }
 
 export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      storehouseDispatcherId: '0',
+      dispatcherId: '0',
       managerId: '0',
       senderId: '0',
       transportId: '0',
       transporterId: '0',
-      driverId: '0',
-      recipientId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -65,11 +57,9 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       this.props.getEntity(this.props.match.params.id);
     }
 
-    this.props.getAppUsers();
+    this.props.getUsers();
     this.props.getTransports();
     this.props.getTransporters();
-    this.props.getDrivers();
-    this.props.getRecipients();
   }
 
   saveEntity = (event, errors, values) => {
@@ -95,7 +85,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   };
 
   render() {
-    const { tTNEntity, appUsers, transports, transporters, drivers, recipients, loading, updating } = this.props;
+    const { tTNEntity, users, transports, transporters, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -125,19 +115,40 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   <Label id="serialNumberLabel" for="serialNumber">
                     <Translate contentKey="storeHouseApp.tTN.serialNumber">Serial Number</Translate>
                   </Label>
-                  <AvField id="ttn-serialNumber" type="text" name="serialNumber" />
+                  <AvField
+                    id="ttn-serialNumber"
+                    type="text"
+                    name="serialNumber"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="dateOfCreationLabel" for="dateOfCreation">
                     <Translate contentKey="storeHouseApp.tTN.dateOfCreation">Date Of Creation</Translate>
                   </Label>
-                  <AvField id="ttn-dateOfCreation" type="date" className="form-control" name="dateOfCreation" />
+                  <AvField
+                    id="ttn-dateOfCreation"
+                    type="date"
+                    className="form-control"
+                    name="dateOfCreation"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="descriptionLabel" for="description">
                     <Translate contentKey="storeHouseApp.tTN.description">Description</Translate>
                   </Label>
                   <AvField id="ttn-description" type="text" name="description" />
+                </AvGroup>
+                <AvGroup>
+                  <Label id="driverNameLabel" for="driverName">
+                    <Translate contentKey="storeHouseApp.tTN.driverName">Driver Name</Translate>
+                  </Label>
+                  <AvField id="ttn-driverName" type="text" name="driverName" />
                 </AvGroup>
                 <AvGroup>
                   <Label id="productsAmountLabel" for="productsAmount">
@@ -162,6 +173,9 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     name="dateTimeOfRegistration"
                     placeholder={'YYYY-MM-DD HH:mm'}
                     value={isNew ? null : convertDateTimeFromServer(this.props.tTNEntity.dateTimeOfRegistration)}
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -171,52 +185,52 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   </Label>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="storehouseDispatcher.name">
-                    <Translate contentKey="storeHouseApp.tTN.storehouseDispatcher">Storehouse Dispatcher</Translate>
+                  <Label for="dispatcher.lastName">
+                    <Translate contentKey="storeHouseApp.tTN.dispatcher">Dispatcher</Translate>
                   </Label>
-                  <AvInput id="ttn-storehouseDispatcher" type="select" className="form-control" name="storehouseDispatcherId">
+                  <AvInput id="ttn-dispatcher" type="select" className="form-control" name="dispatcherId">
                     <option value="" key="0" />
-                    {appUsers
-                      ? appUsers.map(otherEntity => (
+                    {users
+                      ? users.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
+                            {otherEntity.lastName}
                           </option>
                         ))
                       : null}
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="manager.name">
+                  <Label for="manager.lastName">
                     <Translate contentKey="storeHouseApp.tTN.manager">Manager</Translate>
                   </Label>
                   <AvInput id="ttn-manager" type="select" className="form-control" name="managerId">
                     <option value="" key="0" />
-                    {appUsers
-                      ? appUsers.map(otherEntity => (
+                    {users
+                      ? users.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
+                            {otherEntity.lastName}
                           </option>
                         ))
                       : null}
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="sender.name">
+                  <Label for="sender.lastName">
                     <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
                   </Label>
                   <AvInput id="ttn-sender" type="select" className="form-control" name="senderId">
                     <option value="" key="0" />
-                    {appUsers
-                      ? appUsers.map(otherEntity => (
+                    {users
+                      ? users.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
+                            {otherEntity.lastName}
                           </option>
                         ))
                       : null}
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="transport.facility">
+                  <Label for="transport.id">
                     <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
                   </Label>
                   <AvInput id="ttn-transport" type="select" className="form-control" name="transportId">
@@ -224,7 +238,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     {transports
                       ? transports.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.facility}
+                            {otherEntity.id}
                           </option>
                         ))
                       : null}
@@ -238,36 +252,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     <option value="" key="0" />
                     {transporters
                       ? transporters.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.companyName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="driver.name">
-                    <Translate contentKey="storeHouseApp.tTN.driver">Driver</Translate>
-                  </Label>
-                  <AvInput id="ttn-driver" type="select" className="form-control" name="driverId">
-                    <option value="" key="0" />
-                    {drivers
-                      ? drivers.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="recipient.companyName">
-                    <Translate contentKey="storeHouseApp.tTN.recipient">Recipient</Translate>
-                  </Label>
-                  <AvInput id="ttn-recipient" type="select" className="form-control" name="recipientId">
-                    <option value="" key="0" />
-                    {recipients
-                      ? recipients.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
                             {otherEntity.companyName}
                           </option>
@@ -298,11 +282,9 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  appUsers: storeState.appUser.entities,
+  users: storeState.userManagement.users,
   transports: storeState.transport.entities,
   transporters: storeState.transporter.entities,
-  drivers: storeState.driver.entities,
-  recipients: storeState.recipient.entities,
   tTNEntity: storeState.tTN.entity,
   loading: storeState.tTN.loading,
   updating: storeState.tTN.updating,
@@ -310,11 +292,9 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getAppUsers,
+  getUsers,
   getTransports,
   getTransporters,
-  getDrivers,
-  getRecipients,
   getEntity,
   updateEntity,
   createEntity,

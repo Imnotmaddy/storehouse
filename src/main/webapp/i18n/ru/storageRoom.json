@@ -16,8 +16,9 @@
       "detail": {
         "title": "Storage Room"
       },
-      "amountOfDistinctProducts": "Amount Of Distinct Products",
+      "roomNumber": "Room Number",
       "type": "Type",
+      "products": "Products",
       "storehouse": "Storehouse"
     }
   }

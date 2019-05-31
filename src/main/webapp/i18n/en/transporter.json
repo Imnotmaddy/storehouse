@@ -16,7 +16,8 @@
       "detail": {
         "title": "Transporter"
       },
-      "companyName": "Company Name"
+      "companyName": "Company Name",
+      "vehicles": "Vehicles"
     }
   }
 }

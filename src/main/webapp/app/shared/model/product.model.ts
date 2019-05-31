@@ -22,12 +22,15 @@ export const enum Facility {
 
 export interface IProduct {
   id?: number;
+  name?: string;
+  quantity?: number;
   state?: ProductState;
   daysInStorage?: number;
   cost?: number;
   requiredFacility?: Facility;
   weight?: number;
-  name?: string;
+  actId?: number;
+  storageRoomId?: number;
   tTNId?: number;
 }
 

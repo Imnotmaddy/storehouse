@@ -3,11 +3,21 @@
     "fields": [
         {
             "fieldName": "companyName",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
-    "relationships": [],
-    "changelogDate": "20190521164118",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "transport",
+            "otherEntityRelationshipName": "company",
+            "relationshipName": "vehicles"
+        }
+    ],
+    "changelogDate": "20190530162441",
     "entityTableName": "transporter",
     "dto": "mapstruct",
     "pagination": "no",

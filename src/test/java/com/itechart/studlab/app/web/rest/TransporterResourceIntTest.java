@@ -162,6 +162,25 @@ public class TransporterResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCompanyNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transporterRepository.findAll().size();
+        // set the field null
+        transporter.setCompanyName(null);
+
+        // Create the Transporter, which fails.
+        TransporterDTO transporterDTO = transporterMapper.toDto(transporter);
+
+        restTransporterMockMvc.perform(post("/api/transporters")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(transporterDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Transporter> transporterList = transporterRepository.findAll();
+        assertThat(transporterList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllTransporters() throws Exception {
         // Initialize the database
         transporterRepository.saveAndFlush(transporter);

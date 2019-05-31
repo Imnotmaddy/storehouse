@@ -1,8 +1,8 @@
 package com.itechart.studlab.app.service.dto;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 import com.itechart.studlab.app.domain.enumeration.DeliveryType;
-import com.itechart.studlab.app.domain.enumeration.Facility;
 
 /**
  * A DTO for the Transport entity.
@@ -13,12 +13,11 @@ public class TransportDTO implements Serializable {
 
     private String vehicleNumber;
 
-    private String wagonsNumber;
-
+    @NotNull
     private DeliveryType deliveryType;
 
-    private Facility facility;
 
+    private Long companyId;
 
     public Long getId() {
         return id;
@@ -36,14 +35,6 @@ public class TransportDTO implements Serializable {
         this.vehicleNumber = vehicleNumber;
     }
 
-    public String getWagonsNumber() {
-        return wagonsNumber;
-    }
-
-    public void setWagonsNumber(String wagonsNumber) {
-        this.wagonsNumber = wagonsNumber;
-    }
-
     public DeliveryType getDeliveryType() {
         return deliveryType;
     }
@@ -52,12 +43,12 @@ public class TransportDTO implements Serializable {
         this.deliveryType = deliveryType;
     }
 
-    public Facility getFacility() {
-        return facility;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setFacility(Facility facility) {
-        this.facility = facility;
+    public void setCompanyId(Long transporterId) {
+        this.companyId = transporterId;
     }
 
     @Override
@@ -86,9 +77,8 @@ public class TransportDTO implements Serializable {
         return "TransportDTO{" +
             "id=" + getId() +
             ", vehicleNumber='" + getVehicleNumber() + "'" +
-            ", wagonsNumber='" + getWagonsNumber() + "'" +
             ", deliveryType='" + getDeliveryType() + "'" +
-            ", facility='" + getFacility() + "'" +
+            ", company=" + getCompanyId() +
             "}";
     }
 }

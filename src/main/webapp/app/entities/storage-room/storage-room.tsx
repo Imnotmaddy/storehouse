@@ -85,7 +85,7 @@ export class StorageRoom extends React.Component<IStorageRoomProps, IStorageRoom
                   <Translate contentKey="global.field.id">ID</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="storeHouseApp.storageRoom.amountOfDistinctProducts">Amount Of Distinct Products</Translate>
+                  <Translate contentKey="storeHouseApp.storageRoom.roomNumber">Room Number</Translate>
                 </th>
                 <th>
                   <Translate contentKey="storeHouseApp.storageRoom.type">Type</Translate>
@@ -104,7 +104,7 @@ export class StorageRoom extends React.Component<IStorageRoomProps, IStorageRoom
                       {storageRoom.id}
                     </Button>
                   </td>
-                  <td>{storageRoom.amountOfDistinctProducts}</td>
+                  <td>{storageRoom.roomNumber}</td>
                   <td>
                     <Translate contentKey={`storeHouseApp.Facility.${storageRoom.type}`} />
                   </td>

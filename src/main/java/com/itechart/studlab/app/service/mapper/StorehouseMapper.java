@@ -8,19 +8,19 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Storehouse and its DTO StorehouseDTO.
  */
-@Mapper(componentModel = "spring", uses = {AppUserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface StorehouseMapper extends EntityMapper<StorehouseDTO, Storehouse> {
 
     @Mapping(source = "owner.id", target = "ownerId")
-    @Mapping(source = "owner.user.login", target = "ownerName")
+    @Mapping(source = "owner.lastName", target = "ownerLastName")
     @Mapping(source = "administrator.id", target = "administratorId")
-    @Mapping(source = "administrator.user.login", target = "administratorName")
+    @Mapping(source = "administrator.lastName", target = "administratorLastName")
     @Mapping(source = "dispatcher.id", target = "dispatcherId")
-    @Mapping(source = "dispatcher.user.login", target = "dispatcherName")
+    @Mapping(source = "dispatcher.lastName", target = "dispatcherLastName")
     @Mapping(source = "manager.id", target = "managerId")
-    @Mapping(source = "manager.user.login", target = "managerName")
+    @Mapping(source = "manager.lastName", target = "managerLastName")
     @Mapping(source = "supervisor.id", target = "supervisorId")
-    @Mapping(source = "supervisor.user.login", target = "supervisorName")
+    @Mapping(source = "supervisor.lastName", target = "supervisorLastName")
     StorehouseDTO toDto(Storehouse storehouse);
 
     @Mapping(source = "ownerId", target = "owner")

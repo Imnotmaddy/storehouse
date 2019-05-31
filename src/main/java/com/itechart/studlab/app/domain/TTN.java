@@ -31,14 +31,19 @@ public class TTN implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "serial_number")
+    @NotNull
+    @Column(name = "serial_number", nullable = false)
     private String serialNumber;
 
-    @Column(name = "date_of_creation")
+    @NotNull
+    @Column(name = "date_of_creation", nullable = false)
     private LocalDate dateOfCreation;
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "driver_name")
+    private String driverName;
 
     @Column(name = "products_amount")
     private Integer productsAmount;
@@ -46,7 +51,8 @@ public class TTN implements Serializable {
     @Column(name = "number_of_product_entries")
     private Integer numberOfProductEntries;
 
-    @Column(name = "date_time_of_registration")
+    @NotNull
+    @Column(name = "date_time_of_registration", nullable = false)
     private Instant dateTimeOfRegistration;
 
     @Column(name = "is_accepted")
@@ -54,16 +60,15 @@ public class TTN implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
-    private AppUser storehouseDispatcher;
+    private User dispatcher;
 
     @OneToOne
     @JoinColumn(unique = true)
-    private AppUser manager;
+    private User manager;
 
-    @OneToOne(optional = false)    @NotNull
-
+    @OneToOne
     @JoinColumn(unique = true)
-    private AppUser sender;
+    private User sender;
 
     @OneToOne(optional = false)    @NotNull
 
@@ -74,14 +79,6 @@ public class TTN implements Serializable {
 
     @JoinColumn(unique = true)
     private Transporter transporter;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Driver driver;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Recipient recipient;
 
     @OneToMany(mappedBy = "tTN")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -132,6 +129,19 @@ public class TTN implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public TTN driverName(String driverName) {
+        this.driverName = driverName;
+        return this;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
     public Integer getProductsAmount() {
@@ -186,43 +196,43 @@ public class TTN implements Serializable {
         this.isAccepted = isAccepted;
     }
 
-    public AppUser getStorehouseDispatcher() {
-        return storehouseDispatcher;
+    public User getDispatcher() {
+        return dispatcher;
     }
 
-    public TTN storehouseDispatcher(AppUser appUser) {
-        this.storehouseDispatcher = appUser;
+    public TTN dispatcher(User user) {
+        this.dispatcher = user;
         return this;
     }
 
-    public void setStorehouseDispatcher(AppUser appUser) {
-        this.storehouseDispatcher = appUser;
+    public void setDispatcher(User user) {
+        this.dispatcher = user;
     }
 
-    public AppUser getManager() {
+    public User getManager() {
         return manager;
     }
 
-    public TTN manager(AppUser appUser) {
-        this.manager = appUser;
+    public TTN manager(User user) {
+        this.manager = user;
         return this;
     }
 
-    public void setManager(AppUser appUser) {
-        this.manager = appUser;
+    public void setManager(User user) {
+        this.manager = user;
     }
 
-    public AppUser getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public TTN sender(AppUser appUser) {
-        this.sender = appUser;
+    public TTN sender(User user) {
+        this.sender = user;
         return this;
     }
 
-    public void setSender(AppUser appUser) {
-        this.sender = appUser;
+    public void setSender(User user) {
+        this.sender = user;
     }
 
     public Transport getTransport() {
@@ -249,32 +259,6 @@ public class TTN implements Serializable {
 
     public void setTransporter(Transporter transporter) {
         this.transporter = transporter;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public TTN driver(Driver driver) {
-        this.driver = driver;
-        return this;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
-    public Recipient getRecipient() {
-        return recipient;
-    }
-
-    public TTN recipient(Recipient recipient) {
-        this.recipient = recipient;
-        return this;
-    }
-
-    public void setRecipient(Recipient recipient) {
-        this.recipient = recipient;
     }
 
     public Set<Product> getProducts() {
@@ -330,6 +314,7 @@ public class TTN implements Serializable {
             ", serialNumber='" + getSerialNumber() + "'" +
             ", dateOfCreation='" + getDateOfCreation() + "'" +
             ", description='" + getDescription() + "'" +
+            ", driverName='" + getDriverName() + "'" +
             ", productsAmount=" + getProductsAmount() +
             ", numberOfProductEntries=" + getNumberOfProductEntries() +
             ", dateTimeOfRegistration='" + getDateTimeOfRegistration() + "'" +

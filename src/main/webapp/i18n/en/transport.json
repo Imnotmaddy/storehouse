@@ -17,9 +17,8 @@
         "title": "Transport"
       },
       "vehicleNumber": "Vehicle Number",
-      "wagonsNumber": "Wagons Number",
       "deliveryType": "Delivery Type",
-      "facility": "Facility"
+      "company": "Company"
     }
   }
 }

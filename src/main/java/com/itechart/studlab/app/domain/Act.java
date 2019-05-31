@@ -1,14 +1,18 @@
 package com.itechart.studlab.app.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import com.itechart.studlab.app.domain.enumeration.ActType;
@@ -28,20 +32,26 @@ public class Act implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "jhi_date")
+    @NotNull
+    @Column(name = "jhi_date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "jhi_cost")
+    @NotNull
+    @Column(name = "jhi_cost", nullable = false)
     private Double cost;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type")
+    @Column(name = "jhi_type", nullable = false)
     private ActType type;
 
     @OneToOne
     @JoinColumn(unique = true)
-    private AppUser user;
+    private User user;
 
+    @OneToMany(mappedBy = "act")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Product> products = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -90,17 +100,42 @@ public class Act implements Serializable {
         this.type = type;
     }
 
-    public AppUser getUser() {
+    public User getUser() {
         return user;
     }
 
-    public Act user(AppUser appUser) {
-        this.user = appUser;
+    public Act user(User user) {
+        this.user = user;
         return this;
     }
 
-    public void setUser(AppUser appUser) {
-        this.user = appUser;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public Act products(Set<Product> products) {
+        this.products = products;
+        return this;
+    }
+
+    public Act addProducts(Product product) {
+        this.products.add(product);
+        product.setAct(this);
+        return this;
+    }
+
+    public Act removeProducts(Product product) {
+        this.products.remove(product);
+        product.setAct(null);
+        return this;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -94,6 +94,9 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                   <Translate contentKey="storeHouseApp.tTN.description">Description</Translate>
                 </th>
                 <th>
+                  <Translate contentKey="storeHouseApp.tTN.driverName">Driver Name</Translate>
+                </th>
+                <th>
                   <Translate contentKey="storeHouseApp.tTN.productsAmount">Products Amount</Translate>
                 </th>
                 <th>
@@ -106,7 +109,7 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                   <Translate contentKey="storeHouseApp.tTN.isAccepted">Is Accepted</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="storeHouseApp.tTN.storehouseDispatcher">Storehouse Dispatcher</Translate>
+                  <Translate contentKey="storeHouseApp.tTN.dispatcher">Dispatcher</Translate>
                 </th>
                 <th>
                   <Translate contentKey="storeHouseApp.tTN.manager">Manager</Translate>
@@ -119,12 +122,6 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                 </th>
                 <th>
                   <Translate contentKey="storeHouseApp.tTN.transporter">Transporter</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.tTN.driver">Driver</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.tTN.recipient">Recipient</Translate>
                 </th>
                 <th />
               </tr>
@@ -142,27 +139,20 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                     <TextFormat type="date" value={tTN.dateOfCreation} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>{tTN.description}</td>
+                  <td>{tTN.driverName}</td>
                   <td>{tTN.productsAmount}</td>
                   <td>{tTN.numberOfProductEntries}</td>
                   <td>
                     <TextFormat type="date" value={tTN.dateTimeOfRegistration} format={APP_DATE_FORMAT} />
                   </td>
                   <td>{tTN.isAccepted ? 'true' : 'false'}</td>
-                  <td>
-                    {tTN.storehouseDispatcherName ? (
-                      <Link to={`app-user/${tTN.storehouseDispatcherId}`}>{tTN.storehouseDispatcherName}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>{tTN.managerName ? <Link to={`app-user/${tTN.managerId}`}>{tTN.managerName}</Link> : ''}</td>
-                  <td>{tTN.senderName ? <Link to={`app-user/${tTN.senderId}`}>{tTN.senderName}</Link> : ''}</td>
-                  <td>{tTN.transportFacility ? <Link to={`transport/${tTN.transportId}`}>{tTN.transportFacility}</Link> : ''}</td>
+                  <td>{tTN.dispatcherLastName ? tTN.dispatcherLastName : ''}</td>
+                  <td>{tTN.managerLastName ? tTN.managerLastName : ''}</td>
+                  <td>{tTN.senderLastName ? tTN.senderLastName : ''}</td>
+                  <td>{tTN.transportId ? <Link to={`transport/${tTN.transportId}`}>{tTN.transportId}</Link> : ''}</td>
                   <td>
                     {tTN.transporterCompanyName ? <Link to={`transporter/${tTN.transporterId}`}>{tTN.transporterCompanyName}</Link> : ''}
                   </td>
-                  <td>{tTN.driverName ? <Link to={`driver/${tTN.driverId}`}>{tTN.driverName}</Link> : ''}</td>
-                  <td>{tTN.recipientCompanyName ? <Link to={`recipient/${tTN.recipientId}`}>{tTN.recipientCompanyName}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${tTN.id}`} color="info" size="sm">

@@ -8,8 +8,8 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { IAppUser } from 'app/shared/model/app-user.model';
-import { getEntities as getAppUsers } from 'app/entities/app-user/app-user.reducer';
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './act.reducer';
 import { IAct } from 'app/shared/model/act.model';
 // tslint:disable-next-line:no-unused-variable
@@ -45,7 +45,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
       this.props.getEntity(this.props.match.params.id);
     }
 
-    this.props.getAppUsers();
+    this.props.getUsers();
   }
 
   saveEntity = (event, errors, values) => {
@@ -69,7 +69,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
   };
 
   render() {
-    const { actEntity, appUsers, loading, updating } = this.props;
+    const { actEntity, users, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -99,13 +99,30 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
                   <Label id="dateLabel" for="date">
                     <Translate contentKey="storeHouseApp.act.date">Date</Translate>
                   </Label>
-                  <AvField id="act-date" type="date" className="form-control" name="date" />
+                  <AvField
+                    id="act-date"
+                    type="date"
+                    className="form-control"
+                    name="date"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="costLabel" for="cost">
                     <Translate contentKey="storeHouseApp.act.cost">Cost</Translate>
                   </Label>
-                  <AvField id="act-cost" type="string" className="form-control" name="cost" />
+                  <AvField
+                    id="act-cost"
+                    type="string"
+                    className="form-control"
+                    name="cost"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') },
+                      number: { value: true, errorMessage: translate('entity.validation.number') }
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="typeLabel">
@@ -135,8 +152,8 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
                   </Label>
                   <AvInput id="act-user" type="select" className="form-control" name="userId">
                     <option value="" key="0" />
-                    {appUsers
-                      ? appUsers.map(otherEntity => (
+                    {users
+                      ? users.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
                             {otherEntity.id}
                           </option>
@@ -167,7 +184,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  appUsers: storeState.appUser.entities,
+  users: storeState.userManagement.users,
   actEntity: storeState.act.entity,
   loading: storeState.act.loading,
   updating: storeState.act.updating,
@@ -175,7 +192,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getAppUsers,
+  getUsers,
   getEntity,
   updateEntity,
   createEntity,
