@@ -1,8 +1,8 @@
 import React from 'react';
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
-import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Row, Col, Alert, Button } from 'reactstrap';
+import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
+import { Row, Col, Alert, Button, Label } from 'reactstrap';
 
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { IRootState } from 'app/shared/reducers';
@@ -92,6 +92,12 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                   match: { value: 'firstPassword', errorMessage: translate('global.messages.error.dontmatch') }
                 }}
               />
+              <AvGroup>
+                <Label id="birthdateLabel" for="birthdate">
+                  <Translate contentKey="storeHouseApp.appUser.birthdate">Birthdate</Translate>
+                </Label>
+                <AvField id="app-user-birthdate" type="date" className="form-control" name="birthdate" />
+              </AvGroup>
               <Button id="register-submit" color="primary" type="submit">
                 <Translate contentKey="register.form.button">Register</Translate>
               </Button>

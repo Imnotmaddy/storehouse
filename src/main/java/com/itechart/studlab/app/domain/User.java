@@ -1,8 +1,8 @@
 package com.itechart.studlab.app.domain;
 
-import com.itechart.studlab.app.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.itechart.studlab.app.config.Constants;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
@@ -10,10 +10,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.validation.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
@@ -23,6 +26,7 @@ import java.time.Instant;
 /**
  * A user.
  */
+@Data
 @Entity
 @Table(name = "jhi_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -71,6 +75,18 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(max = 256)
     @Column(name = "image_url", length = 256)
     private String imageUrl;
+
+    @Column(name = "birthdate")
+    private LocalDate birthdate;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "city")
+    private String city;
+
+    @JoinColumn(name = "address")
+    private String address;
 
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
@@ -152,6 +168,38 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public boolean getActivated() {
         return activated;
     }
@@ -226,6 +274,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
+            ", birthdate='" + birthdate + '\'' +
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
