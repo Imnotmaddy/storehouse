@@ -55,6 +55,18 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
             </dt>
             <dd>{user.email}</dd>
             <dt>
+              <Translate contentKey="userManagement.country">Country</Translate>
+            </dt>
+            <dd>{user.country}</dd>
+            <dt>
+              <Translate contentKey="userManagement.city">City</Translate>
+            </dt>
+            <dd>{user.city}</dd>
+            <dt>
+              <Translate contentKey="userManagement.address">Address line</Translate>
+            </dt>
+            <dd>{user.address}</dd>
+            <dt>
               <Translate contentKey="userManagement.langKey">Lang Key</Translate>
             </dt>
             <dd>{user.langKey ? languages[user.langKey].name : undefined}</dd>
