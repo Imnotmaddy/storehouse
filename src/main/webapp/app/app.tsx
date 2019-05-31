@@ -17,6 +17,7 @@ import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
+import has = Reflect.has;
 
 export interface IAppProps extends StateProps, DispatchProps {}
 
@@ -40,6 +41,7 @@ export class App extends React.Component<IAppProps> {
             <Header
               isAuthenticated={this.props.isAuthenticated}
               isAdmin={this.props.isAdmin}
+              isManager={this.props.isManager}
               currentLocale={this.props.currentLocale}
               onLocaleChange={this.props.setLocale}
               ribbonEnv={this.props.ribbonEnv}
@@ -65,6 +67,7 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
   currentLocale: locale.currentLocale,
   isAuthenticated: authentication.isAuthenticated,
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
   ribbonEnv: applicationProfile.ribbonEnv,
   isInProduction: applicationProfile.inProduction,
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled
