@@ -223,6 +223,7 @@ public class UserService {
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setBirthdate(userDTO.getBirthdate());
                 user.setCountry(userDTO.getCountry());
+                user.setCity(userDTO.getCity());
                 user.setAddress(userDTO.getAddress());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
