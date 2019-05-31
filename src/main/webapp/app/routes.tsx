@@ -13,6 +13,7 @@ import Entities from 'app/entities';
 import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import { AUTHORITIES } from 'app/config/constants';
+import { TTN } from 'app/entities/ttn/ttn';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
