@@ -2,12 +2,10 @@ package com.itechart.studlab.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itechart.studlab.app.config.Constants;
-import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import javax.validation.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -21,12 +19,10 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.time.Instant;
 
 /**
  * A user.
  */
-@Data
 @Entity
 @Table(name = "jhi_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -75,6 +71,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(max = 256)
     @Column(name = "image_url", length = 256)
     private String imageUrl;
+
+    @Column(name = "company")
+    private String company;
 
     @Column(name = "birthdate")
     private LocalDate birthdate;
@@ -166,6 +165,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public LocalDate getBirthdate() {

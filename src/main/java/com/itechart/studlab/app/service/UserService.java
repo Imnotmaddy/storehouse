@@ -13,6 +13,7 @@ import com.itechart.studlab.app.service.util.RandomUtil;
 import com.itechart.studlab.app.web.rest.errors.EmailAlreadyUsedException;
 import com.itechart.studlab.app.web.rest.errors.InvalidPasswordException;
 import com.itechart.studlab.app.web.rest.errors.LoginAlreadyUsedException;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -148,9 +149,11 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail().toLowerCase());
         user.setImageUrl(userDTO.getImageUrl());
-        user.setAddress(userDTO.getAddress());
-        user.setCountry(userDTO.getCountry());
+        user.setCompany(userDTO.getCompany());
         user.setBirthdate(userDTO.getBirthdate());
+        user.setCountry(userDTO.getCountry());
+        user.setCity(userDTO.getCity());
+        user.setAddress(userDTO.getAddress());
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
         } else {
@@ -186,8 +189,7 @@ public class UserService {
      * @param langKey language key
      * @param imageUrl image URL of user
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl,
-                           LocalDate birthdate) {
+    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
@@ -196,7 +198,6 @@ public class UserService {
                 user.setEmail(email.toLowerCase());
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
-                user.setBirthdate(birthdate);
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
@@ -221,6 +222,7 @@ public class UserService {
                 user.setLastName(userDTO.getLastName());
                 user.setEmail(userDTO.getEmail().toLowerCase());
                 user.setImageUrl(userDTO.getImageUrl());
+                user.setCompany(userDTO.getCompany());
                 user.setBirthdate(userDTO.getBirthdate());
                 user.setCountry(userDTO.getCountry());
                 user.setCity(userDTO.getCity());
@@ -264,6 +266,12 @@ public class UserService {
                 this.clearUserCaches(user);
                 log.debug("Changed password for User: {}", user);
             });
+    }
+
+    public Page<UserDTO> getAllCompanyAdmins (Pageable pageable) {
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.STOREHOUSE_ADMIN);
+        return userRepository.findAllByAuthoritiesIs(pageable, authority).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
