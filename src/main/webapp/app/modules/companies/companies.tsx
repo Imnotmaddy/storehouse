@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Badge } from 'reactstrap';
+import { Button, Table, Row } from 'reactstrap';
 import {
   Translate,
   ICrudGetAllAction,

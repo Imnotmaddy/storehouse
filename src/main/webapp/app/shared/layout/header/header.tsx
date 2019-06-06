@@ -63,7 +63,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <Nav id="header-tabs" className="ml-auto" navbar>
               <Home />
               {isAuthenticated && isManager && <Ttn />}
-              {isAuthenticated && !isAdmin && <EntitiesMenu />}
               {isAuthenticated && isAdmin && <Companies />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
               <AccountMenu isAuthenticated={isAuthenticated} />

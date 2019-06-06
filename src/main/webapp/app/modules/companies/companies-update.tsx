@@ -65,6 +65,7 @@ export class CompaniesUpdate extends React.Component<ICompaniesUpdateProps, ICom
               <p>Loading...</p>
             ) : (
               <AvForm onValidSubmit={this.saveUser}>
+                {user.id ? <AvField name="id" type="hidden" value={user.id} /> : null}
                 <AvGroup>
                   <Label for="company">
                     <Translate contentKey="companies.companyName">Company name</Translate>
@@ -474,7 +475,6 @@ export class CompaniesUpdate extends React.Component<ICompaniesUpdateProps, ICom
                   </Label>
                   <AvInput name="address" type="text" className="form-control" value={user.address} />
                 </AvGroup>
-                <input type="hidden" name="authorities" value={[AUTHORITIES.STOREHOUSE_ADMIN]} />
                 <Button tag={Link} to="/companies" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
