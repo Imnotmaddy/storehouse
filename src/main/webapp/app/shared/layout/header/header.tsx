@@ -5,7 +5,7 @@ import { Storage, Translate } from 'react-jhipster';
 import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
 
-import { Brand, Home, Ttn } from './header-components';
+import { Brand, Companies, Home, Ttn } from './header-components';
 import { AccountMenu, AdminMenu, EntitiesMenu, LocaleMenu } from './menus';
 
 export interface IHeaderProps {
@@ -63,8 +63,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <Nav id="header-tabs" className="ml-auto" navbar>
               <Home />
               {isAuthenticated && isManager && <Ttn />}
-              {isAuthenticated && <EntitiesMenu />}
-              {isAuthenticated && isAdmin && <AdminMenu showSwagger={isSwaggerEnabled} />}
+              {isAuthenticated && isAdmin && <Companies />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
               <AccountMenu isAuthenticated={isAuthenticated} />
             </Nav>

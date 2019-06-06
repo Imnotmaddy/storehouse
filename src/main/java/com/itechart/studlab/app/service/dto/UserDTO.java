@@ -55,6 +55,8 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private String company;
+
     private LocalDate birthdate;
 
     private String country;
@@ -75,6 +77,7 @@ public class UserDTO {
         this.email = user.getEmail();
         this.activated = user.getActivated();
         this.imageUrl = user.getImageUrl();
+        this.company = user.getCompany();
         this.birthdate = user.getBirthdate();
         this.country = user.getCountry();
         this.city = user.getCity();
@@ -193,6 +196,14 @@ public class UserDTO {
         this.authorities = authorities;
     }
 
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
     public LocalDate getBirthdate() {
         return birthdate;
     }
@@ -241,6 +252,7 @@ public class UserDTO {
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
+            ", company='" + company + '\'' +
             ", birthdate=" + birthdate +
             ", country='" + country + '\'' +
             ", city='" + city + '\'' +

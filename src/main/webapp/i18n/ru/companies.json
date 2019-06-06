@@ -1,0 +1,33 @@
+{
+  "companies": {
+    "home": {
+      "title": "Компании",
+      "addLabel": "Добавить компанию",
+      "createOrEditLabel": "Создать или отредактировать компанию"
+    },
+    "created": "Новая компания создана с идентификатором {{ param }}",
+    "updated": "Компания с идентификатором {{ param }} обновлена",
+    "deleted": "Компания с идентификатором {{ param }} удалена",
+    "delete": {
+      "question": "Вы уверены, что хотите удалить компанию {{ company }}?"
+    },
+    "detail": {
+      "title": "Компания",
+      "adminInfo": "Информация об администраторе"
+    },
+    "companyName": "Название компании",
+    "login": "Логин",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "email": "Email администратора",
+    "activated": "Активен",
+    "deactivated": "Неактивен",
+    "birthdate": "Дата рождения",
+    "country": "Страна",
+    "city": "Город",
+    "address": "Адрес",
+    "createdBy": "Создал",
+    "createdDate": "Дата создания",
+    "lastModifiedDate": "Дата изменения"
+  }
+}

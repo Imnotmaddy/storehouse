@@ -1,5 +1,6 @@
 package com.itechart.studlab.app.repository;
 
+import com.itechart.studlab.app.domain.Authority;
 import com.itechart.studlab.app.domain.User;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -44,4 +45,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthoritiesByEmail(String email);
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
+
+    Page<User> findAllByAuthoritiesIs (Pageable pageable, Authority authority);
 }

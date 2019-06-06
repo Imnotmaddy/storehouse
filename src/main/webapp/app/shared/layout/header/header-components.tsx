@@ -1,7 +1,7 @@
 import React from 'react';
 import { Translate } from 'react-jhipster';
 
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, NavItem, NavLink, NavbarBrand } from 'reactstrap';
+import { DropdownMenu, DropdownToggle, NavbarBrand, NavItem, NavLink, UncontrolledDropdown } from 'reactstrap';
 import { NavLink as Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -41,6 +41,16 @@ export const Home = props => (
       <FontAwesomeIcon icon="home" />
       <span>
         <Translate contentKey="global.menu.home">Home</Translate>
+      </span>
+    </NavLink>
+  </NavItem>
+);
+
+export const Companies = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/companies" className="d-flex align-items-center">
+      <span>
+        <Translate contentKey="global.menu.companies">Companies</Translate>
       </span>
     </NavLink>
   </NavItem>

@@ -1,0 +1,33 @@
+{
+  "companies": {
+    "home": {
+      "title": "Companies",
+      "addLabel": "Add company",
+      "createOrEditLabel": "Create or edit a company"
+    },
+    "created": "A new company is created with identifier {{ param }}",
+    "updated": "A company is updated with identifier {{ param }}",
+    "deleted": "A company is deleted with identifier {{ param }}",
+    "delete": {
+      "question": "Are you sure you want to delete company {{ company }}?"
+    },
+    "detail": {
+      "title": "Company",
+      "adminInfo": "Admin info"
+    },
+    "companyName": "Company name",
+    "login": "Login",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Admin email",
+    "activated": "Activated",
+    "deactivated": "Deactivated",
+    "birthdate": "Birthdate",
+    "country": "Country",
+    "city": "City",
+    "address": "Address line",
+    "createdBy": "Created by",
+    "createdDate": "Created date",
+    "lastModifiedDate": "Modified date"
+  }
+}

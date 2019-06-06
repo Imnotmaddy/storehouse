@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -131,9 +130,9 @@ public class UserService {
         return newUser;
     }
 
-    private boolean removeNonActivatedUser(User existingUser){
+    private boolean removeNonActivatedUser(User existingUser) {
         if (existingUser.getActivated()) {
-             return false;
+            return false;
         }
         userRepository.delete(existingUser);
         userRepository.flush();
@@ -148,9 +147,11 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail().toLowerCase());
         user.setImageUrl(userDTO.getImageUrl());
-        user.setAddress(userDTO.getAddress());
-        user.setCountry(userDTO.getCountry());
+        user.setCompany(userDTO.getCompany());
         user.setBirthdate(userDTO.getBirthdate());
+        user.setCountry(userDTO.getCountry());
+        user.setCity(userDTO.getCity());
+        user.setAddress(userDTO.getAddress());
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
         } else {
@@ -181,13 +182,12 @@ public class UserService {
      * Update basic information (first name, last name, email, language) for the current user.
      *
      * @param firstName first name of user
-     * @param lastName last name of user
-     * @param email email id of user
-     * @param langKey language key
-     * @param imageUrl image URL of user
+     * @param lastName  last name of user
+     * @param email     email id of user
+     * @param langKey   language key
+     * @param imageUrl  image URL of user
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl,
-                           LocalDate birthdate) {
+    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
@@ -196,7 +196,6 @@ public class UserService {
                 user.setEmail(email.toLowerCase());
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
-                user.setBirthdate(birthdate);
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
@@ -221,6 +220,7 @@ public class UserService {
                 user.setLastName(userDTO.getLastName());
                 user.setEmail(userDTO.getEmail().toLowerCase());
                 user.setImageUrl(userDTO.getImageUrl());
+                user.setCompany(userDTO.getCompany());
                 user.setBirthdate(userDTO.getBirthdate());
                 user.setCountry(userDTO.getCountry());
                 user.setCity(userDTO.getCity());
@@ -264,6 +264,12 @@ public class UserService {
                 this.clearUserCaches(user);
                 log.debug("Changed password for User: {}", user);
             });
+    }
+
+    public Page<UserDTO> getAllCompanyAdmins(Pageable pageable) {
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.STOREHOUSE_ADMIN);
+        return userRepository.findAllByAuthoritiesIs(pageable, authority).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)

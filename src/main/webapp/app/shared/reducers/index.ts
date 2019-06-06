@@ -13,33 +13,22 @@ import password, { PasswordState } from 'app/modules/account/password/password.r
 import settings, { SettingsState } from 'app/modules/account/settings/settings.reducer';
 import passwordReset, { PasswordResetState } from 'app/modules/account/password-reset/password-reset.reducer';
 // prettier-ignore
-import act, {
-  ActState
-} from 'app/entities/act/act.reducer';
+import act, { ActState } from 'app/entities/act/act.reducer';
 // prettier-ignore
-import storehouse, {
-  StorehouseState
-} from 'app/entities/storehouse/storehouse.reducer';
+import storehouse, { StorehouseState } from 'app/entities/storehouse/storehouse.reducer';
 // prettier-ignore
-import storageRoom, {
-  StorageRoomState
-} from 'app/entities/storage-room/storage-room.reducer';
+import storageRoom, { StorageRoomState } from 'app/entities/storage-room/storage-room.reducer';
 // prettier-ignore
-import product, {
-  ProductState
-} from 'app/entities/product/product.reducer';
+import product, { ProductState } from 'app/entities/product/product.reducer';
 // prettier-ignore
-import transporter, {
-  TransporterState
-} from 'app/entities/transporter/transporter.reducer';
+import transporter, { TransporterState } from 'app/entities/transporter/transporter.reducer';
 // prettier-ignore
-import transport, {
-  TransportState
-} from 'app/entities/transport/transport.reducer';
+import transport, { TransportState } from 'app/entities/transport/transport.reducer';
 // prettier-ignore
-import tTN, {
-  TTNState
-} from 'app/entities/ttn/ttn.reducer';
+import tTN, { TTNState } from 'app/entities/ttn/ttn.reducer';
+
+import companies, { CompaniesState } from 'app/modules/companies/companies.reducer';
+
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -48,6 +37,7 @@ export interface IRootState {
   readonly applicationProfile: ApplicationProfileState;
   readonly administration: AdministrationState;
   readonly userManagement: UserManagementState;
+  readonly companies: CompaniesState;
   readonly register: RegisterState;
   readonly activate: ActivateState;
   readonly passwordReset: PasswordResetState;
@@ -70,6 +60,7 @@ const rootReducer = combineReducers<IRootState>({
   applicationProfile,
   administration,
   userManagement,
+  companies,
   register,
   activate,
   passwordReset,
