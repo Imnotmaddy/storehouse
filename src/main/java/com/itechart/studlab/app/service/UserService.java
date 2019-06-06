@@ -13,7 +13,6 @@ import com.itechart.studlab.app.service.util.RandomUtil;
 import com.itechart.studlab.app.web.rest.errors.EmailAlreadyUsedException;
 import com.itechart.studlab.app.web.rest.errors.InvalidPasswordException;
 import com.itechart.studlab.app.web.rest.errors.LoginAlreadyUsedException;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -132,9 +130,9 @@ public class UserService {
         return newUser;
     }
 
-    private boolean removeNonActivatedUser(User existingUser){
+    private boolean removeNonActivatedUser(User existingUser) {
         if (existingUser.getActivated()) {
-             return false;
+            return false;
         }
         userRepository.delete(existingUser);
         userRepository.flush();
@@ -184,10 +182,10 @@ public class UserService {
      * Update basic information (first name, last name, email, language) for the current user.
      *
      * @param firstName first name of user
-     * @param lastName last name of user
-     * @param email email id of user
-     * @param langKey language key
-     * @param imageUrl image URL of user
+     * @param lastName  last name of user
+     * @param email     email id of user
+     * @param langKey   language key
+     * @param imageUrl  image URL of user
      */
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
         SecurityUtils.getCurrentUserLogin()
@@ -268,7 +266,7 @@ public class UserService {
             });
     }
 
-    public Page<UserDTO> getAllCompanyAdmins (Pageable pageable) {
+    public Page<UserDTO> getAllCompanyAdmins(Pageable pageable) {
         Authority authority = new Authority();
         authority.setName(AuthoritiesConstants.STOREHOUSE_ADMIN);
         return userRepository.findAllByAuthoritiesIs(pageable, authority).map(UserDTO::new);
