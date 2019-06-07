@@ -63,3 +63,11 @@ export const Ttn = props => (
     </NavLink>
   </NavItem>
 );
+
+export const Users = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/users" className="d-flex align-items-center">
+      <Translate contentKey="global.menu.employees">Employees</Translate>
+    </NavLink>
+  </NavItem>
+);
