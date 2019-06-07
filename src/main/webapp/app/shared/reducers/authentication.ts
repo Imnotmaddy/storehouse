@@ -106,7 +106,7 @@ export const getSession = () => async (dispatch, getState) => {
   });
 
   const { account } = getState().authentication;
-  if (account && account.langKey) {
+  if (account && account.langKey && account.companyName) {
     const langKey = Storage.session.get('locale', account.langKey);
     await dispatch(setLocale(langKey));
   }

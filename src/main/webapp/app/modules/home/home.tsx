@@ -17,7 +17,7 @@ export class Home extends React.Component<IHomeProp> {
     return (
       <Row>
         <Col md="9">
-          <h2>Welcome to storehouse</h2>
+          <h2>Welcome</h2>
           <p className="lead">This is your homepage</p>
         </Col>
         <Col md="3" className="pad">

@@ -2,7 +2,7 @@ import './header.css';
 
 import React from 'react';
 import { Storage, Translate } from 'react-jhipster';
-import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap';
+import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Brand, Companies, Home, Ttn, Users } from './header-components';
@@ -13,6 +13,7 @@ export interface IHeaderProps {
   isAdmin: boolean;
   isManager: boolean;
   isStorehouseAdmin: boolean;
+  companyName: string;
   ribbonEnv: string;
   isInProduction: boolean;
   isSwaggerEnabled: boolean;
@@ -49,7 +50,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   render() {
-    const { currentLocale, isAuthenticated, isAdmin, isManager, isStorehouseAdmin, isSwaggerEnabled, isInProduction } = this.props;
+    const {
+      currentLocale,
+      isAuthenticated,
+      isAdmin,
+      isManager,
+      isStorehouseAdmin,
+      companyName,
+      isSwaggerEnabled,
+      isInProduction
+    } = this.props;
 
     /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
@@ -59,7 +69,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         <LoadingBar className="loading-bar" />
         <Navbar dark expand="sm" fixed="top" className="jh-navbar">
           <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} />
-          <Brand />
+          <Brand companyName={companyName} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
               <Home />
