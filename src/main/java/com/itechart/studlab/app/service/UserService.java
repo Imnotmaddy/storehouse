@@ -277,6 +277,34 @@ public class UserService {
         return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
     }
 
+    private List<Authority> getEmployeesAuthorities() {
+        List<Authority> authorities = new ArrayList<>(4);
+
+        Authority dispatcher = new Authority();
+        dispatcher.setName(AuthoritiesConstants.DISPATCHER);
+
+        Authority manager = new Authority();
+        manager.setName(AuthoritiesConstants.MANAGER);
+
+        Authority owner = new Authority();
+        owner.setName(AuthoritiesConstants.OWNER);
+
+        Authority supervisor = new Authority();
+        supervisor.setName(AuthoritiesConstants.SUPERVISOR);
+
+        authorities.add(dispatcher);
+        authorities.add(manager);
+        authorities.add(owner);
+        authorities.add(supervisor);
+
+        return authorities;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDTO> getAllEmployees(Pageable pageable) {
+        return userRepository.findAllByAuthoritiesIsIn(pageable, getEmployeesAuthorities()).map(UserDTO::new);
+    }
+
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
         return userRepository.findOneWithAuthoritiesByLogin(login);

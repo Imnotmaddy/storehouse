@@ -47,4 +47,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findAllByLoginNot(Pageable pageable, String login);
 
     Page<User> findAllByAuthoritiesIs (Pageable pageable, Authority authority);
+
+    Page<User> findAllByAuthoritiesIsIn (Pageable pageable, List<Authority> authorities);
 }
