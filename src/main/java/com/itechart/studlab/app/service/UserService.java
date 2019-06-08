@@ -277,34 +277,20 @@ public class UserService {
         return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
     }
 
-    private List<Authority> getEmployeesAuthorities() {
-        List<Authority> authorities = new ArrayList<>(4);
-
-        Authority dispatcher = new Authority();
-        dispatcher.setName(AuthoritiesConstants.DISPATCHER);
-
-        Authority manager = new Authority();
-        manager.setName(AuthoritiesConstants.MANAGER);
-
-        Authority owner = new Authority();
-        owner.setName(AuthoritiesConstants.OWNER);
-
-        Authority supervisor = new Authority();
-        supervisor.setName(AuthoritiesConstants.SUPERVISOR);
-
-        authorities.add(dispatcher);
-        authorities.add(manager);
-        authorities.add(owner);
-        authorities.add(supervisor);
-
-        return authorities;
+    private List<Authority> getEmployeeAuthoritiesList() {
+        return AuthoritiesConstants.EMPLOYEE_AUTHORITIES.stream()
+            .map(authorityName -> {
+                Authority authority = new Authority();
+                authority.setName(authorityName);
+                return authority;
+            }).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllEmployees(Pageable pageable, String company) {
-        return
-            userRepository.findAllByAuthoritiesIsInAndCompanyIs(pageable, getEmployeesAuthorities(), company)
-                .map(UserDTO::new);
+        return userRepository
+            .findAllByAuthoritiesIsInAndCompanyIs(pageable, getEmployeeAuthoritiesList(), company)
+            .map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
@@ -344,6 +330,12 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public List<String> getEmployeeAuthorities() {
+        return authorityRepository
+            .findAuthoritiesByNameIsIn(AuthoritiesConstants.EMPLOYEE_AUTHORITIES)
+            .stream().map(Authority::getName).collect(Collectors.toList());
     }
 
     private void clearUserCaches(User user) {

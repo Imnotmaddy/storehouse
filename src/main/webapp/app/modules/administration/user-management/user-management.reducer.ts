@@ -130,7 +130,7 @@ export const getEmployees = (company: string, page?: number, size?: number, sort
 
 export const getRoles = () => ({
   type: ACTION_TYPES.FETCH_ROLES,
-  payload: axios.get(`${apiUrl}/authorities`)
+  payload: axios.get(`${apiUrl}/employees/authorities`)
 });
 
 export const getUser: ICrudGetAction<IUser> = id => {

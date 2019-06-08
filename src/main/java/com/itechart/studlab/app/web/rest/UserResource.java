@@ -149,7 +149,6 @@ public class UserResource {
     @GetMapping("/users/employees/{company}")
     public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable, @PathVariable String company) {
         log.debug("REST request to get employees for company: " + company);
-        //final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
         final Page<UserDTO> page = userService.getAllEmployees(pageable, company);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users/employees");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -162,6 +161,12 @@ public class UserResource {
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.STOREHOUSE_ADMIN + "\")")
     public List<String> getAuthorities() {
         return userService.getAuthorities();
+    }
+
+    @GetMapping("/users/employees/authorities")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.STOREHOUSE_ADMIN + "\")")
+    public List<String> getEmployeeAuthorities() {
+        return userService.getEmployeeAuthorities();
     }
 
     /**
