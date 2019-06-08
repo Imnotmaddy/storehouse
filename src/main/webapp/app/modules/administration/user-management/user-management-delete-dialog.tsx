@@ -17,7 +17,7 @@ export class UserManagementDeleteDialog extends React.Component<IUserManagementD
   }
 
   confirmDelete = event => {
-    this.props.deleteUser(this.props.user.login);
+    this.props.deleteUser(this.props.user.login, this.props.user.company);
     this.handleClose(event);
   };
 

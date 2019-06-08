@@ -73,6 +73,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     <AvField type="text" className="form-control" name="id" required readOnly value={user.id} />
                   </AvGroup>
                 ) : null}
+                <AvField type="hidden" className="form-control" name="company" value={document.querySelector('#companyName').textContent} />
                 <AvGroup>
                   <Label for="login">
                     <Translate contentKey="userManagement.login">Login</Translate>
@@ -174,6 +175,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     <Translate contentKey="userManagement.langKey">Language Key</Translate>
                   </Label>
                   <AvField type="select" className="form-control" name="langKey" value={user.langKey}>
+                    <option defaultChecked />
                     {locales.map(locale => (
                       <option value={locale} key={locale}>
                         {languages[locale].name}
@@ -214,7 +216,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     <Translate contentKey="userManagement.country">Country</Translate>
                   </Label>
                   <AvField name="country" type="select" className="form-control" value={user.country}>
-                    <option selected />
+                    <option defaultChecked />
                     <option value="Afghanistan">Afghanistan</option>
                     <option value="Aland Islands">Aland Islands</option>
                     <option value="Albania">Albania</option>

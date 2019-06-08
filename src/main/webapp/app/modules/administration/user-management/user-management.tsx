@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { getUsers, updateUser } from './user-management.reducer';
+import { updateUser, getEmployees } from './user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
@@ -27,7 +27,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   };
 
   componentDidMount() {
-    this.getUsers();
+    this.getEmployees();
   }
 
   sort = prop => () => {
@@ -41,15 +41,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   };
 
   sortUsers() {
-    this.getUsers();
+    this.getEmployees();
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
   handlePagination = activePage => this.setState({ activePage }, () => this.sortUsers());
 
-  getUsers = () => {
+  getEmployees = () => {
     const { activePage, itemsPerPage, sort, order } = this.state;
-    this.props.getUsers(activePage - 1, itemsPerPage, `${sort},${order}`);
+    this.props.getEmployees(this.props.account.company, activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
   toggleActive = user => () => {
@@ -196,7 +196,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   account: storeState.authentication.account
 });
 
-const mapDispatchToProps = { getUsers, updateUser };
+const mapDispatchToProps = { getEmployees, updateUser };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

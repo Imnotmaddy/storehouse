@@ -1,12 +1,13 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { IUser, defaultValue } from 'app/shared/model/user.model';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
+import { defaultValue, IUser } from 'app/shared/model/user.model';
 
 export const ACTION_TYPES = {
   FETCH_ROLES: 'userManagement/FETCH_ROLES',
   FETCH_USERS: 'userManagement/FETCH_USERS',
+  FETCH_EMPLOYEES: 'userManagement/FETCH_EMPLOYEES',
   FETCH_USER: 'userManagement/FETCH_USER',
   CREATE_USER: 'userManagement/CREATE_USER',
   UPDATE_USER: 'userManagement/UPDATE_USER',
@@ -35,6 +36,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state
       };
     case REQUEST(ACTION_TYPES.FETCH_USERS):
+    case REQUEST(ACTION_TYPES.FETCH_EMPLOYEES):
     case REQUEST(ACTION_TYPES.FETCH_USER):
       return {
         ...state,
@@ -52,6 +54,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updating: true
       };
     case FAILURE(ACTION_TYPES.FETCH_USERS):
+    case FAILURE(ACTION_TYPES.FETCH_EMPLOYEES):
     case FAILURE(ACTION_TYPES.FETCH_USER):
     case FAILURE(ACTION_TYPES.FETCH_ROLES):
     case FAILURE(ACTION_TYPES.CREATE_USER):
@@ -70,6 +73,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         authorities: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_USERS):
+    case SUCCESS(ACTION_TYPES.FETCH_EMPLOYEES):
       return {
         ...state,
         loading: false,
@@ -116,6 +120,14 @@ export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
   };
 };
 
+export const getEmployees = (company: string, page?: number, size?: number, sort?: string) => {
+  const requestUrl = `${apiUrl}/employees/${company}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_EMPLOYEES,
+    payload: axios.get<IUser>(requestUrl)
+  };
+};
+
 export const getRoles = () => ({
   type: ACTION_TYPES.FETCH_ROLES,
   payload: axios.get(`${apiUrl}/authorities`)
@@ -134,7 +146,7 @@ export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
     type: ACTION_TYPES.CREATE_USER,
     payload: axios.post(apiUrl, user)
   });
-  dispatch(getUsers());
+  dispatch(getEmployees(user.company));
   return result;
 };
 
@@ -143,17 +155,17 @@ export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
     type: ACTION_TYPES.UPDATE_USER,
     payload: axios.put(apiUrl, user)
   });
-  dispatch(getUsers());
+  dispatch(getEmployees(user.company));
   return result;
 };
 
-export const deleteUser: ICrudDeleteAction<IUser> = id => async dispatch => {
+export const deleteUser = (id, company: string) => async dispatch => {
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_USER,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getUsers());
+  dispatch(getEmployees(company));
   return result;
 };
 

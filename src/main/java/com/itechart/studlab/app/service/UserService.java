@@ -301,8 +301,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserDTO> getAllEmployees(Pageable pageable) {
-        return userRepository.findAllByAuthoritiesIsIn(pageable, getEmployeesAuthorities()).map(UserDTO::new);
+    public Page<UserDTO> getAllEmployees(Pageable pageable, String company) {
+        return
+            userRepository.findAllByAuthoritiesIsInAndCompanyIs(pageable, getEmployeesAuthorities(), company)
+                .map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
