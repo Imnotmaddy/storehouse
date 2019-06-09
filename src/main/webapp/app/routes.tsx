@@ -13,7 +13,18 @@ import Entities from 'app/entities';
 import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import { AUTHORITIES } from 'app/config/constants';
-import { TTN } from 'app/entities/ttn/ttn';
+import TTN from 'app/entities/ttn/ttn';
+import Driver from 'app/entities/ttn/ttn';
+import Transporter from 'app/entities/transporter/transporter';
+import Sender from 'app/entities/sender/sender';
+import Storehouse from 'app/entities/storehouse/storehouse';
+import StorageRoom from 'app/entities/storage-room/storage-room';
+import Address from 'app/entities/address/address';
+import AppUser from 'app/entities/app-user';
+import Act from 'app/entities/act/act';
+import Product from 'app/entities/product/product';
+import Recipient from 'app/entities/recipient/recipient';
+import Transport from 'app/entities/transport/transport';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -27,7 +38,7 @@ const Admin = Loadable({
 });
 // tslint:enable
 
-const Routes = () => (
+const Routes = ({ match }) => (
   <div className="view-routes">
     <ErrorBoundaryRoute path="/login" component={Login} />
     <Switch>
@@ -38,7 +49,9 @@ const Routes = () => (
       <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
-      <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
+      <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.DISPATCHER]} />
+      <PrivateRoute path="/transport" component={Transport} hasAnyAuthorities={[AUTHORITIES.DISPATCHER]} />
+      <PrivateRoute path="/transporter" component={Transporter} hasAnyAuthorities={[AUTHORITIES.DISPATCHER]} />
       <ErrorBoundaryRoute path="/" component={Home} />
     </Switch>
   </div>

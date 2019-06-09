@@ -53,3 +53,19 @@ export const Ttn = props => (
     </NavLink>
   </NavItem>
 );
+
+export const Transporter = props => (
+  <NavItem>
+    <NavLink tag={Link} to="entity/transporter" className="d-flex align-items-center">
+      <span>Transporter</span>
+    </NavLink>
+  </NavItem>
+);
+
+export const Transport = props => (
+  <NavItem>
+    <NavLink tag={Link} to="entity/transport" className="d-flex align-items-center">
+      <span>Transport</span>
+    </NavLink>
+  </NavItem>
+);
