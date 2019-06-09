@@ -63,7 +63,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
               <Home />
-              {isAuthenticated && isAdmin && <Ttn />}
+              {(isAuthenticated && isDispatcher) || (isManager && <Ttn />)}
               {isAuthenticated && isDispatcher && <Transporter />}
               {isAuthenticated && isDispatcher && <Transport />}
               {isAuthenticated && <EntitiesMenu />}
