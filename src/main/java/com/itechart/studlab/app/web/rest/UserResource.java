@@ -148,7 +148,7 @@ public class UserResource {
      */
     @GetMapping("/users/employees/{company}")
     public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable, @PathVariable String company) {
-        log.debug("REST request to get employees for company: " + company);
+        log.debug("REST request to get employees for {}", company);
         final Page<UserDTO> page = userService.getAllEmployees(pageable, company);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users/employees");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

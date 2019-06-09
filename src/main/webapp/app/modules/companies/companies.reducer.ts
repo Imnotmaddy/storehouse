@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { IUser, defaultValue } from 'app/shared/model/user.model';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
+import { defaultValue, IUser } from 'app/shared/model/user.model';
 
 export const ACTION_TYPES = {
   FETCH_USERS: 'companies/FETCH_USERS',
   FETCH_USER: 'companies/FETCH_USER',
   CREATE_USER: 'companies/CREATE_USER',
   UPDATE_USER: 'companies/UPDATE_USER',
+  TOGGLE_EMPLOYEES: 'companies/TOGGLE_EMPLOYEES',
   DELETE_USER: 'companies/DELETE_USER',
   RESET: 'companies/RESET'
 };
@@ -129,6 +130,14 @@ export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
   });
   dispatch(getUsers());
   return result;
+};
+
+export const toggleEmployees = (company: string, isActive: boolean) => {
+  const requestUrl = `${apiUrl}/${company}/${isActive}`;
+  return {
+    type: ACTION_TYPES.TOGGLE_EMPLOYEES,
+    payload: axios.get(requestUrl)
+  };
 };
 
 export const deleteUser: ICrudDeleteAction<IUser> = id => async dispatch => {

@@ -47,7 +47,9 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository,
+                       CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
@@ -240,6 +242,15 @@ public class UserService {
                 return user;
             })
             .map(UserDTO::new);
+    }
+
+    public void toggleEmployees(String company, boolean isActive) {
+        userRepository.findAllByCompanyIs(company).forEach(
+            user -> {
+                user.setActivated(isActive);
+                userRepository.save(user);
+            }
+        );
     }
 
     public void deleteUser(String login) {

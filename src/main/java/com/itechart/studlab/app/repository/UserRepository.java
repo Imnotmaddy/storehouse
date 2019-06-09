@@ -49,4 +49,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findAllByAuthoritiesIs (Pageable pageable, Authority authority);
 
     Page<User> findAllByAuthoritiesIsInAndCompanyIs (Pageable pageable, List<Authority> authorities, String company);
+
+    List<User> findAllByCompanyIs (String company);
+
 }

@@ -115,4 +115,13 @@ public class CompaniesResource {
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert("companies.updated", userDTO.getLogin()));
     }
+
+    @GetMapping("companies/{company}/{isActive}")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Void> toggleEmployees(@PathVariable String company, @PathVariable Boolean isActive) {
+        log.debug("REST request to toggle {} employees with isActive: {}", company, isActive);
+        userService.toggleEmployees(company, isActive);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createAlert("companies.employeesToggled", company)).build();
+    }
 }
