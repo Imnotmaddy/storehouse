@@ -116,9 +116,9 @@ public class CompaniesResource {
             HeaderUtil.createAlert("companies.updated", userDTO.getLogin()));
     }
 
-    @GetMapping("companies/{company}/{isActive}")
+    @GetMapping("companies/{company}")
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<Void> toggleEmployees(@PathVariable String company, @PathVariable Boolean isActive) {
+    public ResponseEntity<Void> toggleEmployees(@PathVariable String company, @RequestParam("isActive") Boolean isActive) {
         log.debug("REST request to toggle {} employees with isActive: {}", company, isActive);
         userService.toggleEmployees(company, isActive);
         return ResponseEntity.ok()

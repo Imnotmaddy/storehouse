@@ -244,7 +244,7 @@ public class UserService {
             .map(UserDTO::new);
     }
 
-    public void toggleEmployees(String company, boolean isActive) {
+    public void toggleEmployees(String company, Boolean isActive) {
         userRepository.findAllByCompanyIs(company).forEach(
             user -> {
                 user.setActivated(isActive);
