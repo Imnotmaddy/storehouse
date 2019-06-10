@@ -49,9 +49,10 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
-      <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.DISPATCHER]} />
+      <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/transport" component={Transport} hasAnyAuthorities={[AUTHORITIES.DISPATCHER]} />
       <PrivateRoute path="/transporter" component={Transporter} hasAnyAuthorities={[AUTHORITIES.DISPATCHER]} />
+      <PrivateRoute path="/ttn" component={TTN} hasAnyAuthorities={[AUTHORITIES.DISPATCHER, AUTHORITIES.MANAGER]} />
       <ErrorBoundaryRoute path="/" component={Home} />
     </Switch>
   </div>

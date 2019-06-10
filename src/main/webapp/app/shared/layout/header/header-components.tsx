@@ -48,7 +48,7 @@ export const Home = props => (
 
 export const Ttn = props => (
   <NavItem>
-    <NavLink tag={Link} to="/entity/ttn" className="d-flex align-items-center">
+    <NavLink tag={Link} to="/ttn" className="d-flex align-items-center">
       <span>TTN</span>
     </NavLink>
   </NavItem>
@@ -56,7 +56,7 @@ export const Ttn = props => (
 
 export const Transporter = props => (
   <NavItem>
-    <NavLink tag={Link} to="entity/transporter" className="d-flex align-items-center">
+    <NavLink tag={Link} to="/transporter" className="d-flex align-items-center">
       <span>Transporter</span>
     </NavLink>
   </NavItem>
@@ -64,7 +64,7 @@ export const Transporter = props => (
 
 export const Transport = props => (
   <NavItem>
-    <NavLink tag={Link} to="entity/transport" className="d-flex align-items-center">
+    <NavLink tag={Link} to="/transport" className="d-flex align-items-center">
       <span>Transport</span>
     </NavLink>
   </NavItem>

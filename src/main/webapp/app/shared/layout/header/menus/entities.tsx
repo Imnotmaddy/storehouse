@@ -13,52 +13,52 @@ export const EntitiesMenu = props => (
       &nbsp;
       <Translate contentKey="global.menu.entities.driver" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/transporter">
+    <DropdownItem tag={Link} to="/transporter">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.transporter" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/recipient">
+    <DropdownItem tag={Link} to="/recipient">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.recipient" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/sender">
+    <DropdownItem tag={Link} to="/sender">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.sender" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/storehouse">
+    <DropdownItem tag={Link} to="/storehouse">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.storehouse" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/storage-room">
+    <DropdownItem tag={Link} to="/storage-room">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.storageRoom" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/address">
+    <DropdownItem tag={Link} to="/address">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.address" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/app-user">
+    <DropdownItem tag={Link} to="/app-user">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.appUser" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/product">
+    <DropdownItem tag={Link} to="/product">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.product" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/transport">
+    <DropdownItem tag={Link} to="/transport">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.transport" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/ttn">
+    <DropdownItem tag={Link} to="/ttn">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.ttn" />
