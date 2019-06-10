@@ -133,7 +133,7 @@ export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
 };
 
 export const toggleEmployees = (company: string, isActive: boolean) => {
-  const requestUrl = `${apiUrl}/${company}?isActive=${isActive}`;
+  const requestUrl = `${apiUrl}/${company}/toggle?isActive=${isActive}`;
   return {
     type: ACTION_TYPES.TOGGLE_EMPLOYEES,
     payload: axios.get(requestUrl)
