@@ -1,0 +1,66 @@
+{
+    "name": "Storehouse",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "appUser",
+            "otherEntityRelationshipName": "storehouse",
+            "relationshipValidateRules": "required",
+            "relationshipName": "owner",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "appUser",
+            "otherEntityRelationshipName": "storehouse",
+            "relationshipValidateRules": "required",
+            "relationshipName": "administrator",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "appUser",
+            "otherEntityRelationshipName": "storehouse",
+            "relationshipValidateRules": "required",
+            "relationshipName": "dispatcher",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "appUser",
+            "otherEntityRelationshipName": "storehouse",
+            "relationshipValidateRules": "required",
+            "relationshipName": "manager",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "appUser",
+            "otherEntityRelationshipName": "storehouse",
+            "relationshipValidateRules": "required",
+            "relationshipName": "supervisor",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "storageRoom",
+            "otherEntityRelationshipName": "storehouse",
+            "relationshipName": "rooms"
+        }
+    ],
+    "changelogDate": "20190521164120",
+    "entityTableName": "storehouse",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

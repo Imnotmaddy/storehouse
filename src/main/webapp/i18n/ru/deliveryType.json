@@ -1,0 +1,9 @@
+{
+  "storeHouseApp": {
+    "DeliveryType": {
+      "null": "",
+      "Auto": "Auto",
+      "Train": "Train"
+    }
+  }
+}

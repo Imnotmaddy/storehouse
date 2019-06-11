@@ -1,0 +1,11 @@
+{
+  "storeHouseApp": {
+    "Facility": {
+      "null": "",
+      "REFRIGERATOR": "REFRIGERATOR",
+      "OPEN_SPACE": "OPEN_SPACE",
+      "HEATED_SPACE": "HEATED_SPACE",
+      "ORDINARY_ROOM": "ORDINARY_ROOM"
+    }
+  }
+}

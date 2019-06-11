@@ -1,0 +1,19 @@
+{
+    "name": "Sender",
+    "fields": [
+        {
+            "fieldName": "companyName",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190521164119",
+    "entityTableName": "sender",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

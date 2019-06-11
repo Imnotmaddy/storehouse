@@ -1,0 +1,22 @@
+{
+  "storeHouseApp": {
+    "recipient": {
+      "home": {
+        "title": "Recipients",
+        "createLabel": "Создать новый Recipient",
+        "createOrEditLabel": "Создать или отредактировать Recipient",
+        "search": "Найти Recipient"
+      },
+      "created": "Новый Recipient создан с идентификатором {{ param }}",
+      "updated": "Recipient обновлен с идентификатором {{ param }}",
+      "deleted": "Recipient удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Recipient {{ id }}?"
+      },
+      "detail": {
+        "title": "Recipient"
+      },
+      "companyName": "Company Name"
+    }
+  }
+}

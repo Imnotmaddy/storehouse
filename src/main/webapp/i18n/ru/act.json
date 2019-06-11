@@ -1,0 +1,25 @@
+{
+  "storeHouseApp": {
+    "act": {
+      "home": {
+        "title": "Acts",
+        "createLabel": "Создать новый Act",
+        "createOrEditLabel": "Создать или отредактировать Act",
+        "search": "Найти Act"
+      },
+      "created": "Новый Act создан с идентификатором {{ param }}",
+      "updated": "Act обновлен с идентификатором {{ param }}",
+      "deleted": "Act удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Act {{ id }}?"
+      },
+      "detail": {
+        "title": "Act"
+      },
+      "date": "Date",
+      "cost": "Cost",
+      "type": "Type",
+      "user": "User"
+    }
+  }
+}
