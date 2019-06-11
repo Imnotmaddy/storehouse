@@ -129,7 +129,7 @@ export class TransportUpdate extends React.Component<ITransportUpdateProps, ITra
                     {transporters
                       ? transporters.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
+                            {otherEntity.companyName}
                           </option>
                         ))
                       : null}
