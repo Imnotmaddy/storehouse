@@ -82,6 +82,14 @@ public class TransporterService {
             .map(transporterMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public List<TransporterDTO> findAllByDispatcherCompanyName(String dispatcherCompanyName){
+        log.debug("Request ot get Transporters of company: ", dispatcherCompanyName);
+        return transporterRepository.findAllByDispatcherCompanyName(dispatcherCompanyName).stream()
+            .map(transporterMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
     /**
      * Delete the transporter by id.
      *
