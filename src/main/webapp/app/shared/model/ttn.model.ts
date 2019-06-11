@@ -6,24 +6,20 @@ export interface ITTN {
   serialNumber?: string;
   dateOfCreation?: Moment;
   description?: string;
+  driverName?: string;
   productsAmount?: number;
   numberOfProductEntries?: number;
   dateTimeOfRegistration?: Moment;
   isAccepted?: boolean;
-  storehouseDispatcherName?: string;
-  storehouseDispatcherId?: number;
-  managerName?: string;
+  dispatcherLastName?: string;
+  dispatcherId?: number;
+  managerLastName?: string;
   managerId?: number;
-  senderName?: string;
+  senderLastName?: string;
   senderId?: number;
-  transportFacility?: string;
   transportId?: number;
   transporterCompanyName?: string;
   transporterId?: number;
-  driverName?: string;
-  driverId?: number;
-  recipientCompanyName?: string;
-  recipientId?: number;
   products?: IProduct[];
 }
 

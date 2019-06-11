@@ -3,7 +3,7 @@ package com.itechart.studlab.app.web.rest;
 import com.itechart.studlab.app.StoreHouseApp;
 
 import com.itechart.studlab.app.domain.Storehouse;
-import com.itechart.studlab.app.domain.AppUser;
+import com.itechart.studlab.app.domain.User;
 import com.itechart.studlab.app.repository.StorehouseRepository;
 import com.itechart.studlab.app.repository.search.StorehouseSearchRepository;
 import com.itechart.studlab.app.service.StorehouseService;
@@ -47,6 +47,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = StoreHouseApp.class)
 public class StorehouseResourceIntTest {
+
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
 
     @Autowired
     private StorehouseRepository storehouseRepository;
@@ -103,20 +106,21 @@ public class StorehouseResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Storehouse createEntity(EntityManager em) {
-        Storehouse storehouse = new Storehouse();
+        Storehouse storehouse = new Storehouse()
+            .name(DEFAULT_NAME);
         // Add required entity
-        AppUser appUser = AppUserResourceIntTest.createEntity(em);
-        em.persist(appUser);
+        User user = UserResourceIntTest.createEntity(em);
+        em.persist(user);
         em.flush();
-        storehouse.setOwner(appUser);
+        storehouse.setOwner(user);
         // Add required entity
-        storehouse.setAdministrator(appUser);
+        storehouse.setAdministrator(user);
         // Add required entity
-        storehouse.setDispatcher(appUser);
+        storehouse.setDispatcher(user);
         // Add required entity
-        storehouse.setManager(appUser);
+        storehouse.setManager(user);
         // Add required entity
-        storehouse.setSupervisor(appUser);
+        storehouse.setSupervisor(user);
         return storehouse;
     }
 
@@ -141,6 +145,7 @@ public class StorehouseResourceIntTest {
         List<Storehouse> storehouseList = storehouseRepository.findAll();
         assertThat(storehouseList).hasSize(databaseSizeBeforeCreate + 1);
         Storehouse testStorehouse = storehouseList.get(storehouseList.size() - 1);
+        assertThat(testStorehouse.getName()).isEqualTo(DEFAULT_NAME);
 
         // Validate the Storehouse in Elasticsearch
         verify(mockStorehouseSearchRepository, times(1)).save(testStorehouse);
@@ -171,6 +176,25 @@ public class StorehouseResourceIntTest {
 
     @Test
     @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = storehouseRepository.findAll().size();
+        // set the field null
+        storehouse.setName(null);
+
+        // Create the Storehouse, which fails.
+        StorehouseDTO storehouseDTO = storehouseMapper.toDto(storehouse);
+
+        restStorehouseMockMvc.perform(post("/api/storehouses")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(storehouseDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Storehouse> storehouseList = storehouseRepository.findAll();
+        assertThat(storehouseList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllStorehouses() throws Exception {
         // Initialize the database
         storehouseRepository.saveAndFlush(storehouse);
@@ -179,7 +203,8 @@ public class StorehouseResourceIntTest {
         restStorehouseMockMvc.perform(get("/api/storehouses?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(storehouse.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(storehouse.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
     
     @Test
@@ -192,7 +217,8 @@ public class StorehouseResourceIntTest {
         restStorehouseMockMvc.perform(get("/api/storehouses/{id}", storehouse.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(storehouse.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(storehouse.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
     }
 
     @Test
@@ -215,6 +241,8 @@ public class StorehouseResourceIntTest {
         Storehouse updatedStorehouse = storehouseRepository.findById(storehouse.getId()).get();
         // Disconnect from session so that the updates on updatedStorehouse are not directly saved in db
         em.detach(updatedStorehouse);
+        updatedStorehouse
+            .name(UPDATED_NAME);
         StorehouseDTO storehouseDTO = storehouseMapper.toDto(updatedStorehouse);
 
         restStorehouseMockMvc.perform(put("/api/storehouses")
@@ -226,6 +254,7 @@ public class StorehouseResourceIntTest {
         List<Storehouse> storehouseList = storehouseRepository.findAll();
         assertThat(storehouseList).hasSize(databaseSizeBeforeUpdate);
         Storehouse testStorehouse = storehouseList.get(storehouseList.size() - 1);
+        assertThat(testStorehouse.getName()).isEqualTo(UPDATED_NAME);
 
         // Validate the Storehouse in Elasticsearch
         verify(mockStorehouseSearchRepository, times(1)).save(testStorehouse);
@@ -285,7 +314,8 @@ public class StorehouseResourceIntTest {
         restStorehouseMockMvc.perform(get("/api/_search/storehouses?query=id:" + storehouse.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(storehouse.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(storehouse.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
 
     @Test

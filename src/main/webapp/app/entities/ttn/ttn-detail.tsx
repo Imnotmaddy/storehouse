@@ -49,6 +49,12 @@ export class TTNDetail extends React.Component<ITTNDetailProps> {
             </dt>
             <dd>{tTNEntity.description}</dd>
             <dt>
+              <span id="driverName">
+                <Translate contentKey="storeHouseApp.tTN.driverName">Driver Name</Translate>
+              </span>
+            </dt>
+            <dd>{tTNEntity.driverName}</dd>
+            <dt>
               <span id="productsAmount">
                 <Translate contentKey="storeHouseApp.tTN.productsAmount">Products Amount</Translate>
               </span>
@@ -75,33 +81,25 @@ export class TTNDetail extends React.Component<ITTNDetailProps> {
             </dt>
             <dd>{tTNEntity.isAccepted ? 'true' : 'false'}</dd>
             <dt>
-              <Translate contentKey="storeHouseApp.tTN.storehouseDispatcher">Storehouse Dispatcher</Translate>
+              <Translate contentKey="storeHouseApp.tTN.dispatcher">Dispatcher</Translate>
             </dt>
-            <dd>{tTNEntity.storehouseDispatcherName ? tTNEntity.storehouseDispatcherName : ''}</dd>
+            <dd>{tTNEntity.dispatcherLastName ? tTNEntity.dispatcherLastName : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.tTN.manager">Manager</Translate>
             </dt>
-            <dd>{tTNEntity.managerName ? tTNEntity.managerName : ''}</dd>
+            <dd>{tTNEntity.managerLastName ? tTNEntity.managerLastName : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
             </dt>
-            <dd>{tTNEntity.senderName ? tTNEntity.senderName : ''}</dd>
+            <dd>{tTNEntity.senderLastName ? tTNEntity.senderLastName : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
             </dt>
-            <dd>{tTNEntity.transportFacility ? tTNEntity.transportFacility : ''}</dd>
+            <dd>{tTNEntity.transportId ? tTNEntity.transportId : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.tTN.transporter">Transporter</Translate>
             </dt>
             <dd>{tTNEntity.transporterCompanyName ? tTNEntity.transporterCompanyName : ''}</dd>
-            <dt>
-              <Translate contentKey="storeHouseApp.tTN.driver">Driver</Translate>
-            </dt>
-            <dd>{tTNEntity.driverName ? tTNEntity.driverName : ''}</dd>
-            <dt>
-              <Translate contentKey="storeHouseApp.tTN.recipient">Recipient</Translate>
-            </dt>
-            <dd>{tTNEntity.recipientCompanyName ? tTNEntity.recipientCompanyName : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/ttn" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}

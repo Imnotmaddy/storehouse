@@ -1,50 +1,58 @@
 {
     "name": "Storehouse",
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "appUser",
+            "otherEntityName": "user",
             "otherEntityRelationshipName": "storehouse",
             "relationshipValidateRules": "required",
             "relationshipName": "owner",
-            "otherEntityField": "name",
+            "otherEntityField": "lastName",
             "ownerSide": true
         },
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "appUser",
+            "otherEntityName": "user",
             "otherEntityRelationshipName": "storehouse",
             "relationshipValidateRules": "required",
             "relationshipName": "administrator",
-            "otherEntityField": "name",
+            "otherEntityField": "lastName",
             "ownerSide": true
         },
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "appUser",
+            "otherEntityName": "user",
             "otherEntityRelationshipName": "storehouse",
             "relationshipValidateRules": "required",
             "relationshipName": "dispatcher",
-            "otherEntityField": "name",
+            "otherEntityField": "lastName",
             "ownerSide": true
         },
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "appUser",
+            "otherEntityName": "user",
             "otherEntityRelationshipName": "storehouse",
             "relationshipValidateRules": "required",
             "relationshipName": "manager",
-            "otherEntityField": "name",
+            "otherEntityField": "lastName",
             "ownerSide": true
         },
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "appUser",
+            "otherEntityName": "user",
             "otherEntityRelationshipName": "storehouse",
             "relationshipValidateRules": "required",
             "relationshipName": "supervisor",
-            "otherEntityField": "name",
+            "otherEntityField": "lastName",
             "ownerSide": true
         },
         {
@@ -54,7 +62,7 @@
             "relationshipName": "rooms"
         }
     ],
-    "changelogDate": "20190521164120",
+    "changelogDate": "20190530162438",
     "entityTableName": "storehouse",
     "dto": "mapstruct",
     "pagination": "no",

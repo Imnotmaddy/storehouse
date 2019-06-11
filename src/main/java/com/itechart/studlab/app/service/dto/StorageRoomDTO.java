@@ -1,4 +1,5 @@
 package com.itechart.studlab.app.service.dto;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 import com.itechart.studlab.app.domain.enumeration.Facility;
@@ -10,8 +11,10 @@ public class StorageRoomDTO implements Serializable {
 
     private Long id;
 
-    private Integer amountOfDistinctProducts;
+    @NotNull
+    private String roomNumber;
 
+    @NotNull
     private Facility type;
 
 
@@ -25,12 +28,12 @@ public class StorageRoomDTO implements Serializable {
         this.id = id;
     }
 
-    public Integer getAmountOfDistinctProducts() {
-        return amountOfDistinctProducts;
+    public String getRoomNumber() {
+        return roomNumber;
     }
 
-    public void setAmountOfDistinctProducts(Integer amountOfDistinctProducts) {
-        this.amountOfDistinctProducts = amountOfDistinctProducts;
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public Facility getType() {
@@ -74,7 +77,7 @@ public class StorageRoomDTO implements Serializable {
     public String toString() {
         return "StorageRoomDTO{" +
             "id=" + getId() +
-            ", amountOfDistinctProducts=" + getAmountOfDistinctProducts() +
+            ", roomNumber='" + getRoomNumber() + "'" +
             ", type='" + getType() + "'" +
             ", storehouse=" + getStorehouseId() +
             "}";

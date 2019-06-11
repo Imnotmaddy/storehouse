@@ -35,23 +35,15 @@ export class TransportDetail extends React.Component<ITransportDetailProps> {
             </dt>
             <dd>{transportEntity.vehicleNumber}</dd>
             <dt>
-              <span id="wagonsNumber">
-                <Translate contentKey="storeHouseApp.transport.wagonsNumber">Wagons Number</Translate>
-              </span>
-            </dt>
-            <dd>{transportEntity.wagonsNumber}</dd>
-            <dt>
               <span id="deliveryType">
                 <Translate contentKey="storeHouseApp.transport.deliveryType">Delivery Type</Translate>
               </span>
             </dt>
             <dd>{transportEntity.deliveryType}</dd>
             <dt>
-              <span id="facility">
-                <Translate contentKey="storeHouseApp.transport.facility">Facility</Translate>
-              </span>
+              <Translate contentKey="storeHouseApp.transport.company">Company</Translate>
             </dt>
-            <dd>{transportEntity.facility}</dd>
+            <dd>{transportEntity.companyId ? transportEntity.companyId : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/transport" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}

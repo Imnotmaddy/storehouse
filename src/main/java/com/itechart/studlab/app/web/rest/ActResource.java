@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class ActResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/acts")
-    public ResponseEntity<ActDTO> createAct(@RequestBody ActDTO actDTO) throws URISyntaxException {
+    public ResponseEntity<ActDTO> createAct(@Valid @RequestBody ActDTO actDTO) throws URISyntaxException {
         log.debug("REST request to save Act : {}", actDTO);
         if (actDTO.getId() != null) {
             throw new BadRequestAlertException("A new act cannot already have an ID", ENTITY_NAME, "idexists");
@@ -64,7 +65,7 @@ public class ActResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/acts")
-    public ResponseEntity<ActDTO> updateAct(@RequestBody ActDTO actDTO) throws URISyntaxException {
+    public ResponseEntity<ActDTO> updateAct(@Valid @RequestBody ActDTO actDTO) throws URISyntaxException {
         log.debug("REST request to update Act : {}", actDTO);
         if (actDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

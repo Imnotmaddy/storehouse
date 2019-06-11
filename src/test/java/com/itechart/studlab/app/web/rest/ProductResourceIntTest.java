@@ -49,6 +49,12 @@ import com.itechart.studlab.app.domain.enumeration.Facility;
 @SpringBootTest(classes = StoreHouseApp.class)
 public class ProductResourceIntTest {
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_QUANTITY = 1;
+    private static final Integer UPDATED_QUANTITY = 2;
+
     private static final ProductState DEFAULT_STATE = ProductState.REGISTRATED;
     private static final ProductState UPDATED_STATE = ProductState.APPROVED;
 
@@ -61,11 +67,8 @@ public class ProductResourceIntTest {
     private static final Facility DEFAULT_REQUIRED_FACILITY = Facility.REFRIGERATOR;
     private static final Facility UPDATED_REQUIRED_FACILITY = Facility.OPEN_SPACE;
 
-    private static final Float DEFAULT_WEIGHT = 1F;
-    private static final Float UPDATED_WEIGHT = 2F;
-
-    private static final String DEFAULT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NAME = "BBBBBBBBBB";
+    private static final Double DEFAULT_WEIGHT = 1D;
+    private static final Double UPDATED_WEIGHT = 2D;
 
     @Autowired
     private ProductRepository productRepository;
@@ -123,12 +126,13 @@ public class ProductResourceIntTest {
      */
     public static Product createEntity(EntityManager em) {
         Product product = new Product()
+            .name(DEFAULT_NAME)
+            .quantity(DEFAULT_QUANTITY)
             .state(DEFAULT_STATE)
             .daysInStorage(DEFAULT_DAYS_IN_STORAGE)
             .cost(DEFAULT_COST)
             .requiredFacility(DEFAULT_REQUIRED_FACILITY)
-            .weight(DEFAULT_WEIGHT)
-            .name(DEFAULT_NAME);
+            .weight(DEFAULT_WEIGHT);
         return product;
     }
 
@@ -153,12 +157,13 @@ public class ProductResourceIntTest {
         List<Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeCreate + 1);
         Product testProduct = productList.get(productList.size() - 1);
+        assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProduct.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testProduct.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testProduct.getDaysInStorage()).isEqualTo(DEFAULT_DAYS_IN_STORAGE);
         assertThat(testProduct.getCost()).isEqualTo(DEFAULT_COST);
         assertThat(testProduct.getRequiredFacility()).isEqualTo(DEFAULT_REQUIRED_FACILITY);
         assertThat(testProduct.getWeight()).isEqualTo(DEFAULT_WEIGHT);
-        assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
 
         // Validate the Product in Elasticsearch
         verify(mockProductSearchRepository, times(1)).save(testProduct);
@@ -189,6 +194,101 @@ public class ProductResourceIntTest {
 
     @Test
     @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productRepository.findAll().size();
+        // set the field null
+        product.setName(null);
+
+        // Create the Product, which fails.
+        ProductDTO productDTO = productMapper.toDto(product);
+
+        restProductMockMvc.perform(post("/api/products")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Product> productList = productRepository.findAll();
+        assertThat(productList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkQuantityIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productRepository.findAll().size();
+        // set the field null
+        product.setQuantity(null);
+
+        // Create the Product, which fails.
+        ProductDTO productDTO = productMapper.toDto(product);
+
+        restProductMockMvc.perform(post("/api/products")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Product> productList = productRepository.findAll();
+        assertThat(productList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCostIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productRepository.findAll().size();
+        // set the field null
+        product.setCost(null);
+
+        // Create the Product, which fails.
+        ProductDTO productDTO = productMapper.toDto(product);
+
+        restProductMockMvc.perform(post("/api/products")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Product> productList = productRepository.findAll();
+        assertThat(productList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkRequiredFacilityIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productRepository.findAll().size();
+        // set the field null
+        product.setRequiredFacility(null);
+
+        // Create the Product, which fails.
+        ProductDTO productDTO = productMapper.toDto(product);
+
+        restProductMockMvc.perform(post("/api/products")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Product> productList = productRepository.findAll();
+        assertThat(productList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkWeightIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productRepository.findAll().size();
+        // set the field null
+        product.setWeight(null);
+
+        // Create the Product, which fails.
+        ProductDTO productDTO = productMapper.toDto(product);
+
+        restProductMockMvc.perform(post("/api/products")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Product> productList = productRepository.findAll();
+        assertThat(productList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllProducts() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
@@ -198,12 +298,13 @@ public class ProductResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
             .andExpect(jsonPath("$.[*].daysInStorage").value(hasItem(DEFAULT_DAYS_IN_STORAGE)))
             .andExpect(jsonPath("$.[*].cost").value(hasItem(DEFAULT_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].requiredFacility").value(hasItem(DEFAULT_REQUIRED_FACILITY.toString())))
-            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
     
     @Test
@@ -217,12 +318,13 @@ public class ProductResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(product.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
             .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
             .andExpect(jsonPath("$.daysInStorage").value(DEFAULT_DAYS_IN_STORAGE))
             .andExpect(jsonPath("$.cost").value(DEFAULT_COST.doubleValue()))
             .andExpect(jsonPath("$.requiredFacility").value(DEFAULT_REQUIRED_FACILITY.toString()))
-            .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.doubleValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+            .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.doubleValue()));
     }
 
     @Test
@@ -246,12 +348,13 @@ public class ProductResourceIntTest {
         // Disconnect from session so that the updates on updatedProduct are not directly saved in db
         em.detach(updatedProduct);
         updatedProduct
+            .name(UPDATED_NAME)
+            .quantity(UPDATED_QUANTITY)
             .state(UPDATED_STATE)
             .daysInStorage(UPDATED_DAYS_IN_STORAGE)
             .cost(UPDATED_COST)
             .requiredFacility(UPDATED_REQUIRED_FACILITY)
-            .weight(UPDATED_WEIGHT)
-            .name(UPDATED_NAME);
+            .weight(UPDATED_WEIGHT);
         ProductDTO productDTO = productMapper.toDto(updatedProduct);
 
         restProductMockMvc.perform(put("/api/products")
@@ -263,12 +366,13 @@ public class ProductResourceIntTest {
         List<Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeUpdate);
         Product testProduct = productList.get(productList.size() - 1);
+        assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProduct.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testProduct.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testProduct.getDaysInStorage()).isEqualTo(UPDATED_DAYS_IN_STORAGE);
         assertThat(testProduct.getCost()).isEqualTo(UPDATED_COST);
         assertThat(testProduct.getRequiredFacility()).isEqualTo(UPDATED_REQUIRED_FACILITY);
         assertThat(testProduct.getWeight()).isEqualTo(UPDATED_WEIGHT);
-        assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
 
         // Validate the Product in Elasticsearch
         verify(mockProductSearchRepository, times(1)).save(testProduct);
@@ -329,12 +433,13 @@ public class ProductResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
             .andExpect(jsonPath("$.[*].daysInStorage").value(hasItem(DEFAULT_DAYS_IN_STORAGE)))
             .andExpect(jsonPath("$.[*].cost").value(hasItem(DEFAULT_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].requiredFacility").value(hasItem(DEFAULT_REQUIRED_FACILITY.toString())))
-            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
 
     @Test

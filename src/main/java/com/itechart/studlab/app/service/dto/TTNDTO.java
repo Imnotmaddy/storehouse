@@ -12,48 +12,43 @@ public class TTNDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private String serialNumber;
 
+    @NotNull
     private LocalDate dateOfCreation;
 
     private String description;
+
+    private String driverName;
 
     private Integer productsAmount;
 
     private Integer numberOfProductEntries;
 
+    @NotNull
     private Instant dateTimeOfRegistration;
 
     private Boolean isAccepted;
 
 
-    private Long storehouseDispatcherId;
+    private Long dispatcherId;
 
-    private String storehouseDispatcherName;
+    private String dispatcherLastName;
 
     private Long managerId;
 
-    private String managerName;
+    private String managerLastName;
 
     private Long senderId;
 
-    private String senderName;
+    private String senderLastName;
 
     private Long transportId;
-
-    private String transportFacility;
 
     private Long transporterId;
 
     private String transporterCompanyName;
-
-    private Long driverId;
-
-    private String driverName;
-
-    private Long recipientId;
-
-    private String recipientCompanyName;
 
     public Long getId() {
         return id;
@@ -85,6 +80,14 @@ public class TTNDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
     public Integer getProductsAmount() {
@@ -119,52 +122,52 @@ public class TTNDTO implements Serializable {
         this.isAccepted = isAccepted;
     }
 
-    public Long getStorehouseDispatcherId() {
-        return storehouseDispatcherId;
+    public Long getDispatcherId() {
+        return dispatcherId;
     }
 
-    public void setStorehouseDispatcherId(Long appUserId) {
-        this.storehouseDispatcherId = appUserId;
+    public void setDispatcherId(Long userId) {
+        this.dispatcherId = userId;
     }
 
-    public String getStorehouseDispatcherName() {
-        return storehouseDispatcherName;
+    public String getDispatcherLastName() {
+        return dispatcherLastName;
     }
 
-    public void setStorehouseDispatcherName(String appUserName) {
-        this.storehouseDispatcherName = appUserName;
+    public void setDispatcherLastName(String userLastName) {
+        this.dispatcherLastName = userLastName;
     }
 
     public Long getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(Long appUserId) {
-        this.managerId = appUserId;
+    public void setManagerId(Long userId) {
+        this.managerId = userId;
     }
 
-    public String getManagerName() {
-        return managerName;
+    public String getManagerLastName() {
+        return managerLastName;
     }
 
-    public void setManagerName(String appUserName) {
-        this.managerName = appUserName;
+    public void setManagerLastName(String userLastName) {
+        this.managerLastName = userLastName;
     }
 
     public Long getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(Long appUserId) {
-        this.senderId = appUserId;
+    public void setSenderId(Long userId) {
+        this.senderId = userId;
     }
 
-    public String getSenderName() {
-        return senderName;
+    public String getSenderLastName() {
+        return senderLastName;
     }
 
-    public void setSenderName(String appUserName) {
-        this.senderName = appUserName;
+    public void setSenderLastName(String userLastName) {
+        this.senderLastName = userLastName;
     }
 
     public Long getTransportId() {
@@ -173,14 +176,6 @@ public class TTNDTO implements Serializable {
 
     public void setTransportId(Long transportId) {
         this.transportId = transportId;
-    }
-
-    public String getTransportFacility() {
-        return transportFacility;
-    }
-
-    public void setTransportFacility(String transportFacility) {
-        this.transportFacility = transportFacility;
     }
 
     public Long getTransporterId() {
@@ -197,38 +192,6 @@ public class TTNDTO implements Serializable {
 
     public void setTransporterCompanyName(String transporterCompanyName) {
         this.transporterCompanyName = transporterCompanyName;
-    }
-
-    public Long getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(Long driverId) {
-        this.driverId = driverId;
-    }
-
-    public String getDriverName() {
-        return driverName;
-    }
-
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
-    }
-
-    public Long getRecipientId() {
-        return recipientId;
-    }
-
-    public void setRecipientId(Long recipientId) {
-        this.recipientId = recipientId;
-    }
-
-    public String getRecipientCompanyName() {
-        return recipientCompanyName;
-    }
-
-    public void setRecipientCompanyName(String recipientCompanyName) {
-        this.recipientCompanyName = recipientCompanyName;
     }
 
     @Override
@@ -259,24 +222,20 @@ public class TTNDTO implements Serializable {
             ", serialNumber='" + getSerialNumber() + "'" +
             ", dateOfCreation='" + getDateOfCreation() + "'" +
             ", description='" + getDescription() + "'" +
+            ", driverName='" + getDriverName() + "'" +
             ", productsAmount=" + getProductsAmount() +
             ", numberOfProductEntries=" + getNumberOfProductEntries() +
             ", dateTimeOfRegistration='" + getDateTimeOfRegistration() + "'" +
             ", isAccepted='" + isIsAccepted() + "'" +
-            ", storehouseDispatcher=" + getStorehouseDispatcherId() +
-            ", storehouseDispatcher='" + getStorehouseDispatcherName() + "'" +
+            ", dispatcher=" + getDispatcherId() +
+            ", dispatcher='" + getDispatcherLastName() + "'" +
             ", manager=" + getManagerId() +
-            ", manager='" + getManagerName() + "'" +
+            ", manager='" + getManagerLastName() + "'" +
             ", sender=" + getSenderId() +
-            ", sender='" + getSenderName() + "'" +
+            ", sender='" + getSenderLastName() + "'" +
             ", transport=" + getTransportId() +
-            ", transport='" + getTransportFacility() + "'" +
             ", transporter=" + getTransporterId() +
             ", transporter='" + getTransporterCompanyName() + "'" +
-            ", driver=" + getDriverId() +
-            ", driver='" + getDriverName() + "'" +
-            ", recipient=" + getRecipientId() +
-            ", recipient='" + getRecipientCompanyName() + "'" +
             "}";
     }
 }

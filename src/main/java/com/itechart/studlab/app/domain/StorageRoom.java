@@ -1,14 +1,18 @@
 package com.itechart.studlab.app.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import com.itechart.studlab.app.domain.enumeration.Facility;
@@ -28,13 +32,18 @@ public class StorageRoom implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "amount_of_distinct_products")
-    private Integer amountOfDistinctProducts;
+    @NotNull
+    @Column(name = "room_number", nullable = false)
+    private String roomNumber;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type")
+    @Column(name = "jhi_type", nullable = false)
     private Facility type;
 
+    @OneToMany(mappedBy = "storageRoom")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Product> products = new HashSet<>();
     @ManyToOne
     @JsonIgnoreProperties("rooms")
     private Storehouse storehouse;
@@ -48,17 +57,17 @@ public class StorageRoom implements Serializable {
         this.id = id;
     }
 
-    public Integer getAmountOfDistinctProducts() {
-        return amountOfDistinctProducts;
+    public String getRoomNumber() {
+        return roomNumber;
     }
 
-    public StorageRoom amountOfDistinctProducts(Integer amountOfDistinctProducts) {
-        this.amountOfDistinctProducts = amountOfDistinctProducts;
+    public StorageRoom roomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
         return this;
     }
 
-    public void setAmountOfDistinctProducts(Integer amountOfDistinctProducts) {
-        this.amountOfDistinctProducts = amountOfDistinctProducts;
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public Facility getType() {
@@ -72,6 +81,31 @@ public class StorageRoom implements Serializable {
 
     public void setType(Facility type) {
         this.type = type;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public StorageRoom products(Set<Product> products) {
+        this.products = products;
+        return this;
+    }
+
+    public StorageRoom addProducts(Product product) {
+        this.products.add(product);
+        product.setStorageRoom(this);
+        return this;
+    }
+
+    public StorageRoom removeProducts(Product product) {
+        this.products.remove(product);
+        product.setStorageRoom(null);
+        return this;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     public Storehouse getStorehouse() {
@@ -112,7 +146,7 @@ public class StorageRoom implements Serializable {
     public String toString() {
         return "StorageRoom{" +
             "id=" + getId() +
-            ", amountOfDistinctProducts=" + getAmountOfDistinctProducts() +
+            ", roomNumber='" + getRoomNumber() + "'" +
             ", type='" + getType() + "'" +
             "}";
     }

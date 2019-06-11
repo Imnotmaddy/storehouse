@@ -1,5 +1,6 @@
 package com.itechart.studlab.app.service.dto;
 import java.time.LocalDate;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 import com.itechart.studlab.app.domain.enumeration.ActType;
@@ -11,10 +12,13 @@ public class ActDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private LocalDate date;
 
+    @NotNull
     private Double cost;
 
+    @NotNull
     private ActType type;
 
 
@@ -56,8 +60,8 @@ public class ActDTO implements Serializable {
         return userId;
     }
 
-    public void setUserId(Long appUserId) {
-        this.userId = appUserId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override

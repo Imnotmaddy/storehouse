@@ -2,6 +2,20 @@
     "name": "Product",
     "fields": [
         {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "quantity",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "state",
             "fieldType": "ProductState",
             "fieldValues": "REGISTRATED,APPROVED,STORED,LOST_BY_TRANSPORTER,GONE_FROM_STORAGE,STOLEN_FROM_STORAGE,TRANSPORTER_SHORTAGE,CONFISCATED,RECYCLED,UNSTORED,READY_TO_LEAVE,REMOVED_FROM_STORAGE"
@@ -12,23 +26,40 @@
         },
         {
             "fieldName": "cost",
-            "fieldType": "Double"
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "requiredFacility",
             "fieldType": "Facility",
-            "fieldValues": "REFRIGERATOR,OPEN_SPACE,HEATED_SPACE,ORDINARY_ROOM"
+            "fieldValues": "REFRIGERATOR,OPEN_SPACE,HEATED_SPACE,ORDINARY_ROOM",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "weight",
-            "fieldType": "Float"
-        },
-        {
-            "fieldName": "name",
-            "fieldType": "String"
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "relationships": [
+        {
+            "relationshipName": "act",
+            "otherEntityName": "act",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "storageRoom",
+            "otherEntityName": "storageRoom",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
         {
             "relationshipName": "tTN",
             "otherEntityName": "tTN",
@@ -36,7 +67,7 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20190521164125",
+    "changelogDate": "20190530162440",
     "entityTableName": "product",
     "dto": "mapstruct",
     "pagination": "no",

@@ -3,29 +3,44 @@
     "fields": [
         {
             "fieldName": "date",
-            "fieldType": "LocalDate"
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "cost",
-            "fieldType": "Double"
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "type",
             "fieldType": "ActType",
-            "fieldValues": "THEFT,INCONSISTENCE,LOSS,SHORTAGE,WRITE_OFF"
+            "fieldValues": "THEFT,INCONSISTENCE,LOSS,SHORTAGE,WRITE_OFF",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "appUser",
+            "otherEntityName": "user",
             "otherEntityRelationshipName": "act",
             "relationshipName": "user",
             "otherEntityField": "id",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "act",
+            "relationshipName": "products"
         }
     ],
-    "changelogDate": "20190521164124",
+    "changelogDate": "20190530162437",
     "entityTableName": "act",
     "dto": "mapstruct",
     "pagination": "no",

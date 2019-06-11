@@ -6,22 +6,24 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "wagonsNumber",
-            "fieldType": "String"
-        },
-        {
             "fieldName": "deliveryType",
             "fieldType": "DeliveryType",
-            "fieldValues": "Auto,Train"
-        },
-        {
-            "fieldName": "facility",
-            "fieldType": "Facility",
-            "fieldValues": "REFRIGERATOR,OPEN_SPACE,HEATED_SPACE,ORDINARY_ROOM"
+            "fieldValues": "Auto,Train",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
-    "relationships": [],
-    "changelogDate": "20190521164127",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "transporter",
+            "otherEntityRelationshipName": "vehicles",
+            "relationshipName": "company",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190530162442",
     "entityTableName": "transport",
     "dto": "mapstruct",
     "pagination": "no",

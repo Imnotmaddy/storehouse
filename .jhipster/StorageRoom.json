@@ -2,16 +2,28 @@
     "name": "StorageRoom",
     "fields": [
         {
-            "fieldName": "amountOfDistinctProducts",
-            "fieldType": "Integer"
+            "fieldName": "roomNumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "type",
             "fieldType": "Facility",
-            "fieldValues": "REFRIGERATOR,OPEN_SPACE,HEATED_SPACE,ORDINARY_ROOM"
+            "fieldValues": "REFRIGERATOR,OPEN_SPACE,HEATED_SPACE,ORDINARY_ROOM",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "storageRoom",
+            "relationshipName": "products"
+        },
         {
             "relationshipType": "many-to-one",
             "otherEntityName": "storehouse",
@@ -20,7 +32,7 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20190521164121",
+    "changelogDate": "20190530162439",
     "entityTableName": "storage_room",
     "dto": "mapstruct",
     "pagination": "no",

@@ -10,8 +10,9 @@ import com.itechart.studlab.app.security.AuthoritiesConstants;
 import com.itechart.studlab.app.security.SecurityUtils;
 import com.itechart.studlab.app.service.dto.UserDTO;
 import com.itechart.studlab.app.service.util.RandomUtil;
-import com.itechart.studlab.app.web.rest.errors.*;
-
+import com.itechart.studlab.app.web.rest.errors.EmailAlreadyUsedException;
+import com.itechart.studlab.app.web.rest.errors.InvalidPasswordException;
+import com.itechart.studlab.app.web.rest.errors.LoginAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -46,7 +47,9 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository,
+                       CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
@@ -129,9 +132,9 @@ public class UserService {
         return newUser;
     }
 
-    private boolean removeNonActivatedUser(User existingUser){
+    private boolean removeNonActivatedUser(User existingUser) {
         if (existingUser.getActivated()) {
-             return false;
+            return false;
         }
         userRepository.delete(existingUser);
         userRepository.flush();
@@ -146,6 +149,11 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail().toLowerCase());
         user.setImageUrl(userDTO.getImageUrl());
+        user.setCompany(userDTO.getCompany());
+        user.setBirthdate(userDTO.getBirthdate());
+        user.setCountry(userDTO.getCountry());
+        user.setCity(userDTO.getCity());
+        user.setAddress(userDTO.getAddress());
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
         } else {
@@ -168,6 +176,7 @@ public class UserService {
         userSearchRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
+
         return user;
     }
 
@@ -175,10 +184,10 @@ public class UserService {
      * Update basic information (first name, last name, email, language) for the current user.
      *
      * @param firstName first name of user
-     * @param lastName last name of user
-     * @param email email id of user
-     * @param langKey language key
-     * @param imageUrl image URL of user
+     * @param lastName  last name of user
+     * @param email     email id of user
+     * @param langKey   language key
+     * @param imageUrl  image URL of user
      */
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
         SecurityUtils.getCurrentUserLogin()
@@ -213,6 +222,11 @@ public class UserService {
                 user.setLastName(userDTO.getLastName());
                 user.setEmail(userDTO.getEmail().toLowerCase());
                 user.setImageUrl(userDTO.getImageUrl());
+                user.setCompany(userDTO.getCompany());
+                user.setBirthdate(userDTO.getBirthdate());
+                user.setCountry(userDTO.getCountry());
+                user.setCity(userDTO.getCity());
+                user.setAddress(userDTO.getAddress());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
                 Set<Authority> managedAuthorities = user.getAuthorities();
@@ -228,6 +242,15 @@ public class UserService {
                 return user;
             })
             .map(UserDTO::new);
+    }
+
+    public void toggleEmployees(String company, Boolean isActive) {
+        userRepository.findAllByCompanyIs(company).forEach(
+            user -> {
+                user.setActivated(isActive);
+                userRepository.save(user);
+            }
+        );
     }
 
     public void deleteUser(String login) {
@@ -254,9 +277,31 @@ public class UserService {
             });
     }
 
+    public Page<UserDTO> getAllCompanyAdmins(Pageable pageable) {
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.STOREHOUSE_ADMIN);
+        return userRepository.findAllByAuthoritiesIs(pageable, authority).map(UserDTO::new);
+    }
+
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+    }
+
+    private List<Authority> getEmployeeAuthoritiesList() {
+        return AuthoritiesConstants.EMPLOYEE_AUTHORITIES.stream()
+            .map(authorityName -> {
+                Authority authority = new Authority();
+                authority.setName(authorityName);
+                return authority;
+            }).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDTO> getAllEmployees(Pageable pageable, String company) {
+        return userRepository
+            .findAllByAuthoritiesIsInAndCompanyIs(pageable, getEmployeeAuthoritiesList(), company)
+            .map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
@@ -296,6 +341,12 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public List<String> getEmployeeAuthorities() {
+        return authorityRepository
+            .findAuthoritiesByNameIsIn(AuthoritiesConstants.EMPLOYEE_AUTHORITIES)
+            .stream().map(Authority::getName).collect(Collectors.toList());
     }
 
     private void clearUserCaches(User user) {

@@ -8,6 +8,8 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { ITransporter } from 'app/shared/model/transporter.model';
+import { getEntities as getTransporters } from 'app/entities/transporter/transporter.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './transport.reducer';
 import { ITransport } from 'app/shared/model/transport.model';
 // tslint:disable-next-line:no-unused-variable
@@ -18,12 +20,14 @@ export interface ITransportUpdateProps extends StateProps, DispatchProps, RouteC
 
 export interface ITransportUpdateState {
   isNew: boolean;
+  companyId: string;
 }
 
 export class TransportUpdate extends React.Component<ITransportUpdateProps, ITransportUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
+      companyId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -40,6 +44,8 @@ export class TransportUpdate extends React.Component<ITransportUpdateProps, ITra
     } else {
       this.props.getEntity(this.props.match.params.id);
     }
+
+    this.props.getTransporters();
   }
 
   saveEntity = (event, errors, values) => {
@@ -63,7 +69,7 @@ export class TransportUpdate extends React.Component<ITransportUpdateProps, ITra
   };
 
   render() {
-    const { transportEntity, loading, updating } = this.props;
+    const { transportEntity, transporters, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -96,12 +102,6 @@ export class TransportUpdate extends React.Component<ITransportUpdateProps, ITra
                   <AvField id="transport-vehicleNumber" type="text" name="vehicleNumber" />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="wagonsNumberLabel" for="wagonsNumber">
-                    <Translate contentKey="storeHouseApp.transport.wagonsNumber">Wagons Number</Translate>
-                  </Label>
-                  <AvField id="transport-wagonsNumber" type="text" name="wagonsNumber" />
-                </AvGroup>
-                <AvGroup>
                   <Label id="deliveryTypeLabel">
                     <Translate contentKey="storeHouseApp.transport.deliveryType">Delivery Type</Translate>
                   </Label>
@@ -121,28 +121,18 @@ export class TransportUpdate extends React.Component<ITransportUpdateProps, ITra
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label id="facilityLabel">
-                    <Translate contentKey="storeHouseApp.transport.facility">Facility</Translate>
+                  <Label for="company.id">
+                    <Translate contentKey="storeHouseApp.transport.company">Company</Translate>
                   </Label>
-                  <AvInput
-                    id="transport-facility"
-                    type="select"
-                    className="form-control"
-                    name="facility"
-                    value={(!isNew && transportEntity.facility) || 'REFRIGERATOR'}
-                  >
-                    <option value="REFRIGERATOR">
-                      <Translate contentKey="storeHouseApp.Facility.REFRIGERATOR" />
-                    </option>
-                    <option value="OPEN_SPACE">
-                      <Translate contentKey="storeHouseApp.Facility.OPEN_SPACE" />
-                    </option>
-                    <option value="HEATED_SPACE">
-                      <Translate contentKey="storeHouseApp.Facility.HEATED_SPACE" />
-                    </option>
-                    <option value="ORDINARY_ROOM">
-                      <Translate contentKey="storeHouseApp.Facility.ORDINARY_ROOM" />
-                    </option>
+                  <AvInput id="transport-company" type="select" className="form-control" name="companyId">
+                    <option value="" key="0" />
+                    {transporters
+                      ? transporters.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.id}
+                          </option>
+                        ))
+                      : null}
                   </AvInput>
                 </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/transport" replace color="info">
@@ -168,6 +158,7 @@ export class TransportUpdate extends React.Component<ITransportUpdateProps, ITra
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  transporters: storeState.transporter.entities,
   transportEntity: storeState.transport.entity,
   loading: storeState.transport.loading,
   updating: storeState.transport.updating,
@@ -175,6 +166,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getTransporters,
   getEntity,
   updateEntity,
   createEntity,

@@ -93,7 +93,14 @@ export class TransporterUpdate extends React.Component<ITransporterUpdateProps, 
                   <Label id="companyNameLabel" for="companyName">
                     <Translate contentKey="storeHouseApp.transporter.companyName">Company Name</Translate>
                   </Label>
-                  <AvField id="transporter-companyName" type="text" name="companyName" />
+                  <AvField
+                    id="transporter-companyName"
+                    type="text"
+                    name="companyName"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
                 </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/transporter" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />

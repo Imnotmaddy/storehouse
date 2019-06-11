@@ -8,11 +8,6 @@ import { NavDropdown } from '../header-components';
 export const EntitiesMenu = props => (
   // tslint:disable-next-line:jsx-self-close
   <NavDropdown icon="th-list" name={translate('global.menu.entities.main')} id="entity-menu">
-    <DropdownItem tag={Link} to="/entity/driver">
-      <FontAwesomeIcon icon="asterisk" fixedWidth />
-      &nbsp;
-      <Translate contentKey="global.menu.entities.driver" />
-    </DropdownItem>
     <DropdownItem tag={Link} to="/transporter">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
@@ -26,7 +21,7 @@ export const EntitiesMenu = props => (
     <DropdownItem tag={Link} to="/sender">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
-      <Translate contentKey="global.menu.entities.sender" />
+      <Translate contentKey="global.menu.entities.act" />
     </DropdownItem>
     <DropdownItem tag={Link} to="/storehouse">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
@@ -37,16 +32,6 @@ export const EntitiesMenu = props => (
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;
       <Translate contentKey="global.menu.entities.storageRoom" />
-    </DropdownItem>
-    <DropdownItem tag={Link} to="/address">
-      <FontAwesomeIcon icon="asterisk" fixedWidth />
-      &nbsp;
-      <Translate contentKey="global.menu.entities.address" />
-    </DropdownItem>
-    <DropdownItem tag={Link} to="/app-user">
-      <FontAwesomeIcon icon="asterisk" fixedWidth />
-      &nbsp;
-      <Translate contentKey="global.menu.entities.appUser" />
     </DropdownItem>
     <DropdownItem tag={Link} to="/product">
       <FontAwesomeIcon icon="asterisk" fixedWidth />

@@ -19,7 +19,8 @@
       "date": "Date",
       "cost": "Cost",
       "type": "Type",
-      "user": "User"
+      "user": "User",
+      "products": "Products"
     }
   }
 }

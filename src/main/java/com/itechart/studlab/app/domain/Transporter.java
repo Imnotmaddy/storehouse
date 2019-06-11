@@ -1,13 +1,17 @@
 package com.itechart.studlab.app.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -25,9 +29,13 @@ public class Transporter implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "company_name")
+    @NotNull
+    @Column(name = "company_name", nullable = false)
     private String companyName;
 
+    @OneToMany(mappedBy = "company")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Transport> vehicles = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -48,6 +56,31 @@ public class Transporter implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public Set<Transport> getVehicles() {
+        return vehicles;
+    }
+
+    public Transporter vehicles(Set<Transport> transports) {
+        this.vehicles = transports;
+        return this;
+    }
+
+    public Transporter addVehicles(Transport transport) {
+        this.vehicles.add(transport);
+        transport.setCompany(this);
+        return this;
+    }
+
+    public Transporter removeVehicles(Transport transport) {
+        this.vehicles.remove(transport);
+        transport.setCompany(null);
+        return this;
+    }
+
+    public void setVehicles(Set<Transport> transports) {
+        this.vehicles = transports;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

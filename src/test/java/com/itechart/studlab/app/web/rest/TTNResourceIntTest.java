@@ -3,7 +3,6 @@ package com.itechart.studlab.app.web.rest;
 import com.itechart.studlab.app.StoreHouseApp;
 
 import com.itechart.studlab.app.domain.TTN;
-import com.itechart.studlab.app.domain.AppUser;
 import com.itechart.studlab.app.domain.Transport;
 import com.itechart.studlab.app.domain.Transporter;
 import com.itechart.studlab.app.repository.TTNRepository;
@@ -62,6 +61,9 @@ public class TTNResourceIntTest {
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DRIVER_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_DRIVER_NAME = "BBBBBBBBBB";
 
     private static final Integer DEFAULT_PRODUCTS_AMOUNT = 1;
     private static final Integer UPDATED_PRODUCTS_AMOUNT = 2;
@@ -134,15 +136,11 @@ public class TTNResourceIntTest {
             .serialNumber(DEFAULT_SERIAL_NUMBER)
             .dateOfCreation(DEFAULT_DATE_OF_CREATION)
             .description(DEFAULT_DESCRIPTION)
+            .driverName(DEFAULT_DRIVER_NAME)
             .productsAmount(DEFAULT_PRODUCTS_AMOUNT)
             .numberOfProductEntries(DEFAULT_NUMBER_OF_PRODUCT_ENTRIES)
             .dateTimeOfRegistration(DEFAULT_DATE_TIME_OF_REGISTRATION)
             .isAccepted(DEFAULT_IS_ACCEPTED);
-        // Add required entity
-        AppUser appUser = AppUserResourceIntTest.createEntity(em);
-        em.persist(appUser);
-        em.flush();
-        tTN.setSender(appUser);
         // Add required entity
         Transport transport = TransportResourceIntTest.createEntity(em);
         em.persist(transport);
@@ -180,6 +178,7 @@ public class TTNResourceIntTest {
         assertThat(testTTN.getSerialNumber()).isEqualTo(DEFAULT_SERIAL_NUMBER);
         assertThat(testTTN.getDateOfCreation()).isEqualTo(DEFAULT_DATE_OF_CREATION);
         assertThat(testTTN.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testTTN.getDriverName()).isEqualTo(DEFAULT_DRIVER_NAME);
         assertThat(testTTN.getProductsAmount()).isEqualTo(DEFAULT_PRODUCTS_AMOUNT);
         assertThat(testTTN.getNumberOfProductEntries()).isEqualTo(DEFAULT_NUMBER_OF_PRODUCT_ENTRIES);
         assertThat(testTTN.getDateTimeOfRegistration()).isEqualTo(DEFAULT_DATE_TIME_OF_REGISTRATION);
@@ -214,6 +213,63 @@ public class TTNResourceIntTest {
 
     @Test
     @Transactional
+    public void checkSerialNumberIsRequired() throws Exception {
+        int databaseSizeBeforeTest = tTNRepository.findAll().size();
+        // set the field null
+        tTN.setSerialNumber(null);
+
+        // Create the TTN, which fails.
+        TTNDTO tTNDTO = tTNMapper.toDto(tTN);
+
+        restTTNMockMvc.perform(post("/api/ttns")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(tTNDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<TTN> tTNList = tTNRepository.findAll();
+        assertThat(tTNList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDateOfCreationIsRequired() throws Exception {
+        int databaseSizeBeforeTest = tTNRepository.findAll().size();
+        // set the field null
+        tTN.setDateOfCreation(null);
+
+        // Create the TTN, which fails.
+        TTNDTO tTNDTO = tTNMapper.toDto(tTN);
+
+        restTTNMockMvc.perform(post("/api/ttns")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(tTNDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<TTN> tTNList = tTNRepository.findAll();
+        assertThat(tTNList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDateTimeOfRegistrationIsRequired() throws Exception {
+        int databaseSizeBeforeTest = tTNRepository.findAll().size();
+        // set the field null
+        tTN.setDateTimeOfRegistration(null);
+
+        // Create the TTN, which fails.
+        TTNDTO tTNDTO = tTNMapper.toDto(tTN);
+
+        restTTNMockMvc.perform(post("/api/ttns")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(tTNDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<TTN> tTNList = tTNRepository.findAll();
+        assertThat(tTNList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllTTNS() throws Exception {
         // Initialize the database
         tTNRepository.saveAndFlush(tTN);
@@ -226,6 +282,7 @@ public class TTNResourceIntTest {
             .andExpect(jsonPath("$.[*].serialNumber").value(hasItem(DEFAULT_SERIAL_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].dateOfCreation").value(hasItem(DEFAULT_DATE_OF_CREATION.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].driverName").value(hasItem(DEFAULT_DRIVER_NAME.toString())))
             .andExpect(jsonPath("$.[*].productsAmount").value(hasItem(DEFAULT_PRODUCTS_AMOUNT)))
             .andExpect(jsonPath("$.[*].numberOfProductEntries").value(hasItem(DEFAULT_NUMBER_OF_PRODUCT_ENTRIES)))
             .andExpect(jsonPath("$.[*].dateTimeOfRegistration").value(hasItem(DEFAULT_DATE_TIME_OF_REGISTRATION.toString())))
@@ -246,6 +303,7 @@ public class TTNResourceIntTest {
             .andExpect(jsonPath("$.serialNumber").value(DEFAULT_SERIAL_NUMBER.toString()))
             .andExpect(jsonPath("$.dateOfCreation").value(DEFAULT_DATE_OF_CREATION.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.driverName").value(DEFAULT_DRIVER_NAME.toString()))
             .andExpect(jsonPath("$.productsAmount").value(DEFAULT_PRODUCTS_AMOUNT))
             .andExpect(jsonPath("$.numberOfProductEntries").value(DEFAULT_NUMBER_OF_PRODUCT_ENTRIES))
             .andExpect(jsonPath("$.dateTimeOfRegistration").value(DEFAULT_DATE_TIME_OF_REGISTRATION.toString()))
@@ -276,6 +334,7 @@ public class TTNResourceIntTest {
             .serialNumber(UPDATED_SERIAL_NUMBER)
             .dateOfCreation(UPDATED_DATE_OF_CREATION)
             .description(UPDATED_DESCRIPTION)
+            .driverName(UPDATED_DRIVER_NAME)
             .productsAmount(UPDATED_PRODUCTS_AMOUNT)
             .numberOfProductEntries(UPDATED_NUMBER_OF_PRODUCT_ENTRIES)
             .dateTimeOfRegistration(UPDATED_DATE_TIME_OF_REGISTRATION)
@@ -294,6 +353,7 @@ public class TTNResourceIntTest {
         assertThat(testTTN.getSerialNumber()).isEqualTo(UPDATED_SERIAL_NUMBER);
         assertThat(testTTN.getDateOfCreation()).isEqualTo(UPDATED_DATE_OF_CREATION);
         assertThat(testTTN.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testTTN.getDriverName()).isEqualTo(UPDATED_DRIVER_NAME);
         assertThat(testTTN.getProductsAmount()).isEqualTo(UPDATED_PRODUCTS_AMOUNT);
         assertThat(testTTN.getNumberOfProductEntries()).isEqualTo(UPDATED_NUMBER_OF_PRODUCT_ENTRIES);
         assertThat(testTTN.getDateTimeOfRegistration()).isEqualTo(UPDATED_DATE_TIME_OF_REGISTRATION);
@@ -361,6 +421,7 @@ public class TTNResourceIntTest {
             .andExpect(jsonPath("$.[*].serialNumber").value(hasItem(DEFAULT_SERIAL_NUMBER)))
             .andExpect(jsonPath("$.[*].dateOfCreation").value(hasItem(DEFAULT_DATE_OF_CREATION.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].driverName").value(hasItem(DEFAULT_DRIVER_NAME)))
             .andExpect(jsonPath("$.[*].productsAmount").value(hasItem(DEFAULT_PRODUCTS_AMOUNT)))
             .andExpect(jsonPath("$.[*].numberOfProductEntries").value(hasItem(DEFAULT_NUMBER_OF_PRODUCT_ENTRIES)))
             .andExpect(jsonPath("$.[*].dateTimeOfRegistration").value(hasItem(DEFAULT_DATE_TIME_OF_REGISTRATION.toString())))

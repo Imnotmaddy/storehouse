@@ -48,8 +48,8 @@ import com.itechart.studlab.app.domain.enumeration.Facility;
 @SpringBootTest(classes = StoreHouseApp.class)
 public class StorageRoomResourceIntTest {
 
-    private static final Integer DEFAULT_AMOUNT_OF_DISTINCT_PRODUCTS = 1;
-    private static final Integer UPDATED_AMOUNT_OF_DISTINCT_PRODUCTS = 2;
+    private static final String DEFAULT_ROOM_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_ROOM_NUMBER = "BBBBBBBBBB";
 
     private static final Facility DEFAULT_TYPE = Facility.REFRIGERATOR;
     private static final Facility UPDATED_TYPE = Facility.OPEN_SPACE;
@@ -110,7 +110,7 @@ public class StorageRoomResourceIntTest {
      */
     public static StorageRoom createEntity(EntityManager em) {
         StorageRoom storageRoom = new StorageRoom()
-            .amountOfDistinctProducts(DEFAULT_AMOUNT_OF_DISTINCT_PRODUCTS)
+            .roomNumber(DEFAULT_ROOM_NUMBER)
             .type(DEFAULT_TYPE);
         return storageRoom;
     }
@@ -136,7 +136,7 @@ public class StorageRoomResourceIntTest {
         List<StorageRoom> storageRoomList = storageRoomRepository.findAll();
         assertThat(storageRoomList).hasSize(databaseSizeBeforeCreate + 1);
         StorageRoom testStorageRoom = storageRoomList.get(storageRoomList.size() - 1);
-        assertThat(testStorageRoom.getAmountOfDistinctProducts()).isEqualTo(DEFAULT_AMOUNT_OF_DISTINCT_PRODUCTS);
+        assertThat(testStorageRoom.getRoomNumber()).isEqualTo(DEFAULT_ROOM_NUMBER);
         assertThat(testStorageRoom.getType()).isEqualTo(DEFAULT_TYPE);
 
         // Validate the StorageRoom in Elasticsearch
@@ -168,6 +168,44 @@ public class StorageRoomResourceIntTest {
 
     @Test
     @Transactional
+    public void checkRoomNumberIsRequired() throws Exception {
+        int databaseSizeBeforeTest = storageRoomRepository.findAll().size();
+        // set the field null
+        storageRoom.setRoomNumber(null);
+
+        // Create the StorageRoom, which fails.
+        StorageRoomDTO storageRoomDTO = storageRoomMapper.toDto(storageRoom);
+
+        restStorageRoomMockMvc.perform(post("/api/storage-rooms")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(storageRoomDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StorageRoom> storageRoomList = storageRoomRepository.findAll();
+        assertThat(storageRoomList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = storageRoomRepository.findAll().size();
+        // set the field null
+        storageRoom.setType(null);
+
+        // Create the StorageRoom, which fails.
+        StorageRoomDTO storageRoomDTO = storageRoomMapper.toDto(storageRoom);
+
+        restStorageRoomMockMvc.perform(post("/api/storage-rooms")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(storageRoomDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StorageRoom> storageRoomList = storageRoomRepository.findAll();
+        assertThat(storageRoomList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllStorageRooms() throws Exception {
         // Initialize the database
         storageRoomRepository.saveAndFlush(storageRoom);
@@ -177,7 +215,7 @@ public class StorageRoomResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(storageRoom.getId().intValue())))
-            .andExpect(jsonPath("$.[*].amountOfDistinctProducts").value(hasItem(DEFAULT_AMOUNT_OF_DISTINCT_PRODUCTS)))
+            .andExpect(jsonPath("$.[*].roomNumber").value(hasItem(DEFAULT_ROOM_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
     
@@ -192,7 +230,7 @@ public class StorageRoomResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(storageRoom.getId().intValue()))
-            .andExpect(jsonPath("$.amountOfDistinctProducts").value(DEFAULT_AMOUNT_OF_DISTINCT_PRODUCTS))
+            .andExpect(jsonPath("$.roomNumber").value(DEFAULT_ROOM_NUMBER.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
     }
 
@@ -217,7 +255,7 @@ public class StorageRoomResourceIntTest {
         // Disconnect from session so that the updates on updatedStorageRoom are not directly saved in db
         em.detach(updatedStorageRoom);
         updatedStorageRoom
-            .amountOfDistinctProducts(UPDATED_AMOUNT_OF_DISTINCT_PRODUCTS)
+            .roomNumber(UPDATED_ROOM_NUMBER)
             .type(UPDATED_TYPE);
         StorageRoomDTO storageRoomDTO = storageRoomMapper.toDto(updatedStorageRoom);
 
@@ -230,7 +268,7 @@ public class StorageRoomResourceIntTest {
         List<StorageRoom> storageRoomList = storageRoomRepository.findAll();
         assertThat(storageRoomList).hasSize(databaseSizeBeforeUpdate);
         StorageRoom testStorageRoom = storageRoomList.get(storageRoomList.size() - 1);
-        assertThat(testStorageRoom.getAmountOfDistinctProducts()).isEqualTo(UPDATED_AMOUNT_OF_DISTINCT_PRODUCTS);
+        assertThat(testStorageRoom.getRoomNumber()).isEqualTo(UPDATED_ROOM_NUMBER);
         assertThat(testStorageRoom.getType()).isEqualTo(UPDATED_TYPE);
 
         // Validate the StorageRoom in Elasticsearch
@@ -292,7 +330,7 @@ public class StorageRoomResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(storageRoom.getId().intValue())))
-            .andExpect(jsonPath("$.[*].amountOfDistinctProducts").value(hasItem(DEFAULT_AMOUNT_OF_DISTINCT_PRODUCTS)))
+            .andExpect(jsonPath("$.[*].roomNumber").value(hasItem(DEFAULT_ROOM_NUMBER)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 

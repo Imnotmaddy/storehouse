@@ -16,6 +16,7 @@
       "detail": {
         "title": "Storehouse"
       },
+      "name": "Name",
       "owner": "Owner",
       "administrator": "Administrator",
       "dispatcher": "Dispatcher",

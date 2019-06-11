@@ -4,19 +4,16 @@
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
+      "companies": "Companies",
+      "employees": "Employees",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "driver": "Driver",
-        "transporter": "Transporter",
-        "sender": "Sender",
+        "act": "Act",
         "storehouse": "Storehouse",
         "storageRoom": "Storage Room",
-        "address": "Address",
-        "appUser": "App User",
-        "act": "Act",
         "product": "Product",
-        "recipient": "Recipient",
+        "transporter": "Transporter",
         "transport": "Transport",
         "ttn": "TTN",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
@@ -130,7 +127,8 @@
       "pattern": "This field should follow pattern for {{ pattern }}.",
       "number": "This field should be a number.",
       "datetimelocal": "This field should be a date and time.",
-      "patternLogin": "This field can only contain letters, digits and e-mail addresses."
+      "patternLogin": "This field can only contain letters, digits and e-mail addresses.",
+      "age": "Age from {{ min }} to {{ max }} years"
     }
   },
   "error": {

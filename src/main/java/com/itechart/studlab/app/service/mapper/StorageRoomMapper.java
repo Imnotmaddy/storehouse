@@ -14,6 +14,7 @@ public interface StorageRoomMapper extends EntityMapper<StorageRoomDTO, StorageR
     @Mapping(source = "storehouse.id", target = "storehouseId")
     StorageRoomDTO toDto(StorageRoom storageRoom);
 
+    @Mapping(target = "products", ignore = true)
     @Mapping(source = "storehouseId", target = "storehouse")
     StorageRoom toEntity(StorageRoomDTO storageRoomDTO);
 

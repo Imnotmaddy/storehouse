@@ -88,13 +88,10 @@ export class Transport extends React.Component<ITransportProps, ITransportState>
                   <Translate contentKey="storeHouseApp.transport.vehicleNumber">Vehicle Number</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="storeHouseApp.transport.wagonsNumber">Wagons Number</Translate>
-                </th>
-                <th>
                   <Translate contentKey="storeHouseApp.transport.deliveryType">Delivery Type</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="storeHouseApp.transport.facility">Facility</Translate>
+                  <Translate contentKey="storeHouseApp.transport.company">Company</Translate>
                 </th>
                 <th />
               </tr>
@@ -108,13 +105,10 @@ export class Transport extends React.Component<ITransportProps, ITransportState>
                     </Button>
                   </td>
                   <td>{transport.vehicleNumber}</td>
-                  <td>{transport.wagonsNumber}</td>
                   <td>
                     <Translate contentKey={`storeHouseApp.DeliveryType.${transport.deliveryType}`} />
                   </td>
-                  <td>
-                    <Translate contentKey={`storeHouseApp.Facility.${transport.facility}`} />
-                  </td>
+                  <td>{transport.companyId ? <Link to={`transporter/${transport.companyId}`}>{transport.companyId}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${transport.id}`} color="info" size="sm">

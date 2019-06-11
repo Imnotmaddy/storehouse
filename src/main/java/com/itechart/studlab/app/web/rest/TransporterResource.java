@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class TransporterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/transporters")
-    public ResponseEntity<TransporterDTO> createTransporter(@RequestBody TransporterDTO transporterDTO) throws URISyntaxException {
+    public ResponseEntity<TransporterDTO> createTransporter(@Valid @RequestBody TransporterDTO transporterDTO) throws URISyntaxException {
         log.debug("REST request to save Transporter : {}", transporterDTO);
         if (transporterDTO.getId() != null) {
             throw new BadRequestAlertException("A new transporter cannot already have an ID", ENTITY_NAME, "idexists");
@@ -64,7 +65,7 @@ public class TransporterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/transporters")
-    public ResponseEntity<TransporterDTO> updateTransporter(@RequestBody TransporterDTO transporterDTO) throws URISyntaxException {
+    public ResponseEntity<TransporterDTO> updateTransporter(@Valid @RequestBody TransporterDTO transporterDTO) throws URISyntaxException {
         log.debug("REST request to update Transporter : {}", transporterDTO);
         if (transporterDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

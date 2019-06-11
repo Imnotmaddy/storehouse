@@ -2,15 +2,16 @@ import { IStorageRoom } from 'app/shared/model/storage-room.model';
 
 export interface IStorehouse {
   id?: number;
-  ownerName?: string;
+  name?: string;
+  ownerLastName?: string;
   ownerId?: number;
-  administratorName?: string;
+  administratorLastName?: string;
   administratorId?: number;
-  dispatcherName?: string;
+  dispatcherLastName?: string;
   dispatcherId?: number;
-  managerName?: string;
+  managerLastName?: string;
   managerId?: number;
-  supervisorName?: string;
+  supervisorLastName?: string;
   supervisorId?: number;
   rooms?: IStorageRoom[];
 }

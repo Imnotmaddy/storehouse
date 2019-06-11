@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { IProduct } from 'app/shared/model/product.model';
 
 export const enum ActType {
   THEFT = 'THEFT',
@@ -14,6 +15,7 @@ export interface IAct {
   cost?: number;
   type?: ActType;
   userId?: number;
+  products?: IProduct[];
 }
 
 export const defaultValue: Readonly<IAct> = {};

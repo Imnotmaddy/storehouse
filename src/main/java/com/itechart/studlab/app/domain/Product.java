@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
@@ -30,6 +31,14 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @NotNull
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private ProductState state;
@@ -37,18 +46,26 @@ public class Product implements Serializable {
     @Column(name = "days_in_storage")
     private Integer daysInStorage;
 
-    @Column(name = "jhi_cost")
+    @NotNull
+    @Column(name = "jhi_cost", nullable = false)
     private Double cost;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "required_facility")
+    @Column(name = "required_facility", nullable = false)
     private Facility requiredFacility;
 
-    @Column(name = "weight")
-    private Float weight;
+    @NotNull
+    @Column(name = "weight", nullable = false)
+    private Double weight;
 
-    @Column(name = "name")
-    private String name;
+    @ManyToOne
+    @JsonIgnoreProperties("products")
+    private Act act;
+
+    @ManyToOne
+    @JsonIgnoreProperties("products")
+    private StorageRoom storageRoom;
 
     @ManyToOne
     @JsonIgnoreProperties("products")
@@ -61,6 +78,32 @@ public class Product implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Product name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Product quantity(Integer quantity) {
+        this.quantity = quantity;
+        return this;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public ProductState getState() {
@@ -115,30 +158,43 @@ public class Product implements Serializable {
         this.requiredFacility = requiredFacility;
     }
 
-    public Float getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public Product weight(Float weight) {
+    public Product weight(Double weight) {
         this.weight = weight;
         return this;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public String getName() {
-        return name;
+    public Act getAct() {
+        return act;
     }
 
-    public Product name(String name) {
-        this.name = name;
+    public Product act(Act act) {
+        this.act = act;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAct(Act act) {
+        this.act = act;
+    }
+
+    public StorageRoom getStorageRoom() {
+        return storageRoom;
+    }
+
+    public Product storageRoom(StorageRoom storageRoom) {
+        this.storageRoom = storageRoom;
+        return this;
+    }
+
+    public void setStorageRoom(StorageRoom storageRoom) {
+        this.storageRoom = storageRoom;
     }
 
     public TTN getTTN() {
@@ -179,12 +235,13 @@ public class Product implements Serializable {
     public String toString() {
         return "Product{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", quantity=" + getQuantity() +
             ", state='" + getState() + "'" +
             ", daysInStorage=" + getDaysInStorage() +
             ", cost=" + getCost() +
             ", requiredFacility='" + getRequiredFacility() + "'" +
             ", weight=" + getWeight() +
-            ", name='" + getName() + "'" +
             "}";
     }
 }

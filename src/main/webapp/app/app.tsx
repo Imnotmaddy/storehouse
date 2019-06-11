@@ -43,6 +43,8 @@ export class App extends React.Component<IAppProps> {
               isAdmin={this.props.isAdmin}
               isDispatcher={this.props.isDispatcher}
               isManager={this.props.isManager}
+              isStorehouseAdmin={this.props.isStorehouseAdmin}
+              companyName={this.props.companyName}
               currentLocale={this.props.currentLocale}
               onLocaleChange={this.props.setLocale}
               ribbonEnv={this.props.ribbonEnv}
@@ -56,7 +58,6 @@ export class App extends React.Component<IAppProps> {
                 <AppRoutes />
               </ErrorBoundary>
             </Card>
-            <Footer />
           </div>
         </div>
       </Router>
@@ -70,6 +71,8 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
   isDispatcher: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
   isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  companyName: authentication.account.company,
   ribbonEnv: applicationProfile.ribbonEnv,
   isInProduction: applicationProfile.inProduction,
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled

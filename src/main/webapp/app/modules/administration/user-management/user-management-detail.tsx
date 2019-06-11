@@ -55,6 +55,18 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
             </dt>
             <dd>{user.email}</dd>
             <dt>
+              <Translate contentKey="userManagement.country">Country</Translate>
+            </dt>
+            <dd>{user.country}</dd>
+            <dt>
+              <Translate contentKey="userManagement.city">City</Translate>
+            </dt>
+            <dd>{user.city}</dd>
+            <dt>
+              <Translate contentKey="userManagement.address">Address line</Translate>
+            </dt>
+            <dd>{user.address}</dd>
+            <dt>
               <Translate contentKey="userManagement.langKey">Lang Key</Translate>
             </dt>
             <dd>{user.langKey ? languages[user.langKey].name : undefined}</dd>
@@ -94,7 +106,7 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
             </dd>
           </dl>
         </Row>
-        <Button tag={Link} to="/admin/user-management" replace color="info">
+        <Button tag={Link} to="/employees" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

@@ -1,21 +1,23 @@
 package com.itechart.studlab.app.service.dto;
 
 import com.itechart.studlab.app.config.Constants;
-
 import com.itechart.studlab.app.domain.Authority;
 import com.itechart.studlab.app.domain.User;
+import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * A DTO representing a user, with his authorities.
  */
+@Data
 public class UserDTO {
 
     private Long id;
@@ -53,6 +55,16 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private String company;
+
+    private LocalDate birthdate;
+
+    private String country;
+
+    private String city;
+
+    private String address;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -65,6 +77,11 @@ public class UserDTO {
         this.email = user.getEmail();
         this.activated = user.getActivated();
         this.imageUrl = user.getImageUrl();
+        this.company = user.getCompany();
+        this.birthdate = user.getBirthdate();
+        this.country = user.getCountry();
+        this.city = user.getCity();
+        this.address = user.getAddress();
         this.langKey = user.getLangKey();
         this.createdBy = user.getCreatedBy();
         this.createdDate = user.getCreatedDate();
@@ -179,21 +196,67 @@ public class UserDTO {
         this.authorities = authorities;
     }
 
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
-            "login='" + login + '\'' +
+            "id=" + id +
+            ", login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
-            ", createdBy=" + createdBy +
+            ", createdBy='" + createdBy + '\'' +
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
-            "}";
+            ", company='" + company + '\'' +
+            ", birthdate=" + birthdate +
+            ", country='" + country + '\'' +
+            ", city='" + city + '\'' +
+            ", address='" + address + '\'' +
+            '}';
     }
 }

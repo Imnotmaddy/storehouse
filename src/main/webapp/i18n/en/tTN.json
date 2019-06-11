@@ -19,17 +19,16 @@
       "serialNumber": "Serial Number",
       "dateOfCreation": "Date Of Creation",
       "description": "Description",
+      "driverName": "Driver Name",
       "productsAmount": "Products Amount",
       "numberOfProductEntries": "Number Of Product Entries",
       "dateTimeOfRegistration": "Date Time Of Registration",
       "isAccepted": "Is Accepted",
-      "storehouseDispatcher": "Storehouse Dispatcher",
+      "dispatcher": "Dispatcher",
       "manager": "Manager",
       "sender": "Sender",
       "transport": "Transport",
       "transporter": "Transporter",
-      "driver": "Driver",
-      "recipient": "Recipient",
       "products": "Products"
     }
   }

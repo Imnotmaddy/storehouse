@@ -96,14 +96,16 @@ export class StorageRoomUpdate extends React.Component<IStorageRoomUpdateProps, 
                   </AvGroup>
                 ) : null}
                 <AvGroup>
-                  <Label id="amountOfDistinctProductsLabel" for="amountOfDistinctProducts">
-                    <Translate contentKey="storeHouseApp.storageRoom.amountOfDistinctProducts">Amount Of Distinct Products</Translate>
+                  <Label id="roomNumberLabel" for="roomNumber">
+                    <Translate contentKey="storeHouseApp.storageRoom.roomNumber">Room Number</Translate>
                   </Label>
                   <AvField
-                    id="storage-room-amountOfDistinctProducts"
-                    type="string"
-                    className="form-control"
-                    name="amountOfDistinctProducts"
+                    id="storage-room-roomNumber"
+                    type="text"
+                    name="roomNumber"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
                   />
                 </AvGroup>
                 <AvGroup>

@@ -29,6 +29,18 @@ export class ProductDetail extends React.Component<IProductDetailProps> {
           </h2>
           <dl className="jh-entity-details">
             <dt>
+              <span id="name">
+                <Translate contentKey="storeHouseApp.product.name">Name</Translate>
+              </span>
+            </dt>
+            <dd>{productEntity.name}</dd>
+            <dt>
+              <span id="quantity">
+                <Translate contentKey="storeHouseApp.product.quantity">Quantity</Translate>
+              </span>
+            </dt>
+            <dd>{productEntity.quantity}</dd>
+            <dt>
               <span id="state">
                 <Translate contentKey="storeHouseApp.product.state">State</Translate>
               </span>
@@ -59,11 +71,13 @@ export class ProductDetail extends React.Component<IProductDetailProps> {
             </dt>
             <dd>{productEntity.weight}</dd>
             <dt>
-              <span id="name">
-                <Translate contentKey="storeHouseApp.product.name">Name</Translate>
-              </span>
+              <Translate contentKey="storeHouseApp.product.act">Act</Translate>
             </dt>
-            <dd>{productEntity.name}</dd>
+            <dd>{productEntity.actId ? productEntity.actId : ''}</dd>
+            <dt>
+              <Translate contentKey="storeHouseApp.product.storageRoom">Storage Room</Translate>
+            </dt>
+            <dd>{productEntity.storageRoomId ? productEntity.storageRoomId : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.product.tTN">T TN</Translate>
             </dt>

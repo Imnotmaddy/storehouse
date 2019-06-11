@@ -1,4 +1,5 @@
 package com.itechart.studlab.app.service.dto;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 import com.itechart.studlab.app.domain.enumeration.ProductState;
@@ -11,18 +12,29 @@ public class ProductDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
+    private String name;
+
+    @NotNull
+    private Integer quantity;
+
     private ProductState state;
 
     private Integer daysInStorage;
 
+    @NotNull
     private Double cost;
 
+    @NotNull
     private Facility requiredFacility;
 
-    private Float weight;
+    @NotNull
+    private Double weight;
 
-    private String name;
 
+    private Long actId;
+
+    private Long storageRoomId;
 
     private Long tTNId;
 
@@ -32,6 +44,22 @@ public class ProductDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public ProductState getState() {
@@ -66,20 +94,28 @@ public class ProductDTO implements Serializable {
         this.requiredFacility = requiredFacility;
     }
 
-    public Float getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public String getName() {
-        return name;
+    public Long getActId() {
+        return actId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setActId(Long actId) {
+        this.actId = actId;
+    }
+
+    public Long getStorageRoomId() {
+        return storageRoomId;
+    }
+
+    public void setStorageRoomId(Long storageRoomId) {
+        this.storageRoomId = storageRoomId;
     }
 
     public Long getTTNId() {
@@ -115,12 +151,15 @@ public class ProductDTO implements Serializable {
     public String toString() {
         return "ProductDTO{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", quantity=" + getQuantity() +
             ", state='" + getState() + "'" +
             ", daysInStorage=" + getDaysInStorage() +
             ", cost=" + getCost() +
             ", requiredFacility='" + getRequiredFacility() + "'" +
             ", weight=" + getWeight() +
-            ", name='" + getName() + "'" +
+            ", act=" + getActId() +
+            ", storageRoom=" + getStorageRoomId() +
             ", tTN=" + getTTNId() +
             "}";
     }

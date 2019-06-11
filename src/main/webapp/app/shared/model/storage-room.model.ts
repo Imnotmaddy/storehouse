@@ -1,3 +1,5 @@
+import { IProduct } from 'app/shared/model/product.model';
+
 export const enum Facility {
   REFRIGERATOR = 'REFRIGERATOR',
   OPEN_SPACE = 'OPEN_SPACE',
@@ -7,8 +9,9 @@ export const enum Facility {
 
 export interface IStorageRoom {
   id?: number;
-  amountOfDistinctProducts?: number;
+  roomNumber?: string;
   type?: Facility;
+  products?: IProduct[];
   storehouseId?: number;
 }
 

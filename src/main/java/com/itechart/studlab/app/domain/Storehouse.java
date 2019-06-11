@@ -29,30 +29,34 @@ public class Storehouse implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
-    private AppUser owner;
-
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
-    private AppUser administrator;
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @OneToOne(optional = false)    @NotNull
 
     @JoinColumn(unique = true)
-    private AppUser dispatcher;
+    private User owner;
 
     @OneToOne(optional = false)    @NotNull
 
     @JoinColumn(unique = true)
-    private AppUser manager;
+    private User administrator;
 
     @OneToOne(optional = false)    @NotNull
 
     @JoinColumn(unique = true)
-    private AppUser supervisor;
+    private User dispatcher;
+
+    @OneToOne(optional = false)    @NotNull
+
+    @JoinColumn(unique = true)
+    private User manager;
+
+    @OneToOne(optional = false)    @NotNull
+
+    @JoinColumn(unique = true)
+    private User supervisor;
 
     @OneToMany(mappedBy = "storehouse")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -66,69 +70,82 @@ public class Storehouse implements Serializable {
         this.id = id;
     }
 
-    public AppUser getOwner() {
+    public String getName() {
+        return name;
+    }
+
+    public Storehouse name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public User getOwner() {
         return owner;
     }
 
-    public Storehouse owner(AppUser appUser) {
-        this.owner = appUser;
+    public Storehouse owner(User user) {
+        this.owner = user;
         return this;
     }
 
-    public void setOwner(AppUser appUser) {
-        this.owner = appUser;
+    public void setOwner(User user) {
+        this.owner = user;
     }
 
-    public AppUser getAdministrator() {
+    public User getAdministrator() {
         return administrator;
     }
 
-    public Storehouse administrator(AppUser appUser) {
-        this.administrator = appUser;
+    public Storehouse administrator(User user) {
+        this.administrator = user;
         return this;
     }
 
-    public void setAdministrator(AppUser appUser) {
-        this.administrator = appUser;
+    public void setAdministrator(User user) {
+        this.administrator = user;
     }
 
-    public AppUser getDispatcher() {
+    public User getDispatcher() {
         return dispatcher;
     }
 
-    public Storehouse dispatcher(AppUser appUser) {
-        this.dispatcher = appUser;
+    public Storehouse dispatcher(User user) {
+        this.dispatcher = user;
         return this;
     }
 
-    public void setDispatcher(AppUser appUser) {
-        this.dispatcher = appUser;
+    public void setDispatcher(User user) {
+        this.dispatcher = user;
     }
 
-    public AppUser getManager() {
+    public User getManager() {
         return manager;
     }
 
-    public Storehouse manager(AppUser appUser) {
-        this.manager = appUser;
+    public Storehouse manager(User user) {
+        this.manager = user;
         return this;
     }
 
-    public void setManager(AppUser appUser) {
-        this.manager = appUser;
+    public void setManager(User user) {
+        this.manager = user;
     }
 
-    public AppUser getSupervisor() {
+    public User getSupervisor() {
         return supervisor;
     }
 
-    public Storehouse supervisor(AppUser appUser) {
-        this.supervisor = appUser;
+    public Storehouse supervisor(User user) {
+        this.supervisor = user;
         return this;
     }
 
-    public void setSupervisor(AppUser appUser) {
-        this.supervisor = appUser;
+    public void setSupervisor(User user) {
+        this.supervisor = user;
     }
 
     public Set<StorageRoom> getRooms() {
@@ -181,6 +198,7 @@ public class Storehouse implements Serializable {
     public String toString() {
         return "Storehouse{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
             "}";
     }
 }

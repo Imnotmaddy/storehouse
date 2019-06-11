@@ -29,11 +29,11 @@ export class StorageRoomDetail extends React.Component<IStorageRoomDetailProps> 
           </h2>
           <dl className="jh-entity-details">
             <dt>
-              <span id="amountOfDistinctProducts">
-                <Translate contentKey="storeHouseApp.storageRoom.amountOfDistinctProducts">Amount Of Distinct Products</Translate>
+              <span id="roomNumber">
+                <Translate contentKey="storeHouseApp.storageRoom.roomNumber">Room Number</Translate>
               </span>
             </dt>
-            <dd>{storageRoomEntity.amountOfDistinctProducts}</dd>
+            <dd>{storageRoomEntity.roomNumber}</dd>
             <dt>
               <span id="type">
                 <Translate contentKey="storeHouseApp.storageRoom.type">Type</Translate>

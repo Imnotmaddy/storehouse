@@ -2,14 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
-import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { IAppUser } from 'app/shared/model/app-user.model';
-import { getEntities as getAppUsers } from 'app/entities/app-user/app-user.reducer';
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './storehouse.reducer';
 import { IStorehouse } from 'app/shared/model/storehouse.model';
 // tslint:disable-next-line:no-unused-variable
@@ -53,7 +53,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
       this.props.getEntity(this.props.match.params.id);
     }
 
-    this.props.getAppUsers();
+    this.props.getUsers();
   }
 
   saveEntity = (event, errors, values) => {
@@ -77,7 +77,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
   };
 
   render() {
-    const { storehouseEntity, appUsers, loading, updating } = this.props;
+    const { storehouseEntity, users, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -104,75 +104,83 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                   </AvGroup>
                 ) : null}
                 <AvGroup>
-                  <Label for="owner.name">
+                  <Label id="nameLabel" for="name">
+                    <Translate contentKey="storeHouseApp.storehouse.name">Name</Translate>
+                  </Label>
+                  <AvField
+                    id="storehouse-name"
+                    type="text"
+                    name="name"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label for="owner.lastName">
                     <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
                   </Label>
                   <AvInput id="storehouse-owner" type="select" className="form-control" name="ownerId">
-                    <option value="" key="0" />
-                    {appUsers
-                      ? appUsers.map(otherEntity => (
+                    {users
+                      ? users.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
+                            {otherEntity.lastName}
                           </option>
                         ))
                       : null}
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="administrator.name">
+                  <Label for="administrator.lastName">
                     <Translate contentKey="storeHouseApp.storehouse.administrator">Administrator</Translate>
                   </Label>
                   <AvInput id="storehouse-administrator" type="select" className="form-control" name="administratorId">
-                    <option value="" key="0" />
-                    {appUsers
-                      ? appUsers.map(otherEntity => (
+                    {users
+                      ? users.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
+                            {otherEntity.lastName}
                           </option>
                         ))
                       : null}
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="dispatcher.name">
+                  <Label for="dispatcher.lastName">
                     <Translate contentKey="storeHouseApp.storehouse.dispatcher">Dispatcher</Translate>
                   </Label>
                   <AvInput id="storehouse-dispatcher" type="select" className="form-control" name="dispatcherId">
-                    <option value="" key="0" />
-                    {appUsers
-                      ? appUsers.map(otherEntity => (
+                    {users
+                      ? users.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
+                            {otherEntity.lastName}
                           </option>
                         ))
                       : null}
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="manager.name">
+                  <Label for="manager.lastName">
                     <Translate contentKey="storeHouseApp.storehouse.manager">Manager</Translate>
                   </Label>
                   <AvInput id="storehouse-manager" type="select" className="form-control" name="managerId">
-                    <option value="" key="0" />
-                    {appUsers
-                      ? appUsers.map(otherEntity => (
+                    {users
+                      ? users.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
+                            {otherEntity.lastName}
                           </option>
                         ))
                       : null}
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="supervisor.name">
+                  <Label for="supervisor.lastName">
                     <Translate contentKey="storeHouseApp.storehouse.supervisor">Supervisor</Translate>
                   </Label>
                   <AvInput id="storehouse-supervisor" type="select" className="form-control" name="supervisorId">
-                    <option value="" key="0" />
-                    {appUsers
-                      ? appUsers.map(otherEntity => (
+                    {users
+                      ? users.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
+                            {otherEntity.lastName}
                           </option>
                         ))
                       : null}
@@ -201,7 +209,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  appUsers: storeState.appUser.entities,
+  users: storeState.userManagement.users,
   storehouseEntity: storeState.storehouse.entity,
   loading: storeState.storehouse.loading,
   updating: storeState.storehouse.updating,
@@ -209,7 +217,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getAppUsers,
+  getUsers,
   getEntity,
   updateEntity,
   createEntity,
