@@ -106,7 +106,7 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
             </dd>
           </dl>
         </Row>
-        <Button tag={Link} to="/admin/user-management" replace color="info">
+        <Button tag={Link} to="/employees" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

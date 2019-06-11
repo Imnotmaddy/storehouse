@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Label, Row, Col, FormGroup } from 'reactstrap';
+import { Button, Label, Row, Col } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField, AvFeedback } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { locales, languages } from 'app/config/translation';
@@ -44,7 +44,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   };
 
   handleClose = () => {
-    this.props.history.push('/admin/user-management');
+    this.props.history.push('/employees');
   };
 
   render() {
@@ -73,6 +73,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     <AvField type="text" className="form-control" name="id" required readOnly value={user.id} />
                   </AvGroup>
                 ) : null}
+                <AvField type="hidden" className="form-control" name="company" value={document.querySelector('#companyName').textContent} />
                 <AvGroup>
                   <Label for="login">
                     <Translate contentKey="userManagement.login">Login</Translate>
@@ -174,6 +175,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     <Translate contentKey="userManagement.langKey">Language Key</Translate>
                   </Label>
                   <AvField type="select" className="form-control" name="langKey" value={user.langKey}>
+                    <option defaultChecked />
                     {locales.map(locale => (
                       <option value={locale} key={locale}>
                         {languages[locale].name}
@@ -214,7 +216,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     <Translate contentKey="userManagement.country">Country</Translate>
                   </Label>
                   <AvField name="country" type="select" className="form-control" value={user.country}>
-                    <option selected />
+                    <option defaultChecked />
                     <option value="Afghanistan">Afghanistan</option>
                     <option value="Aland Islands">Aland Islands</option>
                     <option value="Albania">Albania</option>
@@ -485,7 +487,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     ))}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} to="/admin/user-management" replace color="info">
+                <Button tag={Link} to="/employees" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

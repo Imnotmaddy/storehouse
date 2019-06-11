@@ -1,6 +1,7 @@
 package com.itechart.studlab.app.web.rest;
 
 import com.itechart.studlab.app.config.Constants;
+import com.itechart.studlab.app.domain.Authority;
 import com.itechart.studlab.app.domain.User;
 import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.UserSearchRepository;
@@ -93,7 +94,7 @@ public class UserResource {
      * @throws BadRequestAlertException 400 (Bad Request) if the login or email is already in use
      */
     @PostMapping("/users")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.STOREHOUSE_ADMIN + "\")")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to save User : {}", userDTO);
 
@@ -122,7 +123,7 @@ public class UserResource {
      * @throws LoginAlreadyUsedException 400 (Bad Request) if the login is already in use
      */
     @PutMapping("/users")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.STOREHOUSE_ADMIN + "\")")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
@@ -145,10 +146,11 @@ public class UserResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
-    @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
-        final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
+    @GetMapping("/users/employees/{company}")
+    public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable, @PathVariable String company) {
+        log.debug("REST request to get employees for {}", company);
+        final Page<UserDTO> page = userService.getAllEmployees(pageable, company);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users/employees");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -156,9 +158,15 @@ public class UserResource {
      * @return a string list of the all of the roles
      */
     @GetMapping("/users/authorities")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.STOREHOUSE_ADMIN + "\")")
     public List<String> getAuthorities() {
         return userService.getAuthorities();
+    }
+
+    @GetMapping("/users/employees/authorities")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.STOREHOUSE_ADMIN + "\")")
+    public List<String> getEmployeeAuthorities() {
+        return userService.getEmployeeAuthorities();
     }
 
     /**
@@ -182,7 +190,7 @@ public class UserResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.STOREHOUSE_ADMIN + "\")")
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);

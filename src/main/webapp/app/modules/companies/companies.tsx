@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { getUsers, updateUser } from './companies.reducer';
+import { getUsers, updateUser, toggleEmployees } from './companies.reducer';
 import { IRootState } from 'app/shared/reducers';
 
 export interface ICompaniesProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
@@ -57,6 +57,7 @@ export class Companies extends React.Component<ICompaniesProps, IPaginationBaseS
       ...user,
       activated: !user.activated
     });
+    this.props.toggleEmployees(user.company, !user.activated);
   };
 
   render() {
@@ -164,7 +165,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   account: storeState.authentication.account
 });
 
-const mapDispatchToProps = { getUsers, updateUser };
+const mapDispatchToProps = { getUsers, updateUser, toggleEmployees };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -47,7 +47,9 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository,
+                       CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
@@ -242,6 +244,15 @@ public class UserService {
             .map(UserDTO::new);
     }
 
+    public void toggleEmployees(String company, Boolean isActive) {
+        userRepository.findAllByCompanyIs(company).forEach(
+            user -> {
+                user.setActivated(isActive);
+                userRepository.save(user);
+            }
+        );
+    }
+
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
             userRepository.delete(user);
@@ -275,6 +286,22 @@ public class UserService {
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+    }
+
+    private List<Authority> getEmployeeAuthoritiesList() {
+        return AuthoritiesConstants.EMPLOYEE_AUTHORITIES.stream()
+            .map(authorityName -> {
+                Authority authority = new Authority();
+                authority.setName(authorityName);
+                return authority;
+            }).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDTO> getAllEmployees(Pageable pageable, String company) {
+        return userRepository
+            .findAllByAuthoritiesIsInAndCompanyIs(pageable, getEmployeeAuthoritiesList(), company)
+            .map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
@@ -314,6 +341,12 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public List<String> getEmployeeAuthorities() {
+        return authorityRepository
+            .findAuthoritiesByNameIsIn(AuthoritiesConstants.EMPLOYEE_AUTHORITIES)
+            .stream().map(Authority::getName).collect(Collectors.toList());
     }
 
     private void clearUserCaches(User user) {
