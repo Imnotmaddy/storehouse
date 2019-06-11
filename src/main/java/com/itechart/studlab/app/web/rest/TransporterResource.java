@@ -1,4 +1,5 @@
 package com.itechart.studlab.app.web.rest;
+import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.security.SecurityUtils;
 import com.itechart.studlab.app.service.TransporterService;
 import com.itechart.studlab.app.web.rest.errors.BadRequestAlertException;
@@ -7,6 +8,7 @@ import com.itechart.studlab.app.service.dto.TransporterDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +35,9 @@ public class TransporterResource {
 
     private final TransporterService transporterService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public TransporterResource(TransporterService transporterService) {
         this.transporterService = transporterService;
     }
@@ -50,7 +55,8 @@ public class TransporterResource {
         if (transporterDTO.getId() != null) {
             throw new BadRequestAlertException("A new transporter cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        String dispatcherCompanyName = SecurityUtils.getCurrentUserLogin().get();
+
+        String dispatcherCompanyName = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getCompany();
         transporterDTO.setDispatcherCompanyName(dispatcherCompanyName);
         TransporterDTO result = transporterService.save(transporterDTO);
         return ResponseEntity.created(new URI("/api/transporters/" + result.getId()))
