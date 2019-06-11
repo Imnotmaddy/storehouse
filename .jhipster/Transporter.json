@@ -7,6 +7,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "dispatcher_company_name",
+            "fieldType": "String"
         }
     ],
     "relationships": [

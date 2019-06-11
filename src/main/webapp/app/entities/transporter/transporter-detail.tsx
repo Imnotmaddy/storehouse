@@ -35,14 +35,14 @@ export class TransporterDetail extends React.Component<ITransporterDetailProps> 
             </dt>
             <dd>{transporterEntity.companyName}</dd>
           </dl>
-          <Button tag={Link} to="/entity/transporter" replace color="info">
+          <Button tag={Link} to="/transporter" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/transporter/${transporterEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/transporter/${transporterEntity.id}/edit`} replace color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

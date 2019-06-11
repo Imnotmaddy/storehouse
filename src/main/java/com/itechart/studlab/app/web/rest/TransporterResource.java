@@ -1,4 +1,5 @@
 package com.itechart.studlab.app.web.rest;
+import com.itechart.studlab.app.security.SecurityUtils;
 import com.itechart.studlab.app.service.TransporterService;
 import com.itechart.studlab.app.web.rest.errors.BadRequestAlertException;
 import com.itechart.studlab.app.web.rest.util.HeaderUtil;
@@ -49,6 +50,8 @@ public class TransporterResource {
         if (transporterDTO.getId() != null) {
             throw new BadRequestAlertException("A new transporter cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        String dispatcherCompanyName = SecurityUtils.getCurrentUserLogin().get();
+        transporterDTO.setDispatcherCompanyName(dispatcherCompanyName);
         TransporterDTO result = transporterService.save(transporterDTO);
         return ResponseEntity.created(new URI("/api/transporters/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
