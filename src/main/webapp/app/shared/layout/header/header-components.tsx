@@ -46,6 +46,14 @@ export const Home = props => (
   </NavItem>
 );
 
+export const Ttn = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/ttn" className="d-flex align-items-center">
+      <span>TTN</span>
+       </NavLink>
+  </NavItem>
+);
+
 export const Companies = props => (
   <NavItem>
     <NavLink tag={Link} to="/companies" className="d-flex align-items-center">
@@ -56,14 +64,22 @@ export const Companies = props => (
   </NavItem>
 );
 
-export const Ttn = props => (
+export const Transporter = props => (
   <NavItem>
-    <NavLink tag={Link} to="/entity/ttn" className="d-flex align-items-center">
-      <span>TTN</span>
+    <NavLink tag={Link} to="/transporter" className="d-flex align-items-center">
+      <span>Transporter</span>
     </NavLink>
   </NavItem>
 );
 
+export const Transport = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/transport" className="d-flex align-items-center">
+      <span>Transport</span>
+      </NavLink>
+  </NavItem>
+);
+  
 export const Users = props => (
   <NavItem>
     <NavLink tag={Link} to="/employees" className="d-flex align-items-center">

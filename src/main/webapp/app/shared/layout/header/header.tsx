@@ -2,15 +2,15 @@ import './header.css';
 
 import React from 'react';
 import { Storage, Translate } from 'react-jhipster';
+import { Brand, Companies, Home, Transporter, Ttn, Transport , Users } from './header-components';
 import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
-
-import { Brand, Companies, Home, Ttn, Users } from './header-components';
 import { AccountMenu, AdminMenu, EntitiesMenu, LocaleMenu } from './menus';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isDispatcher: boolean;
   isManager: boolean;
   isStorehouseAdmin: boolean;
   companyName: string;
@@ -54,6 +54,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       currentLocale,
       isAuthenticated,
       isAdmin,
+      isDispatcher,
       isManager,
       isStorehouseAdmin,
       companyName,
@@ -73,6 +74,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
               <Home />
+              {isAuthenticated && (isManager || isDispatcher) && <Ttn />}
+              {isAuthenticated && isDispatcher && <Transporter />}
+              {isAuthenticated && isDispatcher && <Transport />}
+              {isAuthenticated && <EntitiesMenu />}
               {isAuthenticated && isManager && <Ttn />}
               {isAuthenticated && isAdmin && <Companies />}
               {isAuthenticated && isStorehouseAdmin && <Users />}
