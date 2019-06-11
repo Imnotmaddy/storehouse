@@ -147,10 +147,17 @@ public class UserResource {
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
     @GetMapping("/users/employees/{company}")
-    public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable, @PathVariable String company) {
+    public ResponseEntity<List<UserDTO>> getAllEmployees(Pageable pageable, @PathVariable String company) {
         log.debug("REST request to get employees for {}", company);
         final Page<UserDTO> page = userService.getAllEmployees(pageable, company);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users/employees");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
+        final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

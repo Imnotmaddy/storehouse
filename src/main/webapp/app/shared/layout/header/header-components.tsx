@@ -50,7 +50,7 @@ export const Ttn = props => (
   <NavItem>
     <NavLink tag={Link} to="/ttn" className="d-flex align-items-center">
       <span>TTN</span>
-       </NavLink>
+    </NavLink>
   </NavItem>
 );
 
@@ -76,10 +76,10 @@ export const Transport = props => (
   <NavItem>
     <NavLink tag={Link} to="/transport" className="d-flex align-items-center">
       <span>Transport</span>
-      </NavLink>
+    </NavLink>
   </NavItem>
 );
-  
+
 export const Users = props => (
   <NavItem>
     <NavLink tag={Link} to="/employees" className="d-flex align-items-center">
