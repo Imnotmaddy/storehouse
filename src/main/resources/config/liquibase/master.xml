@@ -14,7 +14,6 @@
     <include file="config/liquibase/changelog/20190530162443_added_entity_TTN.xml" relativeToChangelogFile="false"/>
 
     <include file="config/liquibase/changelog/added_address_fields_to_jhi_user.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/added_company_field_to_jhi_user.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20190530162437_added_entity_constraints_Act.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190530162438_added_entity_constraints_Storehouse.xml" relativeToChangelogFile="false"/>

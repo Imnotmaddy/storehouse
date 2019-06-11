@@ -45,6 +45,7 @@
             <column name="birthdate" type="date">
                 <constraints nullable="false"/>
             </column>
+                <column name="company" type="varchar(255)"/>
         </createTable>
 
         <createTable tableName="jhi_authority">
