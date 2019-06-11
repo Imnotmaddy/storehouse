@@ -13,18 +13,18 @@ import Entities from 'app/entities';
 import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import { AUTHORITIES } from 'app/config/constants';
-import TTN from 'app/entities/ttn/ttn';
-import Driver from 'app/entities/ttn/ttn';
-import Transporter from 'app/entities/transporter/transporter';
-import Sender from 'app/entities/sender/sender';
-import Storehouse from 'app/entities/storehouse/storehouse';
-import StorageRoom from 'app/entities/storage-room/storage-room';
-import Address from 'app/entities/address/address';
+import TTN from 'app/entities/ttn';
+import Driver from 'app/entities/driver';
+import Transporter from 'app/entities/transporter';
+import Sender from 'app/entities/sender';
+import Storehouse from 'app/entities/storehouse';
+import StorageRoom from 'app/entities/storage-room';
+import Address from 'app/entities/address';
 import AppUser from 'app/entities/app-user';
-import Act from 'app/entities/act/act';
-import Product from 'app/entities/product/product';
-import Recipient from 'app/entities/recipient/recipient';
-import Transport from 'app/entities/transport/transport';
+import Act from 'app/entities/act';
+import Product from 'app/entities/product';
+import Recipient from 'app/entities/recipient';
+import Transport from 'app/entities/transport';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -49,10 +49,12 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
-      <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
+      <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[]} />
       <PrivateRoute path="/transport" component={Transport} hasAnyAuthorities={[AUTHORITIES.DISPATCHER]} />
       <PrivateRoute path="/transporter" component={Transporter} hasAnyAuthorities={[AUTHORITIES.DISPATCHER]} />
       <PrivateRoute path="/ttn" component={TTN} hasAnyAuthorities={[AUTHORITIES.DISPATCHER, AUTHORITIES.MANAGER]} />
+      <PrivateRoute path="/companies" component={Companies} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
+      <PrivateRoute path="/employees" component={UserManagement} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN]} />
       <ErrorBoundaryRoute path="/" component={Home} />
     </Switch>
   </div>
