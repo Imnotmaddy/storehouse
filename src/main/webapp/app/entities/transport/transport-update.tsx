@@ -65,7 +65,7 @@ export class TransportUpdate extends React.Component<ITransportUpdateProps, ITra
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/transport');
+    this.props.history.push('/transport');
   };
 
   render() {
@@ -135,7 +135,7 @@ export class TransportUpdate extends React.Component<ITransportUpdateProps, ITra
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/transport" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/transport" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">
