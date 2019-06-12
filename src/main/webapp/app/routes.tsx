@@ -18,6 +18,7 @@ import Transporter from 'app/entities/transporter';
 import Transport from 'app/entities/transport';
 import Companies from 'app/modules/companies';
 import UserManagement from 'app/modules/administration/user-management';
+import Storehouse from 'app/entities/storehouse/storehouse-update';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -47,6 +48,7 @@ const Routes = ({ match }) => (
       <PrivateRoute path="/ttn" component={TTN} hasAnyAuthorities={[AUTHORITIES.DISPATCHER, AUTHORITIES.MANAGER]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.MANAGER]} />
       <PrivateRoute path="/companies" component={Companies} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
+      <PrivateRoute path="/storehouse" component={Storehouse} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN]} />
       <PrivateRoute path="/employees" component={UserManagement} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN]} />
       <ErrorBoundaryRoute path="/" component={Home} />
     </Switch>

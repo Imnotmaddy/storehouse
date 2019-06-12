@@ -22,7 +22,11 @@
       "dispatcher": "Dispatcher",
       "manager": "Manager",
       "supervisor": "Supervisor",
-      "rooms": "Rooms"
+      "rooms": "Rooms",
+      "roomNumber": "Room number",
+      "type": "Type",
+      "storageRooms": "Storage rooms",
+      "addRoom": "Add room"
     }
   }
 }

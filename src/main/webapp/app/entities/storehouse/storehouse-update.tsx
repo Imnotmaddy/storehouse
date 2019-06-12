@@ -1,20 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { Button, Col, Label, Row } from 'reactstrap';
+import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-
-import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './storehouse.reducer';
-import { IStorehouse } from 'app/shared/model/storehouse.model';
+import { createEntity, getEntity, reset, updateEntity } from './storehouse.reducer';
+import { AddStorageRoom } from 'app/entities/storehouse/add-storage-room';
+
 // tslint:disable-next-line:no-unused-variable
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IStorehouseUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -116,6 +113,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                     }}
                   />
                 </AvGroup>
+                <AddStorageRoom />
                 <AvGroup>
                   <Label for="owner.lastName">
                     <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
