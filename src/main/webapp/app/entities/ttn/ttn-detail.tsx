@@ -89,9 +89,15 @@ export class TTNDetail extends React.Component<ITTNDetailProps> {
             </dt>
             <dd>{tTNEntity.managerLastName ? tTNEntity.managerLastName : ''}</dd>
             <dt>
-              <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
+              <span id="sender">
+                <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
+              </span>
             </dt>
-            <dd>{tTNEntity.senderLastName ? tTNEntity.senderLastName : ''}</dd>
+            <dd>{tTNEntity.sender}</dd>
+            <dt>
+              <span id="recipient">Recipient</span>
+            </dt>
+            <dd>{tTNEntity.recipient}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
             </dt>

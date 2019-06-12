@@ -31,7 +31,6 @@ public class TTNDTO implements Serializable {
 
     private Boolean isAccepted;
 
-
     private Long dispatcherId;
 
     private String dispatcherLastName;
@@ -40,9 +39,9 @@ public class TTNDTO implements Serializable {
 
     private String managerLastName;
 
-    private Long senderId;
+    private String sender;
 
-    private String senderLastName;
+    private String recipient;
 
     private Long transportId;
 
@@ -154,20 +153,20 @@ public class TTNDTO implements Serializable {
         this.managerLastName = userLastName;
     }
 
-    public Long getSenderId() {
-        return senderId;
+    public String getSender() {
+        return sender;
     }
 
-    public void setSenderId(Long userId) {
-        this.senderId = userId;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public String getSenderLastName() {
-        return senderLastName;
+    public String getRecipient() {
+        return recipient;
     }
 
-    public void setSenderLastName(String userLastName) {
-        this.senderLastName = userLastName;
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
 
     public Long getTransportId() {
@@ -231,8 +230,8 @@ public class TTNDTO implements Serializable {
             ", dispatcher='" + getDispatcherLastName() + "'" +
             ", manager=" + getManagerId() +
             ", manager='" + getManagerLastName() + "'" +
-            ", sender=" + getSenderId() +
-            ", sender='" + getSenderLastName() + "'" +
+            ", sender='" + getSender() + "'" +
+            ", recipient='" + getRecipient() + "'" +
             ", transport=" + getTransportId() +
             ", transporter=" + getTransporterId() +
             ", transporter='" + getTransporterCompanyName() + "'" +

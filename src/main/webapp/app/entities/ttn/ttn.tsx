@@ -117,6 +117,7 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                 <th>
                   <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
                 </th>
+                <th>Recipient</th>
                 <th>
                   <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
                 </th>
@@ -147,8 +148,9 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                   </td>
                   <td>{tTN.isAccepted ? 'true' : 'false'}</td>
                   <td>{tTN.dispatcherLastName ? tTN.dispatcherLastName : ''}</td>
+                  <td>{tTN.sender}</td>
+                  <td>{tTN.recipient}</td>
                   <td>{tTN.managerLastName ? tTN.managerLastName : ''}</td>
-                  <td>{tTN.senderLastName ? tTN.senderLastName : ''}</td>
                   <td>{tTN.transportId ? <Link to={`transport/${tTN.transportId}`}>{tTN.transportId}</Link> : ''}</td>
                   <td>
                     {tTN.transporterCompanyName ? <Link to={`transporter/${tTN.transporterId}`}>{tTN.transporterCompanyName}</Link> : ''}

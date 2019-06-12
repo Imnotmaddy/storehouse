@@ -81,7 +81,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/ttn');
+    this.props.history.push('/ttn');
   };
 
   render() {
@@ -215,19 +215,16 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="sender.lastName">
+                  <Label id="senderLabel" for="sender">
                     <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
                   </Label>
-                  <AvInput id="ttn-sender" type="select" className="form-control" name="senderId">
-                    <option value="" key="0" />
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
+                  <AvField id="ttn-sender" type="text" name="sender" />
+                </AvGroup>
+                <AvGroup>
+                  <Label id="recipientLabel" for="recipient">
+                    Recipient
+                  </Label>
+                  <AvField id="ttn-recipient" type="text" name="recipient" />
                 </AvGroup>
                 <AvGroup>
                   <Label for="transport.id">
@@ -259,7 +256,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/ttn" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/ttn" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

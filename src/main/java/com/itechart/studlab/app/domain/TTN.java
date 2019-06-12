@@ -66,9 +66,11 @@ public class TTN implements Serializable {
     @JoinColumn(unique = true)
     private User manager;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User sender;
+    @Column(name = "sender")
+    private String sender;
+
+    @Column(name = "recipient")
+    private String recipient;
 
     @OneToOne(optional = false)    @NotNull
 
@@ -222,17 +224,30 @@ public class TTN implements Serializable {
         this.manager = user;
     }
 
-    public User getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public TTN sender(User user) {
-        this.sender = user;
+    public TTN sender(String sender) {
+        this.sender = sender;
         return this;
     }
 
-    public void setSender(User user) {
-        this.sender = user;
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public TTN recipient(String recipient) {
+        this.sender = recipient;
+        return this;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
 
     public Transport getTransport() {
