@@ -73,7 +73,6 @@ public class TTN implements Serializable {
     private String recipient;
 
     @OneToOne(optional = false)    @NotNull
-
     @JoinColumn(unique = true)
     private Transport transport;
 
