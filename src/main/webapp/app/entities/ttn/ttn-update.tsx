@@ -19,8 +19,16 @@ import { ITTN } from 'app/shared/model/ttn.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import { AUTHORITIES } from 'app/config/constants';
 
-export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isDispatcher: boolean;
+  isManager: boolean;
+  isStorehouseAdmin: boolean;
+}
 
 export interface ITTNUpdateState {
   isNew: boolean;
@@ -85,7 +93,19 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   };
 
   render() {
-    const { tTNEntity, users, transports, transporters, loading, updating } = this.props;
+    const {
+      tTNEntity,
+      users,
+      transports,
+      transporters,
+      loading,
+      updating,
+      isAuthenticated,
+      isAdmin,
+      isDispatcher,
+      isManager,
+      isStorehouseAdmin
+    } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -184,48 +204,24 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     <Translate contentKey="storeHouseApp.tTN.isAccepted">Is Accepted</Translate>
                   </Label>
                 </AvGroup>
-                <AvGroup>
-                  <Label for="dispatcher.lastName">
-                    <Translate contentKey="storeHouseApp.tTN.dispatcher">Dispatcher</Translate>
-                  </Label>
-                  <AvInput id="ttn-dispatcher" type="select" className="form-control" name="dispatcherId">
-                    <option value="" key="0" />
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="manager.lastName">
-                    <Translate contentKey="storeHouseApp.tTN.manager">Manager</Translate>
-                  </Label>
-                  <AvInput id="ttn-manager" type="select" className="form-control" name="managerId">
-                    <option value="" key="0" />
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label id="senderLabel" for="sender">
-                    <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
-                  </Label>
-                  <AvField id="ttn-sender" type="text" name="sender" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="recipientLabel" for="recipient">
-                    Recipient
-                  </Label>
-                  <AvField id="ttn-recipient" type="text" name="recipient" />
-                </AvGroup>
+                {isAuthenticated &&
+                  isDispatcher && (
+                    <AvGroup>
+                      <Label id="senderLabel" for="sender">
+                        <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
+                      </Label>
+                      <AvField id="ttn-sender" type="text" name="sender" />
+                    </AvGroup>
+                  )}
+                {isAuthenticated &&
+                  isManager && (
+                    <AvGroup>
+                      <Label id="recipientLabel" for="recipient">
+                        Recipient
+                      </Label>
+                      <AvField id="ttn-recipient" type="text" name="recipient" />
+                    </AvGroup>
+                  )}
                 <AvGroup>
                   <Label for="transport.id">
                     <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
@@ -278,7 +274,12 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   }
 }
 
-const mapStateToProps = (storeState: IRootState) => ({
+const mapStateToProps = (storeState: IRootState, authentication: IRootState) => ({
+  isAuthenticated: storeState.authentication.isAuthenticated,
+  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isDispatcher: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
+  isManager: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isStorehouseAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
   users: storeState.userManagement.users,
   transports: storeState.transport.entities,
   transporters: storeState.transporter.entities,

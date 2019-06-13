@@ -1,13 +1,18 @@
 package com.itechart.studlab.app.service;
 
+import com.itechart.studlab.app.domain.Authority;
 import com.itechart.studlab.app.domain.TTN;
+import com.itechart.studlab.app.domain.User;
 import com.itechart.studlab.app.repository.TTNRepository;
+import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.TTNSearchRepository;
+import com.itechart.studlab.app.security.SecurityUtils;
 import com.itechart.studlab.app.service.dto.TTNDTO;
 import com.itechart.studlab.app.service.mapper.TTNMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +39,9 @@ public class TTNService {
 
     private final TTNSearchRepository tTNSearchRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public TTNService(TTNRepository tTNRepository, TTNMapper tTNMapper, TTNSearchRepository tTNSearchRepository) {
         this.tTNRepository = tTNRepository;
         this.tTNMapper = tTNMapper;
@@ -48,6 +56,7 @@ public class TTNService {
      */
     public TTNDTO save(TTNDTO tTNDTO) {
         log.debug("Request to save TTN : {}", tTNDTO);
+        tTNDTO = asignUserToDTO(tTNDTO);
         TTN tTN = tTNMapper.toEntity(tTNDTO);
         tTN = tTNRepository.save(tTN);
         TTNDTO result = tTNMapper.toDto(tTN);
@@ -106,5 +115,22 @@ public class TTNService {
             .stream(tTNSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(tTNMapper::toDto)
             .collect(Collectors.toList());
+    }
+
+    private TTNDTO asignUserToDTO(TTNDTO ttndto){
+        Authority dispatcher = new Authority();
+        Authority manager = new Authority();
+        dispatcher.setName("ROLE_DISPATCHER");
+        manager.setName("ROLE_MANAGER");
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        if(user.getAuthorities().contains(dispatcher)){
+            ttndto.setDispatcherLastName(user.getLastName());
+            ttndto.setDispatcherId(user.getId());
+        }
+        if (user.getAuthorities().contains(manager)){
+            ttndto.setManagerLastName(user.getLastName());
+            ttndto.setManagerId(user.getId());
+        }
+        return ttndto;
     }
 }

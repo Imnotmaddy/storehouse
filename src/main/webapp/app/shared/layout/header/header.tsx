@@ -77,7 +77,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
               {isAuthenticated && (isManager || isDispatcher) && <Ttn />}
               {isAuthenticated && isDispatcher && <Transporter />}
               {isAuthenticated && isDispatcher && <Transport />}
-              {isAuthenticated && <EntitiesMenu />}
               {isAuthenticated && isAdmin && <Companies />}
               {isAuthenticated && isStorehouseAdmin && <Users />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
