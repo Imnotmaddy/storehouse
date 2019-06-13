@@ -115,19 +115,22 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                 <th>
                   <Translate contentKey="storeHouseApp.tTN.isAccepted">Is Accepted</Translate>
                 </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.tTN.dispatcher">Dispatcher</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.tTN.manager">Manager</Translate>
-                </th>
                 {isAuthenticated &&
                   isDispatcher && (
                     <th>
-                      <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
+                      <Translate contentKey="storeHouseApp.tTN.dispatcher">Dispatcher</Translate>
                     </th>
                   )}
-                {isAuthenticated && isManager && <th>Recipient</th>}
+                {isAuthenticated &&
+                  isManager && (
+                    <th>
+                      <Translate contentKey="storeHouseApp.tTN.manager">Manager</Translate>
+                    </th>
+                  )}
+                <th>
+                  <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
+                </th>
+                <th>Recipient</th>
                 <th>
                   <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
                 </th>
@@ -157,10 +160,11 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                     <TextFormat type="date" value={tTN.dateTimeOfRegistration} format={APP_DATE_FORMAT} />
                   </td>
                   <td>{tTN.isAccepted ? 'true' : 'false'}</td>
-                  <td>{tTN.dispatcherLastName ? tTN.dispatcherLastName : ''}</td>
-                  <td>{tTN.managerLastName ? tTN.managerLastName : ''}</td>
-                  {isAuthenticated && isDispatcher && <td>{tTN.sender}</td>}
-                  {isAuthenticated && isManager && <td>{tTN.recipient}</td>}
+                  {isAuthenticated && isDispatcher && <td>{tTN.dispatcherLastName ? tTN.dispatcherLastName : ''}</td>}
+
+                  {isAuthenticated && isManager && <td>{tTN.managerLastName ? tTN.managerLastName : ''}</td>}
+                  <td>{tTN.sender}</td>
+                  <td>{tTN.recipient}</td>
                   <td>{tTN.transportId ? <Link to={`transport/${tTN.transportId}`}>{tTN.transportId}</Link> : ''}</td>
                   <td>
                     {tTN.transporterCompanyName ? <Link to={`transporter/${tTN.transporterId}`}>{tTN.transporterCompanyName}</Link> : ''}

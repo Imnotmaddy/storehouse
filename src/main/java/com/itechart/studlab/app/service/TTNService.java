@@ -57,6 +57,7 @@ public class TTNService {
     public TTNDTO save(TTNDTO tTNDTO) {
         log.debug("Request to save TTN : {}", tTNDTO);
         tTNDTO = asignUserToDTO(tTNDTO);
+        tTNDTO = asignCompanyToDTO(tTNDTO);
         TTN tTN = tTNMapper.toEntity(tTNDTO);
         tTN = tTNRepository.save(tTN);
         TTNDTO result = tTNMapper.toDto(tTN);
@@ -115,6 +116,16 @@ public class TTNService {
             .stream(tTNSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(tTNMapper::toDto)
             .collect(Collectors.toList());
+    }
+
+    private TTNDTO asignCompanyToDTO(TTNDTO ttndto){
+        if(ttndto.getRecipient()==null){
+            ttndto.setRecipient(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getCompany());
+        }
+        if(ttndto.getSender()==null){
+            ttndto.setSender(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getCompany());
+        }
+        return ttndto;
     }
 
     private TTNDTO asignUserToDTO(TTNDTO ttndto){

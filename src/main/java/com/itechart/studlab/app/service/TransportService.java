@@ -2,12 +2,14 @@ package com.itechart.studlab.app.service;
 
 import com.itechart.studlab.app.domain.Transport;
 import com.itechart.studlab.app.repository.TransportRepository;
+import com.itechart.studlab.app.repository.TransporterRepository;
 import com.itechart.studlab.app.repository.search.TransportSearchRepository;
 import com.itechart.studlab.app.service.dto.TransportDTO;
 import com.itechart.studlab.app.service.mapper.TransportMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,8 @@ public class TransportService {
     private final TransportMapper transportMapper;
 
     private final TransportSearchRepository transportSearchRepository;
+
+
 
     public TransportService(TransportRepository transportRepository, TransportMapper transportMapper, TransportSearchRepository transportSearchRepository) {
         this.transportRepository = transportRepository;
@@ -68,6 +72,13 @@ public class TransportService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    public List<TransportDTO> findAllByTransporterDispatcherCompany(String dispatcherCompanyName){
+        log.debug("Request to get transport with companyId:" + dispatcherCompanyName);
+        List<TransportDTO> list = transportRepository.findAllByCompany_DispatcherCompanyName(dispatcherCompanyName).stream()
+            .map(transportMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+        return list;
+    }
 
     /**
      * Get one transport by id.
