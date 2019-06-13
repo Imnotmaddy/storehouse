@@ -54,15 +54,22 @@
                 <constraints nullable="true" />
             </column>
             <column name="dispatcher_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_ttn_dispatcher_id" />
-            </column>            <column name="manager_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_ttn_manager_id" />
-            </column>            <column name="sender_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_ttn_sender_id" />
-            </column>            <column name="transport_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_ttn_transport_id" />
-            </column>            <column name="transporter_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_ttn_transporter_id" />
+                <constraints unique="false" nullable="true" uniqueConstraintName="ux_ttn_dispatcher_id" />
+            </column>
+            <column name="manager_id" type="bigint">
+                <constraints unique="false" nullable="true" uniqueConstraintName="ux_ttn_manager_id" />
+            </column>
+            <column name="sender" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="recipient" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="transport_id" type="bigint">
+                <constraints unique="false" nullable="false" uniqueConstraintName="ux_ttn_transport_id" />
+            </column>
+            <column name="transporter_id" type="bigint">
+                <constraints unique="false" nullable="false" uniqueConstraintName="ux_ttn_transporter_id" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>

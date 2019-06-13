@@ -1,4 +1,7 @@
 package com.itechart.studlab.app.web.rest;
+import com.itechart.studlab.app.repository.TransporterRepository;
+import com.itechart.studlab.app.repository.UserRepository;
+import com.itechart.studlab.app.security.SecurityUtils;
 import com.itechart.studlab.app.service.TransportService;
 import com.itechart.studlab.app.web.rest.errors.BadRequestAlertException;
 import com.itechart.studlab.app.web.rest.util.HeaderUtil;
@@ -6,6 +9,7 @@ import com.itechart.studlab.app.service.dto.TransportDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +35,12 @@ public class TransportResource {
     private static final String ENTITY_NAME = "transport";
 
     private final TransportService transportService;
+
+    @Autowired
+    private TransporterRepository transporterRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public TransportResource(TransportService transportService) {
         this.transportService = transportService;
@@ -83,8 +93,10 @@ public class TransportResource {
      */
     @GetMapping("/transports")
     public List<TransportDTO> getAllTransports() {
+        String dispatcherCompanyName = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getCompany();
+        long companyId = transporterRepository.findFirstByDispatcherCompanyName(dispatcherCompanyName).getId();
         log.debug("REST request to get all Transports");
-        return transportService.findAll();
+        return transportService.findAllByTransporterDispatcherCompany(dispatcherCompanyName);
     }
 
     /**

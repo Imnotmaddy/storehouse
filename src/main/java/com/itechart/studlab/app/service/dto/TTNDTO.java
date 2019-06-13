@@ -31,7 +31,6 @@ public class TTNDTO implements Serializable {
 
     private Boolean isAccepted;
 
-
     private Long dispatcherId;
 
     private String dispatcherLastName;
@@ -40,11 +39,13 @@ public class TTNDTO implements Serializable {
 
     private String managerLastName;
 
-    private Long senderId;
+    private String sender;
 
-    private String senderLastName;
+    private String recipient;
 
     private Long transportId;
+
+    private Long transportVehicleNumber;
 
     private Long transporterId;
 
@@ -154,20 +155,20 @@ public class TTNDTO implements Serializable {
         this.managerLastName = userLastName;
     }
 
-    public Long getSenderId() {
-        return senderId;
+    public String getSender() {
+        return sender;
     }
 
-    public void setSenderId(Long userId) {
-        this.senderId = userId;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public String getSenderLastName() {
-        return senderLastName;
+    public String getRecipient() {
+        return recipient;
     }
 
-    public void setSenderLastName(String userLastName) {
-        this.senderLastName = userLastName;
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
 
     public Long getTransportId() {
@@ -176,6 +177,22 @@ public class TTNDTO implements Serializable {
 
     public void setTransportId(Long transportId) {
         this.transportId = transportId;
+    }
+
+    public Boolean getAccepted() {
+        return isAccepted;
+    }
+
+    public void setAccepted(Boolean accepted) {
+        isAccepted = accepted;
+    }
+
+    public Long getTransportVehicleNumber() {
+        return transportVehicleNumber;
+    }
+
+    public void setTransportVehicleNumber(Long transportVehicleNumber) {
+        this.transportVehicleNumber = transportVehicleNumber;
     }
 
     public Long getTransporterId() {
@@ -231,9 +248,10 @@ public class TTNDTO implements Serializable {
             ", dispatcher='" + getDispatcherLastName() + "'" +
             ", manager=" + getManagerId() +
             ", manager='" + getManagerLastName() + "'" +
-            ", sender=" + getSenderId() +
-            ", sender='" + getSenderLastName() + "'" +
+            ", sender='" + getSender() + "'" +
+            ", recipient='" + getRecipient() + "'" +
             ", transport=" + getTransportId() +
+            ", transport=" + getTransportVehicleNumber() +
             ", transporter=" + getTransporterId() +
             ", transporter='" + getTransporterCompanyName() + "'" +
             "}";
