@@ -22,6 +22,10 @@ export interface IStorehouseUpdateState {
   dispatcherId: string;
   managerId: string;
   supervisorId: string;
+  storageRooms: Array<{
+    roomNumber: string;
+    type: string;
+  }>;
 }
 
 export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IStorehouseUpdateState> {
@@ -33,7 +37,8 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
       dispatcherId: '0',
       managerId: '0',
       supervisorId: '0',
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
+      storageRooms: []
     };
   }
 
@@ -69,8 +74,12 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
     }
   };
 
+  handleStorageRoomsUpdate = (storageRooms: []) => {
+    this.setState({ storageRooms });
+  };
+
   handleClose = () => {
-    this.props.history.push('/entity/storehouse');
+    this.props.history.push('/storehouse');
   };
 
   render() {
@@ -113,7 +122,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                     }}
                   />
                 </AvGroup>
-                <AddStorageRoom />
+                <AddStorageRoom getRows={this.handleStorageRoomsUpdate} />
                 <AvGroup>
                   <Label for="owner.lastName">
                     <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>

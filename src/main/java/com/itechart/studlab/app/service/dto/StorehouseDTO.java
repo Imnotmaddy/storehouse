@@ -13,7 +13,6 @@ public class StorehouseDTO implements Serializable {
     @NotNull
     private String name;
 
-
     private Long ownerId;
 
     private String ownerLastName;

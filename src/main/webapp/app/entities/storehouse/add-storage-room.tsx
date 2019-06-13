@@ -1,14 +1,30 @@
 import React from 'react';
-import { Button, Col, Label, Row, Table } from 'reactstrap';
+import { Button, Col, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table } from 'reactstrap';
 import { Translate } from 'react-jhipster';
-import { AvGroup, AvInput, AvForm } from 'availity-reactstrap-validation';
+import { AvField, AvForm, AvGroup } from 'availity-reactstrap-validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AddModal } from 'app/entities/storehouse/addModal';
 
-export class AddStorageRoom extends React.Component {
+export interface IAddStorageRoomState {
+  rows: Array<{
+    roomNumber: number;
+    type: string;
+  }>;
+  roomNumberValue: string;
+  typeValue: string;
+  showAddModal: boolean;
+}
+
+export interface IAddStorageRoomProps {
+  getRows: Function;
+}
+
+export class AddStorageRoom extends React.Component<IAddStorageRoomProps, IAddStorageRoomState> {
   state = {
     rows: [],
-    roomNumberValue: 0,
-    typeValue: ''
+    roomNumberValue: '',
+    typeValue: '',
+    showAddModal: false
   };
 
   genRows = () =>
@@ -27,72 +43,56 @@ export class AddStorageRoom extends React.Component {
       </tr>
     ));
 
-  addRow = () => {
+  add = () => {
     const roomNumber = this.state.roomNumberValue;
     const type = this.state.typeValue;
-    const newRows = this.state.rows;
     if (roomNumber && type) {
-      newRows.push({ roomNumber, type });
-      this.setState({ rows: newRows });
+      const newRows = this.state.rows.concat({ roomNumber, type });
+      this.props.getRows(newRows);
+      this.setState({
+        rows: newRows,
+        roomNumberValue: '',
+        typeValue: '',
+        showAddModal: false
+      });
     }
   };
 
   deleteRow = event => {
     const newRows = this.state.rows;
-    newRows.splice(event.currentTarget.value, 1);
+    newRows.splice(event.currentTarget.value, 1); // filter, const value from event
     this.setState({ rows: newRows });
   };
 
-  handleRoomNumberChange = event => {
-    this.setState({ roomNumberValue: event.target.value });
+  handleModalValues = (value: { roomNumber: string; type: string }) => {
+    const rows = this.state.rows.concat(value);
+    this.setState({
+      rows,
+      roomNumberValue: '',
+      typeValue: '',
+      showAddModal: false
+    });
   };
 
-  handleTypeChange = event => {
-    this.setState({ typeValue: event.target.value });
+  toggleAddModal = () => {
+    const state = {
+      ...this.state
+    };
+    state.showAddModal = !state.showAddModal;
+    this.setState(state);
   };
 
   render() {
     return (
       <div className="position-relative">
-        <Label for="storageRoomsTable">
-          <Translate contentKey="storeHouseApp.storehouse.storageRooms">Storage rooms</Translate>
-        </Label>
-        <Row>
-          <Col md="5">
-            <AvGroup className="row">
-              <Label for="roomNumber" className="col-4">
-                <Translate contentKey="storeHouseApp.storehouse.roomNumber">Room number</Translate>
-              </Label>
-              <AvInput
-                name="roomNumber"
-                type="number"
-                className="col-8"
-                value={this.state.roomNumberValue}
-                onChange={this.handleRoomNumberChange}
-                required
-              />
-            </AvGroup>
-          </Col>
-          <Col md="5">
-            <AvGroup className="row">
-              <Label for="type" className="col-3">
-                <Translate contentKey="storeHouseApp.storehouse.type">Type</Translate>
-              </Label>
-              <AvInput name="type" type="select" className="col-9" value={this.state.typeValue} onChange={this.handleTypeChange} required>
-                <option defaultChecked />
-                <option value="REFRIGERATOR">REFRIGERATOR</option>
-                <option value="OPEN_SPACE">OPEN_SPACE</option>
-                <option value="HEATED_SPACE">HEATED_SPACE</option>
-                <option value="ORDINARY_ROOM">ORDINARY_ROOM</option>
-              </AvInput>
-            </AvGroup>
-          </Col>
-          <Col md="2">
-            <Button color="primary" onClick={this.addRow}>
-              <Translate contentKey="storeHouseApp.storehouse.addRoom">Add room</Translate>
-            </Button>
-          </Col>
-        </Row>
+        <div className="d-flex">
+          <Label className="mr-auto" for="storageRoomsTable">
+            <Translate contentKey="storeHouseApp.storehouse.storageRooms">Storage rooms</Translate>
+          </Label>
+          <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal}>
+            <Translate contentKey="storeHouseApp.storehouse.addRoom">Add room</Translate>
+          </Button>
+        </div>
         <Table name="storageRoomsTable" responsive size="sm">
           <thead>
             <tr>
@@ -107,6 +107,7 @@ export class AddStorageRoom extends React.Component {
           </thead>
           <tbody>{this.genRows()}</tbody>
         </Table>
+        <AddModal show={this.state.showAddModal} toggle={this.toggleAddModal} getValues={this.handleModalValues} />
       </div>
     );
   }
