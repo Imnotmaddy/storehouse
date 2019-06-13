@@ -165,7 +165,7 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                   {isAuthenticated && isManager && <td>{tTN.managerLastName ? tTN.managerLastName : ''}</td>}
                   <td>{tTN.sender}</td>
                   <td>{tTN.recipient}</td>
-                  <td>{tTN.transportId ? <Link to={`transport/${tTN.transportId}`}>{tTN.transportId}</Link> : ''}</td>
+                  <td>{tTN.transportVehicleNumber ? <Link to={`transport/${tTN.transportId}`}>{tTN.transportVehicleNumber}</Link> : ''}</td>
                   <td>
                     {tTN.transporterCompanyName ? <Link to={`transporter/${tTN.transporterId}`}>{tTN.transporterCompanyName}</Link> : ''}
                   </td>

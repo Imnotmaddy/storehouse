@@ -16,6 +16,7 @@ public interface TTNMapper extends EntityMapper<TTNDTO, TTN> {
     @Mapping(source = "manager.id", target = "managerId")
     @Mapping(source = "manager.lastName", target = "managerLastName")
     @Mapping(source = "transport.id", target = "transportId")
+    @Mapping(source = "transport.vehicleNumber", target = "transportVehicleNumber")
     @Mapping(source = "transporter.id", target = "transporterId")
     @Mapping(source = "transporter.companyName", target = "transporterCompanyName")
     TTNDTO toDto(TTN tTN);

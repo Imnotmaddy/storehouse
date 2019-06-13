@@ -101,7 +101,7 @@ export class TTNDetail extends React.Component<ITTNDetailProps> {
             <dt>
               <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
             </dt>
-            <dd>{tTNEntity.transportId ? tTNEntity.transportId : ''}</dd>
+            <dd>{tTNEntity.transportVehicleNumber ? tTNEntity.transportVehicleNumber : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.tTN.transporter">Transporter</Translate>
             </dt>

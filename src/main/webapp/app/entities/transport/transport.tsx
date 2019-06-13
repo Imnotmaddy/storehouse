@@ -108,7 +108,13 @@ export class Transport extends React.Component<ITransportProps, ITransportState>
                   <td>
                     <Translate contentKey={`storeHouseApp.DeliveryType.${transport.deliveryType}`} />
                   </td>
-                  <td>{transport.companyId ? <Link to={`transporter/${transport.companyId}`}>{transport.companyId}</Link> : ''}</td>
+                  <td>
+                    {transport.transporterCompanyName ? (
+                      <Link to={`transporter/${transport.companyId}`}>{transport.transporterCompanyName}</Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${transport.id}`} color="info" size="sm">

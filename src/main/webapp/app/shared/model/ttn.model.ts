@@ -19,6 +19,7 @@ export interface ITTN {
   sender?: string;
   recipient?: string;
   transportId?: number;
+  transportVehicleNumber?: number;
   transporterCompanyName?: string;
   transporterId?: number;
   products?: IProduct[];

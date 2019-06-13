@@ -45,6 +45,8 @@ public class TTNDTO implements Serializable {
 
     private Long transportId;
 
+    private Long transportVehicleNumber;
+
     private Long transporterId;
 
     private String transporterCompanyName;
@@ -177,6 +179,22 @@ public class TTNDTO implements Serializable {
         this.transportId = transportId;
     }
 
+    public Boolean getAccepted() {
+        return isAccepted;
+    }
+
+    public void setAccepted(Boolean accepted) {
+        isAccepted = accepted;
+    }
+
+    public Long getTransportVehicleNumber() {
+        return transportVehicleNumber;
+    }
+
+    public void setTransportVehicleNumber(Long transportVehicleNumber) {
+        this.transportVehicleNumber = transportVehicleNumber;
+    }
+
     public Long getTransporterId() {
         return transporterId;
     }
@@ -233,6 +251,7 @@ public class TTNDTO implements Serializable {
             ", sender='" + getSender() + "'" +
             ", recipient='" + getRecipient() + "'" +
             ", transport=" + getTransportId() +
+            ", transport=" + getTransportVehicleNumber() +
             ", transporter=" + getTransporterId() +
             ", transporter='" + getTransporterCompanyName() + "'" +
             "}";

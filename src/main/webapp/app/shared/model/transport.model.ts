@@ -8,6 +8,7 @@ export interface ITransport {
   vehicleNumber?: string;
   deliveryType?: DeliveryType;
   companyId?: number;
+  transporterCompanyName?: string;
 }
 
 export const defaultValue: Readonly<ITransport> = {};
