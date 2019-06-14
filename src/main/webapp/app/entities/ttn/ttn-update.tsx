@@ -202,13 +202,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   <Label id="statusLabel">
                     <Translate contentKey="storeHouseApp.act.type">Type</Translate>
                   </Label>
-                  <AvInput
-                    id="ttn-status"
-                    type="select"
-                    className="form-control"
-                    name="status"
-                    value={(!isNew && actEntity.type) || 'REGISTERED'}
-                  >
+                  <AvInput id="ttn-status" type="select" className="form-control" name="status">
                     <option value="REGISTERED">REGISTERED</option>
                     <option value="CHECKED">CHECKED</option>
                     <option value="DECORATED">DECORATED</option>
