@@ -2,6 +2,7 @@ package com.itechart.studlab.app.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.itechart.studlab.app.domain.enumeration.TtnStatus;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -55,8 +56,8 @@ public class TTN implements Serializable {
     @Column(name = "date_time_of_registration", nullable = false)
     private Instant dateTimeOfRegistration;
 
-    @Column(name = "is_accepted")
-    private Boolean isAccepted;
+    @Column(name = "status")
+    private TtnStatus status;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -184,17 +185,17 @@ public class TTN implements Serializable {
         this.dateTimeOfRegistration = dateTimeOfRegistration;
     }
 
-    public Boolean isIsAccepted() {
-        return isAccepted;
+    public TtnStatus getStatus() {
+        return status;
     }
 
-    public TTN isAccepted(Boolean isAccepted) {
-        this.isAccepted = isAccepted;
+    public TTN status(TtnStatus status) {
+        this.status = status;
         return this;
     }
 
-    public void setIsAccepted(Boolean isAccepted) {
-        this.isAccepted = isAccepted;
+    public void setStatus(TtnStatus status) {
+        this.status = status;
     }
 
     public User getDispatcher() {
@@ -332,7 +333,7 @@ public class TTN implements Serializable {
             ", productsAmount=" + getProductsAmount() +
             ", numberOfProductEntries=" + getNumberOfProductEntries() +
             ", dateTimeOfRegistration='" + getDateTimeOfRegistration() + "'" +
-            ", isAccepted='" + isIsAccepted() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

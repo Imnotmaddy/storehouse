@@ -50,7 +50,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="is_accepted" type="boolean">
+            <column name="status" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="dispatcher_id" type="bigint">
