@@ -1,4 +1,5 @@
 package com.itechart.studlab.app.web.rest;
+import com.itechart.studlab.app.service.StorageRoomService;
 import com.itechart.studlab.app.service.StorehouseService;
 import com.itechart.studlab.app.web.rest.errors.BadRequestAlertException;
 import com.itechart.studlab.app.web.rest.util.HeaderUtil;
@@ -32,8 +33,11 @@ public class StorehouseResource {
 
     private final StorehouseService storehouseService;
 
-    public StorehouseResource(StorehouseService storehouseService) {
+    private final StorageRoomService storageRoomService;
+
+    public StorehouseResource(StorehouseService storehouseService, StorageRoomService storageRoomService) {
         this.storehouseService = storehouseService;
+        this.storageRoomService = storageRoomService;
     }
 
     /**
@@ -50,6 +54,7 @@ public class StorehouseResource {
             throw new BadRequestAlertException("A new storehouse cannot already have an ID", ENTITY_NAME, "idexists");
         }
         StorehouseDTO result = storehouseService.save(storehouseDTO);
+        storageRoomService.saveAllForStorehouse(storehouseDTO.getRooms(), result.getId());
         return ResponseEntity.created(new URI("/api/storehouses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

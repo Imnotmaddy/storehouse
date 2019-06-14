@@ -1,17 +1,15 @@
 package com.itechart.studlab.app.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,7 +22,7 @@ import java.util.Objects;
 public class Storehouse implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,34 +35,40 @@ public class Storehouse implements Serializable {
     @Column(name = "company_name")
     private String companyName;
 
-    @OneToOne(optional = false)    @NotNull
+    @OneToOne(optional = false)
+    @NotNull
 
     @JoinColumn(unique = true)
     private User owner;
 
-    @OneToOne(optional = false)    @NotNull
+    @OneToOne(optional = false)
+    @NotNull
 
     @JoinColumn(unique = true)
     private User administrator;
 
-    @OneToOne(optional = false)    @NotNull
+    @OneToOne(optional = false)
+    @NotNull
 
     @JoinColumn(unique = true)
     private User dispatcher;
 
-    @OneToOne(optional = false)    @NotNull
+    @OneToOne(optional = false)
+    @NotNull
 
     @JoinColumn(unique = true)
     private User manager;
 
-    @OneToOne(optional = false)    @NotNull
+    @OneToOne(optional = false)
+    @NotNull
 
     @JoinColumn(unique = true)
     private User supervisor;
 
     @OneToMany(mappedBy = "storehouse")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<StorageRoom> rooms = new HashSet<>();
+    private List<StorageRoom> rooms = new ArrayList<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -160,11 +164,11 @@ public class Storehouse implements Serializable {
         this.supervisor = user;
     }
 
-    public Set<StorageRoom> getRooms() {
+    public List<StorageRoom> getRooms() {
         return rooms;
     }
 
-    public Storehouse rooms(Set<StorageRoom> storageRooms) {
+    public Storehouse rooms(List<StorageRoom> storageRooms) {
         this.rooms = storageRooms;
         return this;
     }
@@ -181,7 +185,7 @@ public class Storehouse implements Serializable {
         return this;
     }
 
-    public void setRooms(Set<StorageRoom> storageRooms) {
+    public void setRooms(List<StorageRoom> storageRooms) {
         this.rooms = storageRooms;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

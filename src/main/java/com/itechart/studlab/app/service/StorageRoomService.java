@@ -7,7 +7,6 @@ import com.itechart.studlab.app.service.dto.StorageRoomDTO;
 import com.itechart.studlab.app.service.mapper.StorageRoomMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing StorageRoom.
@@ -68,6 +67,16 @@ public class StorageRoomService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    public List<StorageRoomDTO> saveAllForStorehouse(List<StorageRoomDTO> storageRoomDTOList, Long storehouseId) {
+        log.debug("Request to save rooms for storehouse id: {}, {}", storehouseId, storageRoomDTOList);
+        storageRoomDTOList.forEach(room -> room.setStorehouseId(storehouseId));
+        log.debug("Update dto list: {}", storageRoomDTOList);
+        List<StorageRoom> rooms = storageRoomMapper.toEntity(storageRoomDTOList);
+        rooms = storageRoomRepository.saveAll(rooms);
+        List<StorageRoomDTO> result = storageRoomMapper.toDto(rooms);
+        storageRoomSearchRepository.saveAll(rooms);
+        return result;
+    }
 
     /**
      * Get one storageRoom by id.
