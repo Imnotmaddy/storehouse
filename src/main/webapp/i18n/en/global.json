@@ -6,7 +6,7 @@
       "home": "Home",
       "companies": "Companies",
       "employees": "Employees",
-      "addStorehouse": "Add storehouse",
+      "storehouse": "Storehouse",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",

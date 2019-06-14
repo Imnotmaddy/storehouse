@@ -201,7 +201,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
               </AvForm>
             )}
             <AddStorageRoom getRows={this.handleStorageRoomsUpdate} />
-            <Button tag={Link} id="cancel-save" to="/entity/storehouse" replace color="info">
+            <Button tag={Link} id="cancel-save" to="/storehouse" replace color="info">
               <FontAwesomeIcon icon="arrow-left" />
               &nbsp;
               <span className="d-none d-md-inline">

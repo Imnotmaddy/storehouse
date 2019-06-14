@@ -18,7 +18,7 @@ import Transporter from 'app/entities/transporter';
 import Transport from 'app/entities/transport';
 import Companies from 'app/modules/companies';
 import UserManagement from 'app/modules/administration/user-management';
-import Storehouse from 'app/entities/storehouse/storehouse-update';
+import Storehouse from 'app/entities/storehouse';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({

@@ -1,13 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import { Translate, ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { IStorehouse } from 'app/shared/model/storehouse.model';
 import { IRootState } from 'app/shared/reducers';
-import { getEntity, deleteEntity } from './storehouse.reducer';
+import { deleteEntity, getEntity } from './storehouse.reducer';
 
 export interface IStorehouseDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -34,7 +32,7 @@ export class StorehouseDeleteDialog extends React.Component<IStorehouseDeleteDia
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
         <ModalBody id="storeHouseApp.storehouse.delete.question">
-          <Translate contentKey="storeHouseApp.storehouse.delete.question" interpolate={{ id: storehouseEntity.id }}>
+          <Translate contentKey="storeHouseApp.storehouse.delete.question" interpolate={{ id: storehouseEntity.name }}>
             Are you sure you want to delete this Storehouse?
           </Translate>
         </ModalBody>
