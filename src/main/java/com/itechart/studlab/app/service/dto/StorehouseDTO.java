@@ -1,9 +1,9 @@
 package com.itechart.studlab.app.service.dto;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A DTO for the Storehouse entity.
@@ -14,6 +14,9 @@ public class StorehouseDTO implements Serializable {
 
     @NotNull
     private String name;
+
+    @NotNull
+    private String companyName;
 
     private Long ownerId;
 
@@ -51,6 +54,14 @@ public class StorehouseDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public Long getOwnerId() {
@@ -167,6 +178,7 @@ public class StorehouseDTO implements Serializable {
         return "StorehouseDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", companyName='" + getCompanyName() + "'" +
             ", owner=" + getOwnerId() +
             ", ownerLastName='" + getOwnerLastName() + "'" +
             ", administrator=" + getAdministratorId() +

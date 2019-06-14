@@ -33,6 +33,10 @@ public class Storehouse implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
+    @Column(name = "company_name")
+    private String companyName;
+
     @OneToOne(optional = false)    @NotNull
 
     @JoinColumn(unique = true)
@@ -85,6 +89,14 @@ public class Storehouse implements Serializable {
 
     public User getOwner() {
         return owner;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public Storehouse owner(User user) {

@@ -127,7 +127,6 @@ export const createEntity: ICrudPutAction<IStorehouse> = entity => async dispatc
     type: ACTION_TYPES.CREATE_STOREHOUSE,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  console.log('entity', cleanEntity(entity));
   dispatch(getEntities());
   return result;
 };

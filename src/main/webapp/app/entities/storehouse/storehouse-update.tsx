@@ -10,6 +10,7 @@ import { IRootState } from 'app/shared/reducers';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { createEntity, getEntity, reset, updateEntity } from './storehouse.reducer';
 import { AddStorageRoom } from 'app/entities/storehouse/add-storage-room';
+import { getSession } from 'app/shared/reducers/authentication';
 
 // tslint:disable-next-line:no-unused-variable
 
@@ -64,7 +65,8 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
       const entity = {
         ...storehouseEntity,
         ...values,
-        rooms: this.state.storageRooms
+        rooms: this.state.storageRooms,
+        companyName: this.props.companyName
       };
 
       if (this.state.isNew) {
@@ -221,6 +223,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
 
 const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
+  companyName: storeState.authentication.account.company,
   storehouseEntity: storeState.storehouse.entity,
   loading: storeState.storehouse.loading,
   updating: storeState.storehouse.updating,
@@ -229,6 +232,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 
 const mapDispatchToProps = {
   getUsers,
+  getSession,
   getEntity,
   updateEntity,
   createEntity,

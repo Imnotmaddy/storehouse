@@ -3,6 +3,7 @@ import { IStorageRoom } from 'app/shared/model/storage-room.model';
 export interface IStorehouse {
   id?: number;
   name?: string;
+  companyName?: string;
   ownerLastName?: string;
   ownerId?: number;
   administratorLastName?: string;

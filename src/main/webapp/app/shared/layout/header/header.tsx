@@ -2,10 +2,10 @@ import './header.css';
 
 import React from 'react';
 import { Storage, Translate } from 'react-jhipster';
-import { Brand, Companies, Home, Transporter, Ttn, Transport, Users, Storehouse } from './header-components';
-import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from 'reactstrap';
+import { Brand, Companies, Home, Storehouse, Transport, Transporter, Ttn, Users } from './header-components';
+import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
-import { AccountMenu, AdminMenu, EntitiesMenu, LocaleMenu } from './menus';
+import { AccountMenu, EntitiesMenu, LocaleMenu } from './menus';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
