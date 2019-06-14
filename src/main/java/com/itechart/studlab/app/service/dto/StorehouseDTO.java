@@ -1,7 +1,9 @@
 package com.itechart.studlab.app.service.dto;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Storehouse entity.
@@ -32,6 +34,8 @@ public class StorehouseDTO implements Serializable {
     private Long supervisorId;
 
     private String supervisorLastName;
+
+    private List<StorageRoomDTO> rooms;
 
     public Long getId() {
         return id;
@@ -129,6 +133,14 @@ public class StorehouseDTO implements Serializable {
         this.supervisorLastName = userLastName;
     }
 
+    public List<StorageRoomDTO> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<StorageRoomDTO> storageRoomDTOSet) {
+        this.rooms = storageRoomDTOSet;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -156,15 +168,16 @@ public class StorehouseDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", owner=" + getOwnerId() +
-            ", owner='" + getOwnerLastName() + "'" +
+            ", ownerLastName='" + getOwnerLastName() + "'" +
             ", administrator=" + getAdministratorId() +
-            ", administrator='" + getAdministratorLastName() + "'" +
+            ", administratorLastName='" + getAdministratorLastName() + "'" +
             ", dispatcher=" + getDispatcherId() +
-            ", dispatcher='" + getDispatcherLastName() + "'" +
+            ", dispatcherLastName='" + getDispatcherLastName() + "'" +
             ", manager=" + getManagerId() +
-            ", manager='" + getManagerLastName() + "'" +
+            ", managerLastName='" + getManagerLastName() + "'" +
             ", supervisor=" + getSupervisorId() +
-            ", supervisor='" + getSupervisorLastName() + "'" +
+            ", supervisorLastName='" + getSupervisorLastName() + "'" +
+            ", storageRooms='" + getRooms() + "'" +
             "}";
     }
 }

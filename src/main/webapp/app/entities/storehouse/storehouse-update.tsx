@@ -63,7 +63,8 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
       const { storehouseEntity } = this.props;
       const entity = {
         ...storehouseEntity,
-        ...values
+        ...values,
+        rooms: this.state.storageRooms
       };
 
       if (this.state.isNew) {
@@ -100,7 +101,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? {} : storehouseEntity} onSubmit={this.saveEntity}>
+              <AvForm model={isNew ? {} : storehouseEntity} id="storehouseForm" onSubmit={this.saveEntity}>
                 {!isNew ? (
                   <AvGroup>
                     <Label for="id">
@@ -118,11 +119,13 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                     type="text"
                     name="name"
                     validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                      required: {
+                        value: true,
+                        errorMessage: translate('entity.validation.required')
+                      }
                     }}
                   />
                 </AvGroup>
-                <AddStorageRoom getRows={this.handleStorageRoomsUpdate} />
                 <AvGroup>
                   <Label for="owner.lastName">
                     <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
@@ -193,21 +196,22 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/storehouse" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
               </AvForm>
             )}
+            <AddStorageRoom getRows={this.handleStorageRoomsUpdate} />
+            <Button tag={Link} id="cancel-save" to="/entity/storehouse" replace color="info">
+              <FontAwesomeIcon icon="arrow-left" />
+              &nbsp;
+              <span className="d-none d-md-inline">
+                <Translate contentKey="entity.action.back">Back</Translate>
+              </span>
+            </Button>
+            &nbsp;
+            <Button color="primary" id="save-entity" type="submit" form="storehouseForm" disabled={updating}>
+              <FontAwesomeIcon icon="save" />
+              &nbsp;
+              <Translate contentKey="entity.action.save">Save</Translate>
+            </Button>
           </Col>
         </Row>
       </div>

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, Col, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table } from 'reactstrap';
+import { Button, Label, Table } from 'reactstrap';
 import { Translate } from 'react-jhipster';
-import { AvField, AvForm, AvGroup } from 'availity-reactstrap-validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AddModal } from 'app/entities/storehouse/addModal';
 
@@ -43,29 +42,17 @@ export class AddStorageRoom extends React.Component<IAddStorageRoomProps, IAddSt
       </tr>
     ));
 
-  add = () => {
-    const roomNumber = this.state.roomNumberValue;
-    const type = this.state.typeValue;
-    if (roomNumber && type) {
-      const newRows = this.state.rows.concat({ roomNumber, type });
-      this.props.getRows(newRows);
-      this.setState({
-        rows: newRows,
-        roomNumberValue: '',
-        typeValue: '',
-        showAddModal: false
-      });
-    }
-  };
-
   deleteRow = event => {
-    const newRows = this.state.rows;
-    newRows.splice(event.currentTarget.value, 1); // filter, const value from event
+    const elementId = event.currentTarget.value;
+    const newRows = [...this.state.rows];
+    newRows.splice(elementId, 1); // filter, const value from event
+    this.props.getRows(newRows);
     this.setState({ rows: newRows });
   };
 
   handleModalValues = (value: { roomNumber: string; type: string }) => {
     const rows = this.state.rows.concat(value);
+    this.props.getRows(rows);
     this.setState({
       rows,
       roomNumberValue: '',

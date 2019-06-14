@@ -25,6 +25,10 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
       roomNumber: this.state.roomNumberValue,
       type: this.state.typeValue
     });
+    this.setState({
+      roomNumberValue: '',
+      typeValue: ''
+    });
   };
 
   handleRoomNumberChange = event => {
@@ -38,11 +42,9 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
   render() {
     return (
       <Modal isOpen={this.props.show} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>
-          <h2>Add storage room</h2>
-        </ModalHeader>
-        <ModalBody>
-          <AvForm id="storageRoomAddForm" onValidSubmit={this.submit}>
+        <AvForm onValidSubmit={this.submit}>
+          <ModalHeader toggle={this.props.toggle}>Add storage room</ModalHeader>
+          <ModalBody>
             <AvGroup>
               <Label for="roomNumber">
                 <Translate contentKey="storeHouseApp.storehouse.roomNumber">Room number</Translate>
@@ -91,14 +93,14 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
                 <option value="ORDINARY_ROOM">ORDINARY_ROOM</option>
               </AvField>
             </AvGroup>
-          </AvForm>
-        </ModalBody>
-        <ModalFooter>
-          <Button onClick={this.props.toggle}>Cancel</Button>
-          <Button form="storageRoomAddForm" color="primary">
-            <Translate contentKey="storeHouseApp.storehouse.addRoom">Add room</Translate>
-          </Button>
-        </ModalFooter>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={this.props.toggle}>Cancel</Button>
+            <Button type="submit" color="primary">
+              <Translate contentKey="storeHouseApp.storehouse.addRoom">Add room</Translate>
+            </Button>
+          </ModalFooter>
+        </AvForm>
       </Modal>
     );
   }
