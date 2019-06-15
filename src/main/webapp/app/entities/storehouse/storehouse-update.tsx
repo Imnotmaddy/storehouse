@@ -11,6 +11,8 @@ import { getUsers } from 'app/modules/administration/user-management/user-manage
 import { createEntity, getEntity, reset, updateEntity } from './storehouse.reducer';
 import { AddStorageRoom } from 'app/entities/storehouse/add-storage-room';
 import { getSession } from 'app/shared/reducers/authentication';
+import { IStorehouse } from 'app/shared/model/storehouse.model';
+import { IStorageRoom } from 'app/shared/model/storage-room.model';
 
 // tslint:disable-next-line:no-unused-variable
 
@@ -23,10 +25,7 @@ export interface IStorehouseUpdateState {
   dispatcherId: string;
   managerId: string;
   supervisorId: string;
-  storageRooms: Array<{
-    roomNumber: string;
-    type: string;
-  }>;
+  storageRooms: IStorehouse[];
 }
 
 export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IStorehouseUpdateState> {
@@ -59,6 +58,8 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
     this.props.getUsers();
   }
 
+  genRoomsTable = () => this.props.storehouseEntity.rooms;
+
   saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
       const { storehouseEntity } = this.props;
@@ -77,7 +78,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
     }
   };
 
-  handleStorageRoomsUpdate = (storageRooms: []) => {
+  handleStorageRoomsUpdate = (storageRooms: IStorehouse[]) => {
     this.setState({ storageRooms });
   };
 
@@ -104,14 +105,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
               <p>Loading...</p>
             ) : (
               <AvForm model={isNew ? {} : storehouseEntity} id="storehouseForm" onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="id">
-                      <Translate contentKey="global.field.id">ID</Translate>
-                    </Label>
-                    <AvInput id="storehouse-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
+                {!isNew ? <AvInput id="storehouse-id" type="hidden" className="form-control" name="id" required readOnly /> : null}
                 <AvGroup>
                   <Label id="nameLabel" for="name">
                     <Translate contentKey="storeHouseApp.storehouse.name">Name</Translate>
@@ -200,7 +194,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                 </AvGroup>
               </AvForm>
             )}
-            <AddStorageRoom getRows={this.handleStorageRoomsUpdate} />
+            <AddStorageRoom getRows={this.handleStorageRoomsUpdate} rows={this.genRoomsTable} />
             <Button tag={Link} id="cancel-save" to="/storehouse" replace color="info">
               <FontAwesomeIcon icon="arrow-left" />
               &nbsp;

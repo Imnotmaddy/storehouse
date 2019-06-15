@@ -3,12 +3,10 @@ import { Button, Label, Table } from 'reactstrap';
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AddModal } from 'app/entities/storehouse/addModal';
+import { IStorageRoom } from 'app/shared/model/storage-room.model';
 
 export interface IAddStorageRoomState {
-  rows: Array<{
-    roomNumber: number;
-    type: string;
-  }>;
+  rows: IStorageRoom[];
   roomNumberValue: string;
   typeValue: string;
   showAddModal: boolean;
@@ -50,7 +48,7 @@ export class AddStorageRoom extends React.Component<IAddStorageRoomProps, IAddSt
     this.setState({ rows: newRows });
   };
 
-  handleModalValues = (value: { roomNumber: string; type: string }) => {
+  handleModalValues = (value: IStorageRoom[]) => {
     const rows = this.state.rows.concat(value);
     this.props.getRows(rows);
     this.setState({

@@ -54,7 +54,7 @@ public class StorehouseResource {
             throw new BadRequestAlertException("A new storehouse cannot already have an ID", ENTITY_NAME, "idexists");
         }
         StorehouseDTO result = storehouseService.save(storehouseDTO);
-        storageRoomService.saveAllForStorehouse(storehouseDTO.getRooms(), result.getId());
+        //storageRoomService.saveAllForStorehouse(storehouseDTO.getRooms(), result.getId());
         return ResponseEntity.created(new URI("/api/storehouses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -90,6 +90,12 @@ public class StorehouseResource {
     public List<StorehouseDTO> getAllStorehouses() {
         log.debug("REST request to get all Storehouses");
         return storehouseService.findAll();
+    }
+
+    @GetMapping("/storehouses/company")
+    public List<StorehouseDTO> getAllCompanyStoreHouses(@RequestParam("companyName") String companyName) {
+        log.debug("REST request to get all Storehouses for company {}", companyName);
+        return storehouseService.findAllForCompany(companyName);
     }
 
     /**

@@ -7,7 +7,7 @@ import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities, getSearchEntities } from './storehouse.reducer';
+import { getCompanyStorehouses, getEntities, getSearchEntities } from './storehouse.reducer';
 
 // tslint:disable-next-line:no-unused-variable
 
@@ -23,7 +23,7 @@ export class Storehouse extends React.Component<IStorehouseProps, IStorehouseSta
   };
 
   componentDidMount() {
-    this.props.getEntities();
+    this.props.getCompanyStorehouses(this.props.companyName);
   }
 
   search = () => {
@@ -122,13 +122,15 @@ export class Storehouse extends React.Component<IStorehouseProps, IStorehouseSta
   }
 }
 
-const mapStateToProps = ({ storehouse }: IRootState) => ({
-  storehouseList: storehouse.entities
+const mapStateToProps = ({ storehouse, authentication }: IRootState) => ({
+  storehouseList: storehouse.entities,
+  companyName: authentication.account.company
 });
 
 const mapDispatchToProps = {
   getSearchEntities,
-  getEntities
+  getEntities,
+  getCompanyStorehouses
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

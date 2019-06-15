@@ -69,7 +69,6 @@ public class StorageRoomService {
 
     public List<StorageRoomDTO> saveAllForStorehouse(List<StorageRoomDTO> storageRoomDTOList, Long storehouseId) {
         log.debug("Request to save rooms for storehouse id: {}, {}", storehouseId, storageRoomDTOList);
-        storageRoomDTOList.forEach(room -> room.setStorehouseId(storehouseId));
         log.debug("Update dto list: {}", storageRoomDTOList);
         List<StorageRoom> rooms = storageRoomMapper.toEntity(storageRoomDTOList);
         rooms = storageRoomRepository.saveAll(rooms);

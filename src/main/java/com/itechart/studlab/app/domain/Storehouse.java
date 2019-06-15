@@ -67,7 +67,7 @@ public class Storehouse implements Serializable {
 
     @OneToMany(mappedBy = "storehouse")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<StorageRoom> rooms = new ArrayList<>();
+    private List<StorageRoom> rooms;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -170,18 +170,6 @@ public class Storehouse implements Serializable {
 
     public Storehouse rooms(List<StorageRoom> storageRooms) {
         this.rooms = storageRooms;
-        return this;
-    }
-
-    public Storehouse addRooms(StorageRoom storageRoom) {
-        this.rooms.add(storageRoom);
-        storageRoom.setStorehouse(this);
-        return this;
-    }
-
-    public Storehouse removeRooms(StorageRoom storageRoom) {
-        this.rooms.remove(storageRoom);
-        storageRoom.setStorehouse(null);
         return this;
     }
 

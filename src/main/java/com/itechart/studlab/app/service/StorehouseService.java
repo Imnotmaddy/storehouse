@@ -68,6 +68,12 @@ public class StorehouseService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    public List<StorehouseDTO> findAllForCompany(String company) {
+        log.debug("Request to get all Storehouses for company {}", company);
+        return storehouseRepository.findAllByCompanyNameIs(company).stream()
+            .map(storehouseMapper::toDto).collect(Collectors.toList());
+    }
+
 
     /**
      * Get one storehouse by id.

@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Storehouse and its DTO StorehouseDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, StorageRoomMapper.class})
 public interface StorehouseMapper extends EntityMapper<StorehouseDTO, Storehouse> {
 
     @Mapping(source = "owner.id", target = "ownerId")
@@ -21,6 +21,7 @@ public interface StorehouseMapper extends EntityMapper<StorehouseDTO, Storehouse
     @Mapping(source = "manager.lastName", target = "managerLastName")
     @Mapping(source = "supervisor.id", target = "supervisorId")
     @Mapping(source = "supervisor.lastName", target = "supervisorLastName")
+    @Mapping(source = "rooms", target = "rooms")
     StorehouseDTO toDto(Storehouse storehouse);
 
     @Mapping(source = "ownerId", target = "owner")
@@ -28,7 +29,7 @@ public interface StorehouseMapper extends EntityMapper<StorehouseDTO, Storehouse
     @Mapping(source = "dispatcherId", target = "dispatcher")
     @Mapping(source = "managerId", target = "manager")
     @Mapping(source = "supervisorId", target = "supervisor")
-    @Mapping(target = "rooms", ignore = true)
+    @Mapping(source = "rooms", target = "rooms")
     Storehouse toEntity(StorehouseDTO storehouseDTO);
 
     default Storehouse fromId(Long id) {

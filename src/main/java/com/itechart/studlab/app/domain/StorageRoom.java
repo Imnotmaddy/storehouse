@@ -41,8 +41,9 @@ public class StorageRoom implements Serializable {
     @OneToMany(mappedBy = "storageRoom")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Product> products = new HashSet<>();
-    @ManyToOne
-    @JsonIgnoreProperties("rooms")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "storehouse_id")
     private Storehouse storehouse;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
