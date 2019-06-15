@@ -40,6 +40,7 @@ export class App extends React.Component<IAppProps> {
               isAuthenticated={this.props.isAuthenticated}
               isAdmin={this.props.isAdmin}
               isDispatcher={this.props.isDispatcher}
+              isSupervisor={this.props.isSupervisor}
               isManager={this.props.isManager}
               isStorehouseAdmin={this.props.isStorehouseAdmin}
               companyName={this.props.companyName}
@@ -69,6 +70,7 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
   isDispatcher: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
   isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isSupervisor: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.SUPERVISOR]),
   isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
   companyName: authentication.account.company,
   ribbonEnv: applicationProfile.ribbonEnv,

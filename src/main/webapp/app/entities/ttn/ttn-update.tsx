@@ -199,9 +199,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="statusLabel">
-                    <Translate contentKey="storeHouseApp.act.type">Type</Translate>
-                  </Label>
+                  <Label id="statusLabel">Status</Label>
                   <AvInput id="ttn-status" type="select" className="form-control" name="status">
                     <option value="REGISTERED">REGISTERED</option>
                     <option value="CHECKED">CHECKED</option>

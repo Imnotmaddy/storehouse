@@ -112,9 +112,7 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                 <th>
                   <Translate contentKey="storeHouseApp.tTN.dateTimeOfRegistration">Date Time Of Registration</Translate>
                 </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.tTN.isAccepted">Is Accepted</Translate>
-                </th>
+                <th>Status</th>
                 {isAuthenticated &&
                   isDispatcher && (
                     <th>
@@ -159,7 +157,7 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                   <td>
                     <TextFormat type="date" value={tTN.dateTimeOfRegistration} format={APP_DATE_FORMAT} />
                   </td>
-                  <td>{tTN.isAccepted ? 'true' : 'false'}</td>
+                  <td>{tTN.status}</td>
                   {isAuthenticated && isDispatcher && <td>{tTN.dispatcherLastName ? tTN.dispatcherLastName : ''}</td>}
 
                   {isAuthenticated && isManager && <td>{tTN.managerLastName ? tTN.managerLastName : ''}</td>}
