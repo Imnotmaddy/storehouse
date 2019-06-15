@@ -49,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @see TTNResource
  */
-@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)
 @SpringBootTest(classes = StoreHouseApp.class)
 public class TTNResourceIntTest {
 
@@ -74,7 +74,7 @@ public class TTNResourceIntTest {
     private static final Instant DEFAULT_DATE_TIME_OF_REGISTRATION = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE_TIME_OF_REGISTRATION = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final Boolean DEFAULT_IS_ACCEPTED = false;
+    private static final Boolean DEFAULT_STATUS = "CHECKED";
     private static final Boolean UPDATED_IS_ACCEPTED = true;
 
     @Autowired
@@ -86,11 +86,6 @@ public class TTNResourceIntTest {
     @Autowired
     private TTNService tTNService;
 
-    /**
-     * This repository is mocked in the com.itechart.studlab.app.repository.search test package.
-     *
-     * @see com.itechart.studlab.app.repository.search.TTNSearchRepositoryMockConfiguration
-     */
     @Autowired
     private TTNSearchRepository mockTTNSearchRepository;
 
@@ -125,12 +120,7 @@ public class TTNResourceIntTest {
             .setValidator(validator).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
+
     public static TTN createEntity(EntityManager em) {
         TTN tTN = new TTN()
             .serialNumber(DEFAULT_SERIAL_NUMBER)
@@ -140,7 +130,7 @@ public class TTNResourceIntTest {
             .productsAmount(DEFAULT_PRODUCTS_AMOUNT)
             .numberOfProductEntries(DEFAULT_NUMBER_OF_PRODUCT_ENTRIES)
             .dateTimeOfRegistration(DEFAULT_DATE_TIME_OF_REGISTRATION)
-            .isAccepted(DEFAULT_IS_ACCEPTED);
+            .status(DEFAULT_STATUS);
         // Add required entity
         Transport transport = TransportResourceIntTest.createEntity(em);
         em.persist(transport);
@@ -182,7 +172,7 @@ public class TTNResourceIntTest {
         assertThat(testTTN.getProductsAmount()).isEqualTo(DEFAULT_PRODUCTS_AMOUNT);
         assertThat(testTTN.getNumberOfProductEntries()).isEqualTo(DEFAULT_NUMBER_OF_PRODUCT_ENTRIES);
         assertThat(testTTN.getDateTimeOfRegistration()).isEqualTo(DEFAULT_DATE_TIME_OF_REGISTRATION);
-        assertThat(testTTN.isIsAccepted()).isEqualTo(DEFAULT_IS_ACCEPTED);
+        assertThat(testTTN.getStatus()).isEqualTo(DEFAULT_STATUS);
 
         // Validate the TTN in Elasticsearch
         verify(mockTTNSearchRepository, times(1)).save(testTTN);
@@ -338,7 +328,7 @@ public class TTNResourceIntTest {
             .productsAmount(UPDATED_PRODUCTS_AMOUNT)
             .numberOfProductEntries(UPDATED_NUMBER_OF_PRODUCT_ENTRIES)
             .dateTimeOfRegistration(UPDATED_DATE_TIME_OF_REGISTRATION)
-            .isAccepted(UPDATED_IS_ACCEPTED);
+            .status(UPDATED_STATUS);
         TTNDTO tTNDTO = tTNMapper.toDto(updatedTTN);
 
         restTTNMockMvc.perform(put("/api/ttns")
@@ -465,4 +455,4 @@ public class TTNResourceIntTest {
         assertThat(tTNMapper.fromId(42L).getId()).isEqualTo(42);
         assertThat(tTNMapper.fromId(null)).isNull();
     }
-}
+}*/

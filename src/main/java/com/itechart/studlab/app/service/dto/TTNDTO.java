@@ -1,4 +1,6 @@
 package com.itechart.studlab.app.service.dto;
+import com.itechart.studlab.app.domain.enumeration.TtnStatus;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
@@ -29,7 +31,7 @@ public class TTNDTO implements Serializable {
     @NotNull
     private Instant dateTimeOfRegistration;
 
-    private Boolean isAccepted;
+    private TtnStatus status;
 
     private Long dispatcherId;
 
@@ -115,12 +117,12 @@ public class TTNDTO implements Serializable {
         this.dateTimeOfRegistration = dateTimeOfRegistration;
     }
 
-    public Boolean isIsAccepted() {
-        return isAccepted;
+    public TtnStatus getStatus() {
+        return status;
     }
 
-    public void setIsAccepted(Boolean isAccepted) {
-        this.isAccepted = isAccepted;
+    public void setStatus(TtnStatus status) {
+        this.status = status;
     }
 
     public Long getDispatcherId() {
@@ -179,13 +181,7 @@ public class TTNDTO implements Serializable {
         this.transportId = transportId;
     }
 
-    public Boolean getAccepted() {
-        return isAccepted;
-    }
 
-    public void setAccepted(Boolean accepted) {
-        isAccepted = accepted;
-    }
 
     public Long getTransportVehicleNumber() {
         return transportVehicleNumber;
@@ -243,7 +239,7 @@ public class TTNDTO implements Serializable {
             ", productsAmount=" + getProductsAmount() +
             ", numberOfProductEntries=" + getNumberOfProductEntries() +
             ", dateTimeOfRegistration='" + getDateTimeOfRegistration() + "'" +
-            ", isAccepted='" + isIsAccepted() + "'" +
+            ", status='" + getStatus() + "'" +
             ", dispatcher=" + getDispatcherId() +
             ", dispatcher='" + getDispatcherLastName() + "'" +
             ", manager=" + getManagerId() +

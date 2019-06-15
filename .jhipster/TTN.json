@@ -39,8 +39,8 @@
             ]
         },
         {
-            "fieldName": "isAccepted",
-            "fieldType": "Boolean"
+            "fieldName": "status",
+            "fieldType": "String"
         },
         {
             "fieldName": "sender",

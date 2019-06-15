@@ -13,6 +13,7 @@ export interface IHeaderProps {
   isDispatcher: boolean;
   isManager: boolean;
   isStorehouseAdmin: boolean;
+  isSupervisor: boolean;
   companyName: string;
   ribbonEnv: string;
   isInProduction: boolean;
@@ -57,6 +58,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       isDispatcher,
       isManager,
       isStorehouseAdmin,
+      isSupervisor,
       companyName,
       isSwaggerEnabled,
       isInProduction
@@ -74,7 +76,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
               <Home />
-              {isAuthenticated && (isManager || isDispatcher) && <Ttn />}
+              {isAuthenticated && (isManager || isDispatcher || isSupervisor) && <Ttn />}
               {isAuthenticated && isDispatcher && <Transporter />}
               {isAuthenticated && isDispatcher && <Transport />}
               {isAuthenticated && isAdmin && <Companies />}

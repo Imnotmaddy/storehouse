@@ -66,9 +66,9 @@ export const TTNAdd = props => (
             />
           </AvGroup>
           <AvGroup>
-            <Label id="isAcceptedLabel" check>
-              <AvInput id="ttn-isAccepted" type="checkbox" className="form-control" name="isAccepted" />
-              <Translate contentKey="storeHouseApp.tTN.isAccepted">Is Accepted</Translate>
+            <Label id="statusLabel" check>
+              <AvInput id="ttn-status" type="select" className="form-control" name="status" />
+              Status
             </Label>
           </AvGroup>
           <AvGroup>
