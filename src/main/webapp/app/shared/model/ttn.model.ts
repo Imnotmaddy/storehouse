@@ -32,3 +32,5 @@ export interface ITTN {
   transporterId?: number;
   products?: IProduct[];
 }
+
+export const defaultValue: Readonly<ITTN> = {};
