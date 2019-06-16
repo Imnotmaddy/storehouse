@@ -80,7 +80,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       const { tTNEntity } = this.props;
       const entity = {
         ...tTNEntity,
-        ...values
+        ...values,
+        products: this.state.products
       };
 
       if (this.state.isNew) {
@@ -117,7 +118,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? {} : tTNEntity} onSubmit={this.saveEntity}>
+              <AvForm model={isNew ? {} : tTNEntity} id="ttnForm" onSubmit={this.saveEntity}>
                 {!isNew ? (
                   <AvGroup>
                     <Label for="id">
@@ -285,7 +286,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
               </span>
             </Button>
             &nbsp;
-            <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+            <Button color="primary" id="save-entity" type="submit" form="ttnForm" disabled={updating}>
               <FontAwesomeIcon icon="save" />
               &nbsp;
               <Translate contentKey="entity.action.save">Save</Translate>

@@ -7,6 +7,7 @@ import com.itechart.studlab.app.domain.Transport;
 import com.itechart.studlab.app.domain.Transporter;
 import com.itechart.studlab.app.repository.TTNRepository;
 import com.itechart.studlab.app.repository.search.TTNSearchRepository;
+import com.itechart.studlab.app.service.ProductService;
 import com.itechart.studlab.app.service.TTNService;
 import com.itechart.studlab.app.service.dto.TTNDTO;
 import com.itechart.studlab.app.service.mapper.TTNMapper;
@@ -86,6 +87,9 @@ public class TTNResourceIntTest {
     @Autowired
     private TTNService tTNService;
 
+    @Autowired
+    private ProductService productService;
+
     /**
      * This repository is mocked in the com.itechart.studlab.app.repository.search test package.
      *
@@ -116,7 +120,7 @@ public class TTNResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TTNResource tTNResource = new TTNResource(tTNService);
+        final TTNResource tTNResource = new TTNResource(tTNService, productService);
         this.restTTNMockMvc = MockMvcBuilders.standaloneSetup(tTNResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

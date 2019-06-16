@@ -1,4 +1,5 @@
 package com.itechart.studlab.app.web.rest;
+import com.itechart.studlab.app.service.ProductService;
 import com.itechart.studlab.app.service.TTNService;
 import com.itechart.studlab.app.web.rest.errors.BadRequestAlertException;
 import com.itechart.studlab.app.web.rest.util.HeaderUtil;
@@ -32,8 +33,11 @@ public class TTNResource {
 
     private final TTNService tTNService;
 
-    public TTNResource(TTNService tTNService) {
+    private final ProductService productService;
+
+    public TTNResource(TTNService tTNService, ProductService productService) {
         this.tTNService = tTNService;
+        this.productService = productService;
     }
 
     /**
@@ -50,6 +54,7 @@ public class TTNResource {
             throw new BadRequestAlertException("A new tTN cannot already have an ID", ENTITY_NAME, "idexists");
         }
         TTNDTO result = tTNService.save(tTNDTO);
+        productService.saveAllForTTN(tTNDTO.getProducts(), result.getId());
         return ResponseEntity.created(new URI("/api/ttns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
