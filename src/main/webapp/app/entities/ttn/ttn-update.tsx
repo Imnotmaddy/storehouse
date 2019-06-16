@@ -19,6 +19,8 @@ import { ITTN } from 'app/shared/model/ttn.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import { AddProductModal } from 'app/entities/ttn/add-product-modal';
+import { AddProduct } from 'app/entities/ttn/add-product';
 
 export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -29,6 +31,14 @@ export interface ITTNUpdateState {
   senderId: string;
   transportId: string;
   transporterId: string;
+  products: Array<{
+    name: string;
+    quantity: number;
+    cost: number;
+    weight: number;
+    requiredFacility: string;
+    state: string;
+  }>;
 }
 
 export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState> {
@@ -40,7 +50,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       senderId: '0',
       transportId: '0',
       transporterId: '0',
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
+      products: []
     };
   }
 
@@ -80,8 +91,12 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
     }
   };
 
+  handleProductUpdate = (products: []) => {
+    this.setState({ products });
+  };
+
   handleClose = () => {
-    this.props.history.push('/entity/ttn');
+    this.props.history.push('/ttn');
   };
 
   render() {
@@ -259,21 +274,22 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/ttn" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
               </AvForm>
             )}
+            <AddProduct getRows={this.handleProductUpdate} />
+            <Button tag={Link} id="cancel-save" to="/ttn" replace color="info">
+              <FontAwesomeIcon icon="arrow-left" />
+              &nbsp;
+              <span className="d-none d-md-inline">
+                <Translate contentKey="entity.action.back">Back</Translate>
+              </span>
+            </Button>
+            &nbsp;
+            <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <FontAwesomeIcon icon="save" />
+              &nbsp;
+              <Translate contentKey="entity.action.save">Save</Translate>
+            </Button>
           </Col>
         </Row>
       </div>

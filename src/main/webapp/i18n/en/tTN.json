@@ -29,7 +29,14 @@
       "sender": "Sender",
       "transport": "Transport",
       "transporter": "Transporter",
-      "products": "Products"
+      "products": "Products",
+      "quantity": "Quantity",
+      "cost": "Cost",
+      "weight": "Weight",
+      "name": "Name",
+      "requiredFacility": "Required Facility",
+      "currentState": "Current State",
+      "addProduct": "Add Product"
     }
   }
 }
