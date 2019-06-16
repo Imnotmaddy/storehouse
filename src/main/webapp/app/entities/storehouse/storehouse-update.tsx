@@ -94,8 +94,8 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
 
   handleModalValues = (value: IStorageRoom) => {
     value.storehouseId = this.props.storehouseEntity.id;
+
     const storageRooms = this.state.storageRooms.concat(value);
-    console.log('new rooms', storageRooms);
     this.setState({
       storageRooms,
       roomNumberValue: '',
@@ -112,7 +112,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
     this.setState(state);
   };
 
-  checkRoomNumber = value => !this.state.storageRooms.includes({ roomNumber: value });
+  checkRoomNumber = (value: string) => !this.state.storageRooms.filter(room => room.roomNumber === value).length;
 
   saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
