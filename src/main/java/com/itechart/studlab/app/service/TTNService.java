@@ -150,9 +150,11 @@ public class TTNService {
         Authority dispatcher = new Authority();
         Authority manager = new Authority();
         Authority supervisor = new Authority();
+        Authority owner = new Authority();
         dispatcher.setName("ROLE_DISPATCHER");
         manager.setName("ROLE_MANAGER");
         supervisor.setName("ROLE_SUPERVISOR");
+        owner.setName("ROLE_OWNER");
 
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
         if(user.getAuthorities().contains(dispatcher)){
@@ -168,13 +170,19 @@ public class TTNService {
         }
 
         if(user.getAuthorities().contains(supervisor)){
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.CHECKED).stream()
+            list.addAll( tTNRepository.findAllByStatus(TtnStatus.REGISTERED).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
         }
 
         if(user.getAuthorities().contains(manager)){
             list.addAll( tTNRepository.findAllByStatus(TtnStatus.REMOVED_FROM_STORAGE).stream()
+                .map(tTNMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new)));
+        }
+
+        if(user.getAuthorities().contains(owner)){
+            list.addAll( tTNRepository.findAll().stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
         }

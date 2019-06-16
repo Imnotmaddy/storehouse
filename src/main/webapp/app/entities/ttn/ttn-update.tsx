@@ -28,6 +28,7 @@ export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteCompone
   isDispatcher: boolean;
   isManager: boolean;
   isStorehouseAdmin: boolean;
+  isSupervisor: boolean;
 }
 
 export interface ITTNUpdateState {
@@ -104,7 +105,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       isAdmin,
       isDispatcher,
       isManager,
-      isStorehouseAdmin
+      isStorehouseAdmin,
+      isSupervisor
     } = this.props;
     const { isNew } = this.state;
 
@@ -201,11 +203,11 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                 <AvGroup>
                   <Label id="statusLabel">Status</Label>
                   <AvInput id="ttn-status" type="select" className="form-control" name="status">
-                    <option value="REGISTERED">REGISTERED</option>
-                    <option value="CHECKED">CHECKED</option>
-                    <option value="DECORATED">DECORATED</option>
-                    <option value="RELEASE_ALLOWED">RELEASE_ALLOWED</option>
-                    <option value="REMOVED_FROM_STORAGE">REMOVED_FROM_STORAGE</option>
+                    {isAuthenticated && (isDispatcher || isManager) && <option value="REGISTERED">REGISTERED</option>}
+                    {isAuthenticated && isSupervisor && <option value="CHECKED">CHECKED</option>}
+                    {isAuthenticated && isDispatcher && <option value="DECORATED">DECORATED</option>}
+                    {isAuthenticated && isSupervisor && <option value="RELEASE_ALLOWED">RELEASE_ALLOWED</option>}
+                    {isAuthenticated && isSupervisor && <option value="REMOVED_FROM_STORAGE">REMOVED_FROM_STORAGE</option>}
                   </AvInput>
                 </AvGroup>
                 {isAuthenticated &&
@@ -284,6 +286,7 @@ const mapStateToProps = (storeState: IRootState, authentication: IRootState) => 
   isDispatcher: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
   isManager: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.MANAGER]),
   isStorehouseAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  isSupervisor: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.SUPERVISOR]),
   users: storeState.userManagement.users,
   transports: storeState.transport.entities,
   transporters: storeState.transporter.entities,
