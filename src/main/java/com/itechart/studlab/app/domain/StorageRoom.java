@@ -45,7 +45,7 @@ public class StorageRoom implements Serializable {
     private Set<Product> products = new HashSet<>();
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "storehouse_id")
     private Storehouse storehouse;
 

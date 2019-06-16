@@ -93,7 +93,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
   };
 
   handleModalValues = (value: IStorageRoom) => {
-    value.storehouseId = this.props.storehouseEntity.id;
+    // value.storehouseId = this.props.storehouseEntity.id;
 
     const storageRooms = this.state.storageRooms.concat(value);
     this.setState({

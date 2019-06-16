@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,9 +63,9 @@ public class Storehouse implements Serializable {
     private User supervisor;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<StorageRoom> rooms;
+    private List<StorageRoom> rooms = new ArrayList<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
