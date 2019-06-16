@@ -12,6 +12,7 @@ export interface IAddModalProps {
   show: boolean;
   toggle: Function;
   getValues: Function;
+  checkRoomNumber: Function;
 }
 
 export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
@@ -66,7 +67,8 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
                   maxLength: {
                     value: 50,
                     errorMessage: translate('entity.validation.maxlength', { max: 50 })
-                  }
+                  },
+                  checkId: this.props.checkRoomNumber
                 }}
               />
             </AvGroup>

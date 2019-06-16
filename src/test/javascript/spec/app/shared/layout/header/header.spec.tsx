@@ -20,6 +20,7 @@ describe('Header', () => {
     isAdmin: true,
     isManager: false,
     isStorehouseAdmin: false,
+    isDispatcher: false,
     companyName: 'test',
     currentLocale: 'en',
     onLocaleChange: localeSpy,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row } from 'reactstrap';
+import { Button, Col, Label, Row, Table } from 'reactstrap';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate } from 'react-jhipster';
@@ -9,10 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { createEntity, getEntity, reset, updateEntity } from './storehouse.reducer';
-import { AddStorageRoom } from 'app/entities/storehouse/add-storage-room';
 import { getSession } from 'app/shared/reducers/authentication';
-import { IStorehouse } from 'app/shared/model/storehouse.model';
 import { IStorageRoom } from 'app/shared/model/storage-room.model';
+import { AddModal } from 'app/entities/storehouse/addModal';
 
 // tslint:disable-next-line:no-unused-variable
 
@@ -25,7 +24,10 @@ export interface IStorehouseUpdateState {
   dispatcherId: string;
   managerId: string;
   supervisorId: string;
-  storageRooms: IStorehouse[];
+  roomNumberValue: string;
+  typeValue: string;
+  showAddModal: boolean;
+  storageRooms: IStorageRoom[];
 }
 
 export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IStorehouseUpdateState> {
@@ -38,6 +40,9 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
       managerId: '0',
       supervisorId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id,
+      roomNumberValue: '',
+      typeValue: '',
+      showAddModal: false,
       storageRooms: []
     };
   }
@@ -52,13 +57,62 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
     if (this.state.isNew) {
       this.props.reset();
     } else {
-      this.props.getEntity(this.props.match.params.id);
+      const entity = this.props.getEntity(this.props.match.params.id);
+      const promise = new Promise(resolve => {
+        resolve(entity);
+      });
+      promise.then(value => {
+        this.setState({ storageRooms: value.value.data.rooms });
+      });
     }
 
     this.props.getUsers();
   }
 
-  genRoomsTable = () => this.props.storehouseEntity.rooms;
+  genRows = () =>
+    this.state.storageRooms.map((row, i) => (
+      <tr key={i}>
+        <td>{row.roomNumber}</td>
+        <td>{row.type}</td>
+        <td>
+          <Button color="danger" size="sm" value={i} onClick={this.deleteRow}>
+            <FontAwesomeIcon icon="trash" />{' '}
+            <span className="d-none d-md-inline">
+              <Translate contentKey="entity.action.delete">Delete</Translate>
+            </span>
+          </Button>
+        </td>
+      </tr>
+    ));
+
+  deleteRow = event => {
+    const elementId = event.currentTarget.value;
+    const newRows = [...this.state.storageRooms];
+    newRows.splice(elementId, 1); // filter, const value from event
+    this.setState({ storageRooms: newRows });
+  };
+
+  handleModalValues = (value: IStorageRoom) => {
+    value.storehouseId = this.props.storehouseEntity.id;
+    const storageRooms = this.state.storageRooms.concat(value);
+    console.log('new rooms', storageRooms);
+    this.setState({
+      storageRooms,
+      roomNumberValue: '',
+      typeValue: '',
+      showAddModal: false
+    });
+  };
+
+  toggleAddModal = () => {
+    const state = {
+      ...this.state
+    };
+    state.showAddModal = !state.showAddModal;
+    this.setState(state);
+  };
+
+  checkRoomNumber = value => !this.state.storageRooms.includes({ roomNumber: value });
 
   saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
@@ -76,10 +130,6 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
         this.props.updateEntity(entity);
       }
     }
-  };
-
-  handleStorageRoomsUpdate = (storageRooms: IStorehouse[]) => {
-    this.setState({ storageRooms });
   };
 
   handleClose = () => {
@@ -194,7 +244,34 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                 </AvGroup>
               </AvForm>
             )}
-            <AddStorageRoom getRows={this.handleStorageRoomsUpdate} rows={this.genRoomsTable} />
+            <div className="d-flex">
+              <Label className="mr-auto" for="storageRoomsTable">
+                <Translate contentKey="storeHouseApp.storehouse.storageRooms">Storage rooms</Translate>
+              </Label>
+              <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal}>
+                <Translate contentKey="storeHouseApp.storehouse.addRoom">Add room</Translate>
+              </Button>
+            </div>
+            <Table name="storageRoomsTable" responsive size="sm">
+              <thead>
+                <tr>
+                  <th>
+                    <Translate contentKey="storeHouseApp.storehouse.roomNumber">Room number</Translate>
+                  </th>
+                  <th>
+                    <Translate contentKey="storeHouseApp.storehouse.type">Type</Translate>
+                  </th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>{this.genRows()}</tbody>
+            </Table>
+            <AddModal
+              show={this.state.showAddModal}
+              toggle={this.toggleAddModal}
+              getValues={this.handleModalValues}
+              checkRoomNumber={this.checkRoomNumber}
+            />
             <Button tag={Link} id="cancel-save" to="/storehouse" replace color="info">
               <FontAwesomeIcon icon="arrow-left" />
               &nbsp;

@@ -1,6 +1,9 @@
 package com.itechart.studlab.app.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -65,6 +68,7 @@ public class Storehouse implements Serializable {
     @JoinColumn(unique = true)
     private User supervisor;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "storehouse")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<StorageRoom> rooms;

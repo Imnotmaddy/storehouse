@@ -4,6 +4,7 @@ import com.itechart.studlab.app.domain.Storehouse;
 import com.itechart.studlab.app.repository.StorehouseRepository;
 import com.itechart.studlab.app.repository.search.StorehouseSearchRepository;
 import com.itechart.studlab.app.service.dto.StorehouseDTO;
+import com.itechart.studlab.app.service.mapper.StorageRoomMapper;
 import com.itechart.studlab.app.service.mapper.StorehouseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,7 @@ public class StorehouseService {
         log.debug("Request to save Storehouse : {}", storehouseDTO);
         Storehouse storehouse = storehouseMapper.toEntity(storehouseDTO);
         storehouse = storehouseRepository.save(storehouse);
+
         StorehouseDTO result = storehouseMapper.toDto(storehouse);
         storehouseSearchRepository.save(storehouse);
         return result;
