@@ -11,9 +11,17 @@ import { IRootState } from 'app/shared/reducers';
 import { getSearchEntities, getEntities } from './transport.reducer';
 import { ITransport } from 'app/shared/model/transport.model';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
-export interface ITransportProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface ITransportProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isDispatcher: boolean;
+  isManager: boolean;
+  isStorehouseAdmin: boolean;
+  isOwner: boolean;
+}
 
 export interface ITransportState {
   search: string;
@@ -43,16 +51,18 @@ export class Transport extends React.Component<ITransportProps, ITransportState>
   handleSearch = event => this.setState({ search: event.target.value });
 
   render() {
-    const { transportList, match } = this.props;
+    const { transportList, match, isAuthenticated, isAdmin, isDispatcher, isManager, isStorehouseAdmin, isOwner } = this.props;
     return (
       <div>
         <h2 id="transport-heading">
           <Translate contentKey="storeHouseApp.transport.home.title">Transports</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="storeHouseApp.transport.home.createLabel">Create new Transport</Translate>
-          </Link>
+          {!isOwner && (
+            <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+              <FontAwesomeIcon icon="plus" />
+              &nbsp;
+              <Translate contentKey="storeHouseApp.transport.home.createLabel">Create new Transport</Translate>
+            </Link>
+          )}
         </h2>
         <Row>
           <Col sm="12">
@@ -115,28 +125,30 @@ export class Transport extends React.Component<ITransportProps, ITransportState>
                       ''
                     )}
                   </td>
-                  <td className="text-right">
-                    <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${transport.id}`} color="info" size="sm">
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${transport.id}/edit`} color="primary" size="sm">
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${transport.id}/delete`} color="danger" size="sm">
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
-                      </Button>
-                    </div>
-                  </td>
+                  {!isOwner && (
+                    <td className="text-right">
+                      <div className="btn-group flex-btn-group-container">
+                        <Button tag={Link} to={`${match.url}/${transport.id}`} color="info" size="sm">
+                          <FontAwesomeIcon icon="eye" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.view">View</Translate>
+                          </span>
+                        </Button>
+                        <Button tag={Link} to={`${match.url}/${transport.id}/edit`} color="primary" size="sm">
+                          <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.edit">Edit</Translate>
+                          </span>
+                        </Button>
+                        <Button tag={Link} to={`${match.url}/${transport.id}/delete`} color="danger" size="sm">
+                          <FontAwesomeIcon icon="trash" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.delete">Delete</Translate>
+                          </span>
+                        </Button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -147,8 +159,14 @@ export class Transport extends React.Component<ITransportProps, ITransportState>
   }
 }
 
-const mapStateToProps = ({ transport }: IRootState) => ({
-  transportList: transport.entities
+const mapStateToProps = ({ authentication, transport }: IRootState) => ({
+  transportList: transport.entities,
+  isAuthenticated: authentication.isAuthenticated,
+  isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isDispatcher: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
+  isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  isOwner: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.OWNER])
 });
 
 const mapDispatchToProps = {

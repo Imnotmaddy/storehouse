@@ -20,6 +20,7 @@ export interface ITTNProps extends StateProps, DispatchProps, RouteComponentProp
   isDispatcher: boolean;
   isManager: boolean;
   isStorehouseAdmin: boolean;
+  isOwner: boolean;
 }
 
 export interface ITTNState {
@@ -50,16 +51,18 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
   handleSearch = event => this.setState({ search: event.target.value });
 
   render() {
-    const { tTNList, match, isAuthenticated, isAdmin, isDispatcher, isManager, isStorehouseAdmin } = this.props;
+    const { tTNList, match, isAuthenticated, isAdmin, isDispatcher, isManager, isStorehouseAdmin, isOwner } = this.props;
     return (
       <div>
         <h2 id="ttn-heading">
           <Translate contentKey="storeHouseApp.tTN.home.title">TTNS</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="storeHouseApp.tTN.home.createLabel">Create new TTN</Translate>
-          </Link>
+          {!isOwner && (
+            <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+              <FontAwesomeIcon icon="plus" />
+              &nbsp;
+              <Translate contentKey="storeHouseApp.tTN.home.createLabel">Create new TTN</Translate>
+            </Link>
+          )}
         </h2>
         <Row>
           <Col sm="12">
@@ -167,28 +170,30 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                   <td>
                     {tTN.transporterCompanyName ? <Link to={`transporter/${tTN.transporterId}`}>{tTN.transporterCompanyName}</Link> : ''}
                   </td>
-                  <td className="text-right">
-                    <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${tTN.id}`} color="info" size="sm">
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${tTN.id}/edit`} color="primary" size="sm">
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${tTN.id}/delete`} color="danger" size="sm">
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
-                      </Button>
-                    </div>
-                  </td>
+                  {!isOwner && (
+                    <td className="text-right">
+                      <div className="btn-group flex-btn-group-container">
+                        <Button tag={Link} to={`${match.url}/${tTN.id}`} color="info" size="sm">
+                          <FontAwesomeIcon icon="eye" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.view">View</Translate>
+                          </span>
+                        </Button>
+                        <Button tag={Link} to={`${match.url}/${tTN.id}/edit`} color="primary" size="sm">
+                          <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.edit">Edit</Translate>
+                          </span>
+                        </Button>
+                        <Button tag={Link} to={`${match.url}/${tTN.id}/delete`} color="danger" size="sm">
+                          <FontAwesomeIcon icon="trash" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.delete">Delete</Translate>
+                          </span>
+                        </Button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -205,7 +210,8 @@ const mapStateToProps = ({ authentication, tTN }: IRootState) => ({
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
   isDispatcher: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
   isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
-  isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN])
+  isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  isOwner: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.OWNER])
 });
 
 const mapDispatchToProps = {
