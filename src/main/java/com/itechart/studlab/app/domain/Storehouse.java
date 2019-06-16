@@ -1,8 +1,6 @@
 package com.itechart.studlab.app.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -11,7 +9,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,25 +37,21 @@ public class Storehouse implements Serializable {
 
     @OneToOne(optional = false)
     @NotNull
-
     @JoinColumn(unique = true)
     private User owner;
 
     @OneToOne(optional = false)
     @NotNull
-
     @JoinColumn(unique = true)
     private User administrator;
 
     @OneToOne(optional = false)
     @NotNull
-
     @JoinColumn(unique = true)
     private User dispatcher;
 
     @OneToOne(optional = false)
     @NotNull
-
     @JoinColumn(unique = true)
     private User manager;
 
@@ -69,7 +62,7 @@ public class Storehouse implements Serializable {
     private User supervisor;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "storehouse")
+    @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<StorageRoom> rooms;
 
