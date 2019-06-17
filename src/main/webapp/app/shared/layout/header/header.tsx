@@ -13,6 +13,8 @@ export interface IHeaderProps {
   isDispatcher: boolean;
   isManager: boolean;
   isStorehouseAdmin: boolean;
+  isSupervisor: boolean;
+  isOwner: boolean;
   companyName: string;
   ribbonEnv: string;
   isInProduction: boolean;
@@ -57,6 +59,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       isDispatcher,
       isManager,
       isStorehouseAdmin,
+      isSupervisor,
+      isOwner,
       companyName,
       isSwaggerEnabled,
       isInProduction
@@ -74,12 +78,11 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
               <Home />
-              {isAuthenticated && (isManager || isDispatcher) && <Ttn />}
-              {isAuthenticated && isDispatcher && <Transporter />}
-              {isAuthenticated && isDispatcher && <Transport />}
-              {isAuthenticated && <EntitiesMenu />}
+              {isAuthenticated && (isManager || isDispatcher || isSupervisor || isOwner) && <Ttn />}
+              {isAuthenticated && (isDispatcher || isOwner) && <Transporter />}
+              {isAuthenticated && (isDispatcher || isOwner) && <Transport />}
               {isAuthenticated && isAdmin && <Companies />}
-              {isAuthenticated && isStorehouseAdmin && <Users />}
+              {isAuthenticated && (isStorehouseAdmin || isOwner) && <Users />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
               <AccountMenu isAuthenticated={isAuthenticated} />
             </Nav>

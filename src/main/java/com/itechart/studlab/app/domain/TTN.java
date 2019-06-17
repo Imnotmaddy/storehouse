@@ -2,6 +2,7 @@ package com.itechart.studlab.app.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.itechart.studlab.app.domain.enumeration.TtnStatus;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -56,8 +57,8 @@ public class TTN implements Serializable {
     @Column(name = "date_time_of_registration", nullable = false)
     private Instant dateTimeOfRegistration;
 
-    @Column(name = "is_accepted")
-    private Boolean isAccepted;
+    @Column(name = "status")
+    private TtnStatus status;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -67,12 +68,13 @@ public class TTN implements Serializable {
     @JoinColumn(unique = true)
     private User manager;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User sender;
+    @Column(name = "sender")
+    private String sender;
+
+    @Column(name = "recipient")
+    private String recipient;
 
     @OneToOne(optional = false)    @NotNull
-
     @JoinColumn(unique = true)
     private Transport transport;
 
@@ -184,17 +186,17 @@ public class TTN implements Serializable {
         this.dateTimeOfRegistration = dateTimeOfRegistration;
     }
 
-    public Boolean isIsAccepted() {
-        return isAccepted;
+    public TtnStatus getStatus() {
+        return status;
     }
 
-    public TTN isAccepted(Boolean isAccepted) {
-        this.isAccepted = isAccepted;
+    public TTN status(TtnStatus status) {
+        this.status = status;
         return this;
     }
 
-    public void setIsAccepted(Boolean isAccepted) {
-        this.isAccepted = isAccepted;
+    public void setStatus(TtnStatus status) {
+        this.status = status;
     }
 
     public User getDispatcher() {
@@ -223,17 +225,30 @@ public class TTN implements Serializable {
         this.manager = user;
     }
 
-    public User getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public TTN sender(User user) {
-        this.sender = user;
+    public TTN sender(String sender) {
+        this.sender = sender;
         return this;
     }
 
-    public void setSender(User user) {
-        this.sender = user;
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public TTN recipient(String recipient) {
+        this.sender = recipient;
+        return this;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
 
     public Transport getTransport() {
@@ -319,7 +334,7 @@ public class TTN implements Serializable {
             ", productsAmount=" + getProductsAmount() +
             ", numberOfProductEntries=" + getNumberOfProductEntries() +
             ", dateTimeOfRegistration='" + getDateTimeOfRegistration() + "'" +
-            ", isAccepted='" + isIsAccepted() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

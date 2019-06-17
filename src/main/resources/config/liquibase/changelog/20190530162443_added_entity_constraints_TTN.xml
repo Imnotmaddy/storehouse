@@ -20,12 +20,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
-        <addForeignKeyConstraint baseColumnNames="sender_id"
-                                 baseTableName="ttn"
-                                 constraintName="fk_ttn_sender_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
-
         <addForeignKeyConstraint baseColumnNames="transport_id"
                                  baseTableName="ttn"
                                  constraintName="fk_ttn_transport_id"

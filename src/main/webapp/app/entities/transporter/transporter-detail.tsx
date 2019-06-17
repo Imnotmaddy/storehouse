@@ -10,9 +10,17 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './transporter.reducer';
 import { ITransporter } from 'app/shared/model/transporter.model';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
-export interface ITransporterDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface ITransporterDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isDispatcher: boolean;
+  isManager: boolean;
+  isStorehouseAdmin: boolean;
+  isOwner: boolean;
+}
 
 export class TransporterDetail extends React.Component<ITransporterDetailProps> {
   componentDidMount() {
@@ -20,7 +28,7 @@ export class TransporterDetail extends React.Component<ITransporterDetailProps> 
   }
 
   render() {
-    const { transporterEntity } = this.props;
+    const { transporterEntity, isAuthenticated, isAdmin, isDispatcher, isManager, isStorehouseAdmin, isOwner } = this.props;
     return (
       <Row>
         <Col md="8">
@@ -42,20 +50,28 @@ export class TransporterDetail extends React.Component<ITransporterDetailProps> 
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/transporter/${transporterEntity.id}/edit`} replace color="primary">
-            <FontAwesomeIcon icon="pencil-alt" />{' '}
-            <span className="d-none d-md-inline">
-              <Translate contentKey="entity.action.edit">Edit</Translate>
-            </span>
-          </Button>
+          {!isOwner && (
+            <Button tag={Link} to={`/transporter/${transporterEntity.id}/edit`} replace color="primary">
+              <FontAwesomeIcon icon="pencil-alt" />{' '}
+              <span className="d-none d-md-inline">
+                <Translate contentKey="entity.action.edit">Edit</Translate>
+              </span>
+            </Button>
+          )}
         </Col>
       </Row>
     );
   }
 }
 
-const mapStateToProps = ({ transporter }: IRootState) => ({
-  transporterEntity: transporter.entity
+const mapStateToProps = ({ authentication, transporter }: IRootState) => ({
+  transporterEntity: transporter.entity,
+  isAuthenticated: authentication.isAuthenticated,
+  isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isDispatcher: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
+  isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  isOwner: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.OWNER])
 });
 
 const mapDispatchToProps = { getEntity };

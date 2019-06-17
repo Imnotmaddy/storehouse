@@ -19,11 +19,23 @@ import { ITTN } from 'app/shared/model/ttn.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+
 import { AddProductModal } from 'app/entities/ttn/add-product-modal';
 import { AddProduct } from 'app/entities/ttn/add-product';
 import { IProduct } from 'app/shared/model/product.model';
 
-export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import { AUTHORITIES } from 'app/config/constants';
+
+
+export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isDispatcher: boolean;
+  isManager: boolean;
+  isStorehouseAdmin: boolean;
+  isSupervisor: boolean;
+}
 
 export interface ITTNUpdateState {
   isNew: boolean;
@@ -161,7 +173,20 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   };
 
   render() {
-    const { tTNEntity, users, transports, transporters, loading, updating } = this.props;
+    const {
+      tTNEntity,
+      users,
+      transports,
+      transporters,
+      loading,
+      updating,
+      isAuthenticated,
+      isAdmin,
+      isDispatcher,
+      isManager,
+      isStorehouseAdmin,
+      isSupervisor
+    } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -264,56 +289,33 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="isAcceptedLabel" check>
-                    <AvInput id="ttn-isAccepted" type="checkbox" className="form-control" name="isAccepted" />
-                    <Translate contentKey="storeHouseApp.tTN.isAccepted">Is Accepted</Translate>
-                  </Label>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="dispatcher.lastName">
-                    <Translate contentKey="storeHouseApp.tTN.dispatcher">Dispatcher</Translate>
-                  </Label>
-                  <AvInput id="ttn-dispatcher" type="select" className="form-control" name="dispatcherId">
-                    <option value="" key="0" />
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
+                  <Label id="statusLabel">Status</Label>
+                  <AvInput id="ttn-status" type="select" className="form-control" name="status">
+                    {isAuthenticated && (isDispatcher || isManager) && <option value="REGISTERED">REGISTERED</option>}
+                    {isAuthenticated && isSupervisor && <option value="CHECKED">CHECKED</option>}
+                    {isAuthenticated && isDispatcher && <option value="DECORATED">DECORATED</option>}
+                    {isAuthenticated && isSupervisor && <option value="RELEASE_ALLOWED">RELEASE_ALLOWED</option>}
+                    {isAuthenticated && isSupervisor && <option value="REMOVED_FROM_STORAGE">REMOVED_FROM_STORAGE</option>}
                   </AvInput>
                 </AvGroup>
-                <AvGroup>
-                  <Label for="manager.lastName">
-                    <Translate contentKey="storeHouseApp.tTN.manager">Manager</Translate>
-                  </Label>
-                  <AvInput id="ttn-manager" type="select" className="form-control" name="managerId">
-                    <option value="" key="0" />
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="sender.lastName">
-                    <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
-                  </Label>
-                  <AvInput id="ttn-sender" type="select" className="form-control" name="senderId">
-                    <option value="" key="0" />
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
+                {isAuthenticated &&
+                  isDispatcher && (
+                    <AvGroup>
+                      <Label id="senderLabel" for="sender">
+                        <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
+                      </Label>
+                      <AvField id="ttn-sender" type="text" name="sender" />
+                    </AvGroup>
+                  )}
+                {isAuthenticated &&
+                  isManager && (
+                    <AvGroup>
+                      <Label id="recipientLabel" for="recipient">
+                        Recipient
+                      </Label>
+                      <AvField id="ttn-recipient" type="text" name="recipient" />
+                    </AvGroup>
+                  )}
                 <AvGroup>
                   <Label for="transport.id">
                     <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
@@ -344,6 +346,19 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                       : null}
                   </AvInput>
                 </AvGroup>
+                <Button tag={Link} id="cancel-save" to="/ttn" replace color="info">
+                  <FontAwesomeIcon icon="arrow-left" />
+                  &nbsp;
+                  <span className="d-none d-md-inline">
+                    <Translate contentKey="entity.action.back">Back</Translate>
+                  </span>
+                </Button>
+                &nbsp;
+                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+                  <FontAwesomeIcon icon="save" />
+                  &nbsp;
+                  <Translate contentKey="entity.action.save">Save</Translate>
+                </Button>
               </AvForm>
             )}
             <div className="position-relative">
@@ -403,7 +418,13 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   }
 }
 
-const mapStateToProps = (storeState: IRootState) => ({
+const mapStateToProps = (storeState: IRootState, authentication: IRootState) => ({
+  isAuthenticated: storeState.authentication.isAuthenticated,
+  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isDispatcher: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
+  isManager: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isStorehouseAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  isSupervisor: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.SUPERVISOR]),
   users: storeState.userManagement.users,
   transports: storeState.transport.entities,
   transporters: storeState.transporter.entities,

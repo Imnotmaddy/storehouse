@@ -1,4 +1,6 @@
 package com.itechart.studlab.app.service.dto;
+import com.itechart.studlab.app.domain.enumeration.TtnStatus;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
@@ -30,8 +32,7 @@ public class TTNDTO implements Serializable {
     @NotNull
     private Instant dateTimeOfRegistration;
 
-    private Boolean isAccepted;
-
+    private TtnStatus status;
 
     private Long dispatcherId;
 
@@ -41,11 +42,13 @@ public class TTNDTO implements Serializable {
 
     private String managerLastName;
 
-    private Long senderId;
+    private String sender;
 
-    private String senderLastName;
+    private String recipient;
 
     private Long transportId;
+
+    private Long transportVehicleNumber;
 
     private Long transporterId;
 
@@ -125,12 +128,12 @@ public class TTNDTO implements Serializable {
         this.dateTimeOfRegistration = dateTimeOfRegistration;
     }
 
-    public Boolean isIsAccepted() {
-        return isAccepted;
+    public TtnStatus getStatus() {
+        return status;
     }
 
-    public void setIsAccepted(Boolean isAccepted) {
-        this.isAccepted = isAccepted;
+    public void setStatus(TtnStatus status) {
+        this.status = status;
     }
 
     public Long getDispatcherId() {
@@ -165,20 +168,20 @@ public class TTNDTO implements Serializable {
         this.managerLastName = userLastName;
     }
 
-    public Long getSenderId() {
-        return senderId;
+    public String getSender() {
+        return sender;
     }
 
-    public void setSenderId(Long userId) {
-        this.senderId = userId;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public String getSenderLastName() {
-        return senderLastName;
+    public String getRecipient() {
+        return recipient;
     }
 
-    public void setSenderLastName(String userLastName) {
-        this.senderLastName = userLastName;
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
 
     public Long getTransportId() {
@@ -187,6 +190,16 @@ public class TTNDTO implements Serializable {
 
     public void setTransportId(Long transportId) {
         this.transportId = transportId;
+    }
+
+
+
+    public Long getTransportVehicleNumber() {
+        return transportVehicleNumber;
+    }
+
+    public void setTransportVehicleNumber(Long transportVehicleNumber) {
+        this.transportVehicleNumber = transportVehicleNumber;
     }
 
     public Long getTransporterId() {
@@ -237,14 +250,15 @@ public class TTNDTO implements Serializable {
             ", productsAmount=" + getProductsAmount() +
             ", numberOfProductEntries=" + getNumberOfProductEntries() +
             ", dateTimeOfRegistration='" + getDateTimeOfRegistration() + "'" +
-            ", isAccepted='" + isIsAccepted() + "'" +
+            ", status='" + getStatus() + "'" +
             ", dispatcher=" + getDispatcherId() +
             ", dispatcher='" + getDispatcherLastName() + "'" +
             ", manager=" + getManagerId() +
             ", manager='" + getManagerLastName() + "'" +
-            ", sender=" + getSenderId() +
-            ", sender='" + getSenderLastName() + "'" +
+            ", sender='" + getSender() + "'" +
+            ", recipient='" + getRecipient() + "'" +
             ", transport=" + getTransportId() +
+            ", transport=" + getTransportVehicleNumber() +
             ", transporter=" + getTransporterId() +
             ", transporter='" + getTransporterCompanyName() + "'" +
             "}";
