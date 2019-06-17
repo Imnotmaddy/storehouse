@@ -30,11 +30,11 @@ export class StorehouseDetail extends React.Component<IStorehouseDetailProps> {
             <dt>
               <Translate contentKey="storeHouseApp.storehouse.employees">Employees</Translate>
             </dt>
-            {storehouseEntity.employees ? storehouseEntity.employees.map(employee => <dd>{employee.login}</dd>) : ''}
+            {storehouseEntity.employees ? storehouseEntity.employees.map((employee, i) => <dd key={i}>{employee.login}</dd>) : ''}
             <dt>
               <Translate contentKey="storeHouseApp.storehouse.rooms">Rooms</Translate>
             </dt>
-            {storehouseEntity.rooms ? storehouseEntity.rooms.map(room => <dd>{room.roomNumber}</dd>) : ''}
+            {storehouseEntity.rooms ? storehouseEntity.rooms.map((room, i) => <dd key={i}>{room.roomNumber}</dd>) : ''}
           </dl>
           <Button tag={Link} to="/storehouse" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
