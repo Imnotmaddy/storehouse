@@ -22,10 +22,6 @@ public class StorehouseDTO implements Serializable {
 
     private String ownerLastName;
 
-    private Long administratorId;
-
-    private String administratorLastName;
-
     private Long dispatcherId;
 
     private String dispatcherLastName;
@@ -78,22 +74,6 @@ public class StorehouseDTO implements Serializable {
 
     public void setOwnerLastName(String userLastName) {
         this.ownerLastName = userLastName;
-    }
-
-    public Long getAdministratorId() {
-        return administratorId;
-    }
-
-    public void setAdministratorId(Long userId) {
-        this.administratorId = userId;
-    }
-
-    public String getAdministratorLastName() {
-        return administratorLastName;
-    }
-
-    public void setAdministratorLastName(String userLastName) {
-        this.administratorLastName = userLastName;
     }
 
     public Long getDispatcherId() {
@@ -181,8 +161,6 @@ public class StorehouseDTO implements Serializable {
             ", companyName='" + getCompanyName() + "'" +
             ", owner=" + getOwnerId() +
             ", ownerLastName='" + getOwnerLastName() + "'" +
-            ", administrator=" + getAdministratorId() +
-            ", administratorLastName='" + getAdministratorLastName() + "'" +
             ", dispatcher=" + getDispatcherId() +
             ", dispatcherLastName='" + getDispatcherLastName() + "'" +
             ", manager=" + getManagerId() +

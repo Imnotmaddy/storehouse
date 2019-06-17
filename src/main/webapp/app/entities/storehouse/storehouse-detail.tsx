@@ -32,10 +32,6 @@ export class StorehouseDetail extends React.Component<IStorehouseDetailProps> {
             </dt>
             <dd>{storehouseEntity.ownerLastName ? storehouseEntity.ownerLastName : ''}</dd>
             <dt>
-              <Translate contentKey="storeHouseApp.storehouse.administrator">Administrator</Translate>
-            </dt>
-            <dd>{storehouseEntity.administratorLastName ? storehouseEntity.administratorLastName : ''}</dd>
-            <dt>
               <Translate contentKey="storeHouseApp.storehouse.dispatcher">Dispatcher</Translate>
             </dt>
             <dd>{storehouseEntity.dispatcherLastName ? storehouseEntity.dispatcherLastName : ''}</dd>

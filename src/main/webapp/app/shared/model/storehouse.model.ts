@@ -6,8 +6,6 @@ export interface IStorehouse {
   companyName?: string;
   ownerLastName?: string;
   ownerId?: number;
-  administratorLastName?: string;
-  administratorId?: number;
   dispatcherLastName?: string;
   dispatcherId?: number;
   managerLastName?: string;

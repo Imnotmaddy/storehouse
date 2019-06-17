@@ -44,11 +44,6 @@ public class Storehouse implements Serializable {
     @OneToOne(optional = false)
     @NotNull
     @JoinColumn(unique = true)
-    private User administrator;
-
-    @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(unique = true)
     private User dispatcher;
 
     @OneToOne(optional = false)
@@ -108,19 +103,6 @@ public class Storehouse implements Serializable {
 
     public void setOwner(User user) {
         this.owner = user;
-    }
-
-    public User getAdministrator() {
-        return administrator;
-    }
-
-    public Storehouse administrator(User user) {
-        this.administrator = user;
-        return this;
-    }
-
-    public void setAdministrator(User user) {
-        this.administrator = user;
     }
 
     public User getDispatcher() {

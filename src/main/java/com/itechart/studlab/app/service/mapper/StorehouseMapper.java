@@ -13,8 +13,6 @@ public interface StorehouseMapper extends EntityMapper<StorehouseDTO, Storehouse
 
     @Mapping(source = "owner.id", target = "ownerId")
     @Mapping(source = "owner.lastName", target = "ownerLastName")
-    @Mapping(source = "administrator.id", target = "administratorId")
-    @Mapping(source = "administrator.lastName", target = "administratorLastName")
     @Mapping(source = "dispatcher.id", target = "dispatcherId")
     @Mapping(source = "dispatcher.lastName", target = "dispatcherLastName")
     @Mapping(source = "manager.id", target = "managerId")
@@ -25,7 +23,6 @@ public interface StorehouseMapper extends EntityMapper<StorehouseDTO, Storehouse
     StorehouseDTO toDto(Storehouse storehouse);
 
     @Mapping(source = "ownerId", target = "owner")
-    @Mapping(source = "administratorId", target = "administrator")
     @Mapping(source = "dispatcherId", target = "dispatcher")
     @Mapping(source = "managerId", target = "manager")
     @Mapping(source = "supervisorId", target = "supervisor")

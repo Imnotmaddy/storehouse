@@ -186,20 +186,6 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="administrator.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.administrator">Administrator</Translate>
-                  </Label>
-                  <AvInput id="storehouse-administrator" type="select" className="form-control" name="administratorId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
                   <Label for="dispatcher.lastName">
                     <Translate contentKey="storeHouseApp.storehouse.dispatcher">Dispatcher</Translate>
                   </Label>

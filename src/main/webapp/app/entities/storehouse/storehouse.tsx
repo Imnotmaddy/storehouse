@@ -63,9 +63,6 @@ export class Storehouse extends React.Component<IStorehouseProps, IStorehouseSta
                   <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="storeHouseApp.storehouse.administrator">Administrator</Translate>
-                </th>
-                <th>
                   <Translate contentKey="storeHouseApp.storehouse.dispatcher">Dispatcher</Translate>
                 </th>
                 <th>
@@ -86,7 +83,6 @@ export class Storehouse extends React.Component<IStorehouseProps, IStorehouseSta
                     </Button>
                   </td>
                   <td>{storehouse.ownerLastName ? storehouse.ownerLastName : ''}</td>
-                  <td>{storehouse.administratorLastName ? storehouse.administratorLastName : ''}</td>
                   <td>{storehouse.dispatcherLastName ? storehouse.dispatcherLastName : ''}</td>
                   <td>{storehouse.managerLastName ? storehouse.managerLastName : ''}</td>
                   <td>{storehouse.supervisorLastName ? storehouse.supervisorLastName : ''}</td>

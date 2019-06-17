@@ -115,8 +115,6 @@ public class StorehouseResourceIntTest {
         em.flush();
         storehouse.setOwner(user);
         // Add required entity
-        storehouse.setAdministrator(user);
-        // Add required entity
         storehouse.setDispatcher(user);
         // Add required entity
         storehouse.setManager(user);
