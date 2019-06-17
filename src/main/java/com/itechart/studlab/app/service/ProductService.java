@@ -1,9 +1,11 @@
 package com.itechart.studlab.app.service;
 
 import com.itechart.studlab.app.domain.Product;
+import com.itechart.studlab.app.domain.StorageRoom;
 import com.itechart.studlab.app.repository.ProductRepository;
 import com.itechart.studlab.app.repository.search.ProductSearchRepository;
 import com.itechart.studlab.app.service.dto.ProductDTO;
+import com.itechart.studlab.app.service.dto.StorageRoomDTO;
 import com.itechart.studlab.app.service.mapper.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +68,17 @@ public class ProductService {
         return productRepository.findAll().stream()
             .map(productMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    public List<ProductDTO> saveAllForTTN(List<ProductDTO> dtos, Long ttnId){
+        log.debug("Request to save products for ttn id: {}, {}", ttnId, dtos);
+        dtos.forEach(product -> product.setTTNId(ttnId));
+        log.debug("Update dto list: {}", dtos);
+        List<Product> products = productMapper.toEntity(dtos);
+        products = productRepository.saveAll(products);
+        List<ProductDTO> result = productMapper.toDto(products);
+        productSearchRepository.saveAll(products);
+        return result;
     }
 
 

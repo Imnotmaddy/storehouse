@@ -1,5 +1,6 @@
 package com.itechart.studlab.app.service;
 
+import com.itechart.studlab.app.domain.Product;
 import com.itechart.studlab.app.domain.Authority;
 import com.itechart.studlab.app.domain.TTN;
 import com.itechart.studlab.app.domain.User;
@@ -9,6 +10,7 @@ import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.TTNSearchRepository;
 import com.itechart.studlab.app.security.SecurityUtils;
 import com.itechart.studlab.app.service.dto.TTNDTO;
+import com.itechart.studlab.app.service.mapper.ProductMapper;
 import com.itechart.studlab.app.service.mapper.TTNMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,9 +63,12 @@ public class TTNService {
         tTNDTO = asignUserToDTO(tTNDTO);
         tTNDTO = asignCompanyToDTO(tTNDTO);
         TTN tTN = tTNMapper.toEntity(tTNDTO);
+        for (Product product : tTN.getProducts()) {
+            product.setTTN(tTN);
+        }
         tTN = tTNRepository.save(tTN);
         TTNDTO result = tTNMapper.toDto(tTN);
-        tTNSearchRepository.save(tTN);
+      //  tTNSearchRepository.save(tTN);
         return result;
     }
 

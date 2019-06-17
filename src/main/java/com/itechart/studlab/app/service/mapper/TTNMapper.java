@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity TTN and its DTO TTNDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class, TransportMapper.class, TransporterMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, TransportMapper.class, TransporterMapper.class, ProductMapper.class})
 public interface TTNMapper extends EntityMapper<TTNDTO, TTN> {
 
     @Mapping(source = "dispatcher.id", target = "dispatcherId")
@@ -19,13 +19,14 @@ public interface TTNMapper extends EntityMapper<TTNDTO, TTN> {
     @Mapping(source = "transport.vehicleNumber", target = "transportVehicleNumber")
     @Mapping(source = "transporter.id", target = "transporterId")
     @Mapping(source = "transporter.companyName", target = "transporterCompanyName")
+    @Mapping(source = "products", target = "products")
     TTNDTO toDto(TTN tTN);
 
     @Mapping(source = "dispatcherId", target = "dispatcher")
     @Mapping(source = "managerId", target = "manager")
     @Mapping(source = "transportId", target = "transport")
     @Mapping(source = "transporterId", target = "transporter")
-    @Mapping(target = "products", ignore = true)
+    @Mapping(source = "products", target = "products")
     TTN toEntity(TTNDTO tTNDTO);
 
     default TTN fromId(Long id) {

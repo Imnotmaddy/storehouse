@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,6 +53,16 @@ public class TTNDTO implements Serializable {
     private Long transporterId;
 
     private String transporterCompanyName;
+
+    private List<ProductDTO> products;
+
+    public List<ProductDTO> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductDTO> products) {
+        this.products = products;
+    }
 
     public Long getId() {
         return id;

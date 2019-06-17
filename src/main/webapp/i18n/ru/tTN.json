@@ -29,7 +29,14 @@
       "sender": "Sender",
       "transport": "Transport",
       "transporter": "Transporter",
-      "products": "Products"
+      "products": "Товары",
+      "quantity": "Количество",
+      "cost": "Стоимость",
+      "weight": "Масса",
+      "name": "Наименование",
+      "requiredFacility": "Требования к хранению",
+      "currentState": "Текущее состояние",
+      "addProduct": "Добавить Товар"
     }
   }
 }

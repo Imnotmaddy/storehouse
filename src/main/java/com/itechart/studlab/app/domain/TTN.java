@@ -9,6 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.Instant;
@@ -82,7 +83,7 @@ public class TTN implements Serializable {
     @JoinColumn(unique = true)
     private Transporter transporter;
 
-    @OneToMany(mappedBy = "tTN")
+    @OneToMany(mappedBy = "tTN", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Product> products = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
