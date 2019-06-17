@@ -1,5 +1,6 @@
 package com.itechart.studlab.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itechart.studlab.app.config.Constants;
 import org.apache.commons.lang3.StringUtils;
@@ -86,6 +87,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @JoinColumn(name = "address")
     private String address;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "storehouse_id")
+    private Storehouse storehouse;
 
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
@@ -207,6 +213,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.address = address;
     }
 
+    public Storehouse getStorehouse() {
+        return storehouse;
+    }
+
+    public void setStorehouse(Storehouse storehouse) {
+        this.storehouse = storehouse;
+    }
+
     public boolean getActivated() {
         return activated;
     }
@@ -282,6 +296,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", birthdate='" + birthdate + '\'' +
+            ", company='" + company + '\'' +
+            ", storehouse='" + storehouse + '\'' +
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +

@@ -59,6 +59,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
     } else {
       this.props
         .getEntity(this.props.match.params.id)
+        // @ts-ignore
         .then(response => {
           this.setState({ storageRooms: response.value.data.rooms });
         })

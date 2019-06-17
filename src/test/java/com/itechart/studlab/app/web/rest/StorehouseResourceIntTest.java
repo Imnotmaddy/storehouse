@@ -113,13 +113,13 @@ public class StorehouseResourceIntTest {
         User user = UserResourceIntTest.createEntity(em);
         em.persist(user);
         em.flush();
-        storehouse.setOwner(user);
+        //storehouse.setOwner(user);
         // Add required entity
-        storehouse.setDispatcher(user);
+        //storehouse.setDispatcher(user);
         // Add required entity
-        storehouse.setManager(user);
+        //storehouse.setManager(user);
         // Add required entity
-        storehouse.setSupervisor(user);
+        //storehouse.setSupervisor(user);
         return storehouse;
     }
 

@@ -8,17 +8,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import { languages } from 'app/config/translation';
 import { getUser } from './user-management.reducer';
+import { getEntity } from 'app/entities/storehouse/storehouse.reducer';
 import { IRootState } from 'app/shared/reducers';
 
 export interface IUserManagementDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 
 export class UserManagementDetail extends React.Component<IUserManagementDetailProps> {
   componentDidMount() {
-    this.props.getUser(this.props.match.params.login);
+    // @ts-ignore
+    this.props.getUser(this.props.match.params.login).then(response => {
+      this.props.getEntity(response.value.data.storehouseId);
+    });
   }
 
   render() {
-    const { user } = this.props;
+    const { user, storehouse } = this.props;
     return (
       <div>
         <h2>
@@ -91,6 +95,10 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
               <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
             </dd>
             <dt>
+              <Translate contentKey="userManagement.storehouse">Storehouse</Translate>
+            </dt>
+            <dd>{storehouse ? storehouse.name : null}</dd>
+            <dt>
               <Translate contentKey="userManagement.profiles">Profiles</Translate>
             </dt>
             <dd>
@@ -118,10 +126,11 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  user: storeState.userManagement.user
+  user: storeState.userManagement.user,
+  storehouse: storeState.storehouse.entity
 });
 
-const mapDispatchToProps = { getUser };
+const mapDispatchToProps = { getUser, getEntity };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -36,26 +36,25 @@ public class Storehouse implements Serializable {
     @Column(name = "company_name")
     private String companyName;
 
-    @OneToOne(optional = false)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
-    @JoinColumn(unique = true)
-    private User owner;
+    private List<User> owners = new ArrayList<>();
 
-    @OneToOne(optional = false)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
-    @JoinColumn(unique = true)
-    private User dispatcher;
+    private List<User> dispatchers = new ArrayList<>();
 
-    @OneToOne(optional = false)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
-    @JoinColumn(unique = true)
-    private User manager;
+    private List<User> managers = new ArrayList<>();
 
-    @OneToOne(optional = false)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
-
-    @JoinColumn(unique = true)
-    private User supervisor;
+    private List<User> supervisors = new ArrayList<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -84,8 +83,8 @@ public class Storehouse implements Serializable {
         this.name = name;
     }
 
-    public User getOwner() {
-        return owner;
+    public List<User> getOwners() {
+        return owners;
     }
 
     public String getCompanyName() {
@@ -96,52 +95,52 @@ public class Storehouse implements Serializable {
         this.companyName = companyName;
     }
 
-    public Storehouse owner(User user) {
-        this.owner = user;
+    public Storehouse owners(List<User> users) {
+        this.owners = users;
         return this;
     }
 
-    public void setOwner(User user) {
-        this.owner = user;
+    public void setOwners(List<User> users) {
+        this.owners = users;
     }
 
-    public User getDispatcher() {
-        return dispatcher;
+    public List<User> getDispatchers() {
+        return dispatchers;
     }
 
-    public Storehouse dispatcher(User user) {
-        this.dispatcher = user;
+    public Storehouse dispatchers(List<User> users) {
+        this.dispatchers = users;
         return this;
     }
 
-    public void setDispatcher(User user) {
-        this.dispatcher = user;
+    public void setDispatchers(List<User> users) {
+        this.dispatchers = users;
     }
 
-    public User getManager() {
-        return manager;
+    public List<User> getManagers() {
+        return managers;
     }
 
-    public Storehouse manager(User user) {
-        this.manager = user;
+    public Storehouse managers(List<User> users) {
+        this.managers = users;
         return this;
     }
 
-    public void setManager(User user) {
-        this.manager = user;
+    public void setManagers(List<User> users) {
+        this.managers = users;
     }
 
-    public User getSupervisor() {
-        return supervisor;
+    public List<User> getSupervisors() {
+        return supervisors;
     }
 
-    public Storehouse supervisor(User user) {
-        this.supervisor = user;
+    public Storehouse supervisors(List<User> users) {
+        this.supervisors = users;
         return this;
     }
 
-    public void setSupervisor(User user) {
-        this.supervisor = user;
+    public void setSupervisors(List<User> users) {
+        this.supervisors = users;
     }
 
     public List<StorageRoom> getRooms() {

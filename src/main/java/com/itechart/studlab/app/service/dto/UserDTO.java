@@ -65,6 +65,8 @@ public class UserDTO {
 
     private String address;
 
+    private Long storehouseId;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -82,6 +84,11 @@ public class UserDTO {
         this.country = user.getCountry();
         this.city = user.getCity();
         this.address = user.getAddress();
+
+        try {
+            this.storehouseId = user.getStorehouse().getId();
+        } catch (NullPointerException e) {}
+
         this.langKey = user.getLangKey();
         this.createdBy = user.getCreatedBy();
         this.createdDate = user.getCreatedDate();
@@ -236,6 +243,14 @@ public class UserDTO {
         this.address = address;
     }
 
+    public Long getStorehouseId() {
+        return storehouseId;
+    }
+
+    public void setStorehouseId(Long storehouseId) {
+        this.storehouseId = storehouseId;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -257,6 +272,7 @@ public class UserDTO {
             ", country='" + country + '\'' +
             ", city='" + city + '\'' +
             ", address='" + address + '\'' +
+            ", storehouseId='" + storehouseId + '\'' +
             '}';
     }
 }

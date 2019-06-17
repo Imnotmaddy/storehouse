@@ -18,23 +18,16 @@ public class StorehouseDTO implements Serializable {
     @NotNull
     private String companyName;
 
-    private Long ownerId;
-
-    private String ownerLastName;
-
-    private Long dispatcherId;
-
-    private String dispatcherLastName;
-
-    private Long managerId;
-
-    private String managerLastName;
-
-    private Long supervisorId;
-
-    private String supervisorLastName;
 
     private List<StorageRoomDTO> rooms;
+
+    private List<UserDTO> owners;
+
+    private List<UserDTO> dispatchers;
+
+    private List<UserDTO> managers;
+
+    private List<UserDTO> supervisors;
 
     public Long getId() {
         return id;
@@ -60,76 +53,44 @@ public class StorehouseDTO implements Serializable {
         this.companyName = companyName;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long userId) {
-        this.ownerId = userId;
-    }
-
-    public String getOwnerLastName() {
-        return ownerLastName;
-    }
-
-    public void setOwnerLastName(String userLastName) {
-        this.ownerLastName = userLastName;
-    }
-
-    public Long getDispatcherId() {
-        return dispatcherId;
-    }
-
-    public void setDispatcherId(Long userId) {
-        this.dispatcherId = userId;
-    }
-
-    public String getDispatcherLastName() {
-        return dispatcherLastName;
-    }
-
-    public void setDispatcherLastName(String userLastName) {
-        this.dispatcherLastName = userLastName;
-    }
-
-    public Long getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Long userId) {
-        this.managerId = userId;
-    }
-
-    public String getManagerLastName() {
-        return managerLastName;
-    }
-
-    public void setManagerLastName(String userLastName) {
-        this.managerLastName = userLastName;
-    }
-
-    public Long getSupervisorId() {
-        return supervisorId;
-    }
-
-    public void setSupervisorId(Long userId) {
-        this.supervisorId = userId;
-    }
-
-    public String getSupervisorLastName() {
-        return supervisorLastName;
-    }
-
-    public void setSupervisorLastName(String userLastName) {
-        this.supervisorLastName = userLastName;
-    }
-
     public List<StorageRoomDTO> getRooms() {
         return rooms;
     }
 
     public void setRooms(List<StorageRoomDTO> storageRoomDTOSet) {
         this.rooms = storageRoomDTOSet;
+    }
+
+    public List<UserDTO> getOwners() {
+        return owners;
+    }
+
+    public void setOwners(List<UserDTO> owners) {
+        this.owners = owners;
+    }
+
+    public List<UserDTO> getDispatchers() {
+        return dispatchers;
+    }
+
+    public void setDispatchers(List<UserDTO> dispatchers) {
+        this.dispatchers = dispatchers;
+    }
+
+    public List<UserDTO> getManagers() {
+        return managers;
+    }
+
+    public void setManagers(List<UserDTO> managers) {
+        this.managers = managers;
+    }
+
+    public List<UserDTO> getSupervisors() {
+        return supervisors;
+    }
+
+    public void setSupervisors(List<UserDTO> supervisors) {
+        this.supervisors = supervisors;
     }
 
     @Override
@@ -159,15 +120,10 @@ public class StorehouseDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", companyName='" + getCompanyName() + "'" +
-            ", owner=" + getOwnerId() +
-            ", ownerLastName='" + getOwnerLastName() + "'" +
-            ", dispatcher=" + getDispatcherId() +
-            ", dispatcherLastName='" + getDispatcherLastName() + "'" +
-            ", manager=" + getManagerId() +
-            ", managerLastName='" + getManagerLastName() + "'" +
-            ", supervisor=" + getSupervisorId() +
-            ", supervisorLastName='" + getSupervisorLastName() + "'" +
-            ", storageRooms='" + getRooms() + "'" +
+            ", managers='" + getManagers() + "'" +
+            ", dispatchers='" + getDispatchers() + "'" +
+            ", owners='" + getOwners() + "'" +
+            ", supervisors='" + getSupervisors() + "'" +
             "}";
     }
 }
