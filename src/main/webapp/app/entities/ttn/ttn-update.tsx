@@ -315,7 +315,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     {transports
                       ? transports.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
+                            {otherEntity.deliveryType + ' ' + otherEntity.vehicleNumber}
                           </option>
                         ))
                       : null}

@@ -18,6 +18,7 @@ import Transporter from 'app/entities/transporter';
 import Transport from 'app/entities/transport';
 import Companies from 'app/modules/companies';
 import UserManagement from 'app/modules/administration/user-management';
+import Act from 'app/entities/act/act-update';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -44,6 +45,7 @@ const Routes = ({ match }) => (
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute path="/transport" component={Transport} hasAnyAuthorities={[AUTHORITIES.DISPATCHER, AUTHORITIES.OWNER]} />
       <PrivateRoute path="/transporter" component={Transporter} hasAnyAuthorities={[AUTHORITIES.DISPATCHER, AUTHORITIES.OWNER]} />
+      <PrivateRoute path="/act" component={Act} hasAnyAuthorities={[AUTHORITIES.SUPERVISOR, AUTHORITIES.OWNER]} />
       <PrivateRoute
         path="/ttn"
         component={TTN}
