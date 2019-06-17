@@ -21,13 +21,7 @@ public class StorehouseDTO implements Serializable {
 
     private List<StorageRoomDTO> rooms;
 
-    private List<UserDTO> owners;
-
-    private List<UserDTO> dispatchers;
-
-    private List<UserDTO> managers;
-
-    private List<UserDTO> supervisors;
+    private List<UserDTO> employees;
 
     public Long getId() {
         return id;
@@ -61,36 +55,12 @@ public class StorehouseDTO implements Serializable {
         this.rooms = storageRoomDTOSet;
     }
 
-    public List<UserDTO> getOwners() {
-        return owners;
+    public List<UserDTO> getEmployees() {
+        return employees;
     }
 
-    public void setOwners(List<UserDTO> owners) {
-        this.owners = owners;
-    }
-
-    public List<UserDTO> getDispatchers() {
-        return dispatchers;
-    }
-
-    public void setDispatchers(List<UserDTO> dispatchers) {
-        this.dispatchers = dispatchers;
-    }
-
-    public List<UserDTO> getManagers() {
-        return managers;
-    }
-
-    public void setManagers(List<UserDTO> managers) {
-        this.managers = managers;
-    }
-
-    public List<UserDTO> getSupervisors() {
-        return supervisors;
-    }
-
-    public void setSupervisors(List<UserDTO> supervisors) {
-        this.supervisors = supervisors;
+    public void setEmployees(List<UserDTO> employees) {
+        this.employees = employees;
     }
 
     @Override
@@ -120,10 +90,7 @@ public class StorehouseDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", companyName='" + getCompanyName() + "'" +
-            ", managers='" + getManagers() + "'" +
-            ", dispatchers='" + getDispatchers() + "'" +
-            ", owners='" + getOwners() + "'" +
-            ", supervisors='" + getSupervisors() + "'" +
+            ", employees='" + getEmployees() + "'" +
             "}";
     }
 }

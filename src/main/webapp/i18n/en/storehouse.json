@@ -22,6 +22,7 @@
       "dispatcher": "Dispatcher",
       "manager": "Manager",
       "supervisor": "Supervisor",
+      "employees": "Employees",
       "rooms": "Rooms",
       "roomNumber": "Room number",
       "type": "Type",

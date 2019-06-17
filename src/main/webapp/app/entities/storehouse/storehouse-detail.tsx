@@ -28,21 +28,13 @@ export class StorehouseDetail extends React.Component<IStorehouseDetailProps> {
           </h2>
           <dl className="jh-entity-details">
             <dt>
-              <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
+              <Translate contentKey="storeHouseApp.storehouse.employees">Employees</Translate>
             </dt>
-            <dd>{storehouseEntity.ownerLastName ? storehouseEntity.ownerLastName : ''}</dd>
+            {storehouseEntity.employees ? storehouseEntity.employees.map(employee => <dd>{employee.login}</dd>) : ''}
             <dt>
-              <Translate contentKey="storeHouseApp.storehouse.dispatcher">Dispatcher</Translate>
+              <Translate contentKey="storeHouseApp.storehouse.rooms">Rooms</Translate>
             </dt>
-            <dd>{storehouseEntity.dispatcherLastName ? storehouseEntity.dispatcherLastName : ''}</dd>
-            <dt>
-              <Translate contentKey="storeHouseApp.storehouse.manager">Manager</Translate>
-            </dt>
-            <dd>{storehouseEntity.managerLastName ? storehouseEntity.managerLastName : ''}</dd>
-            <dt>
-              <Translate contentKey="storeHouseApp.storehouse.supervisor">Supervisor</Translate>
-            </dt>
-            <dd>{storehouseEntity.supervisorLastName ? storehouseEntity.supervisorLastName : ''}</dd>
+            {storehouseEntity.rooms ? storehouseEntity.rooms.map(room => <dd>{room.roomNumber}</dd>) : ''}
           </dl>
           <Button tag={Link} to="/storehouse" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}

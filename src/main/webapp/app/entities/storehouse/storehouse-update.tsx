@@ -7,9 +7,7 @@ import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validatio
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { createEntity, getEntity, reset, updateEntity } from './storehouse.reducer';
-import { getSession } from 'app/shared/reducers/authentication';
 import { IStorageRoom } from 'app/shared/model/storage-room.model';
 import { AddModal } from 'app/entities/storehouse/addModal';
 
@@ -68,8 +66,6 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
           this.setState({ storageRooms: [] });
         });
     }
-
-    this.props.getUsers();
   }
 
   genRows = () =>
@@ -138,7 +134,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
   };
 
   render() {
-    const { storehouseEntity, users, loading, updating } = this.props;
+    const { storehouseEntity, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -172,62 +168,6 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                       }
                     }}
                   />
-                </AvGroup>
-                <AvGroup>
-                  <Label for="owner.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
-                  </Label>
-                  <AvInput id="storehouse-owner" type="select" className="form-control" name="ownerId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="dispatcher.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.dispatcher">Dispatcher</Translate>
-                  </Label>
-                  <AvInput id="storehouse-dispatcher" type="select" className="form-control" name="dispatcherId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="manager.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.manager">Manager</Translate>
-                  </Label>
-                  <AvInput id="storehouse-manager" type="select" className="form-control" name="managerId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="supervisor.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.supervisor">Supervisor</Translate>
-                  </Label>
-                  <AvInput id="storehouse-supervisor" type="select" className="form-control" name="supervisorId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
                 </AvGroup>
               </AvForm>
             )}
@@ -280,7 +220,6 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  users: storeState.userManagement.users,
   companyName: storeState.authentication.account.company,
   storehouseEntity: storeState.storehouse.entity,
   loading: storeState.storehouse.loading,
@@ -289,8 +228,6 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getUsers,
-  getSession,
   getEntity,
   updateEntity,
   createEntity,

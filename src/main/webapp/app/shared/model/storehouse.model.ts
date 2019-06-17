@@ -5,10 +5,7 @@ export interface IStorehouse {
   id?: number;
   name?: string;
   companyName?: string;
-  owners?: IUser[];
-  dispatchers?: IUser[];
-  managers?: IUser[];
-  supervisors?: IUser[];
+  employees?: IUser[];
   rooms?: IStorageRoom[];
 }
 
