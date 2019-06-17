@@ -57,6 +57,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
     if (this.state.isNew) {
       this.props.reset();
     } else {
+      console.log(this.props.getEntity(this.props.match.params.id));
       this.props
         .getEntity(this.props.match.params.id)
         // @ts-ignore
