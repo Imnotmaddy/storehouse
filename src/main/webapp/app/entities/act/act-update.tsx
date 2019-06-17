@@ -44,7 +44,6 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
     } else {
       this.props.getEntity(this.props.match.params.id);
     }
-
     this.props.getUsers();
   }
 

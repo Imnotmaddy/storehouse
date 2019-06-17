@@ -375,7 +375,10 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
               </Table>
               <AddProductModal show={this.state.showAddModal} toggle={this.toggleAddModal} getValues={this.handleModalValues} />
             </div>
-            <Button tag={Link} id="cancel-save" to="/ttn" replace color="info">
+            <Button tag={Link} id="createAct" to={`/act/new?ttnId=${tTNEntity.id}`} replace color="info" hidden={!isSupervisor}>
+              <span className="d-none d-md-inline">Create Act</span>
+            </Button>
+            <Button tag={Link} id="cancel-save" to="/ttn" replace color="info" hidden={isSupervisor}>
               <FontAwesomeIcon icon="arrow-left" />
               &nbsp;
               <span className="d-none d-md-inline">
