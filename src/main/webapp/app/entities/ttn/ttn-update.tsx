@@ -27,7 +27,6 @@ import { IProduct } from 'app/shared/model/product.model';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
 
-
 export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
   isAuthenticated: boolean;
   isAdmin: boolean;
@@ -226,6 +225,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
+                    readOnly={isSupervisor}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -243,31 +243,20 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
+                    readOnly={isSupervisor}
                   />
                 </AvGroup>
                 <AvGroup>
                   <Label id="descriptionLabel" for="description">
                     <Translate contentKey="storeHouseApp.tTN.description">Description</Translate>
                   </Label>
-                  <AvField id="ttn-description" type="text" name="description" />
+                  <AvField id="ttn-description" type="text" name="description" readOnly={isSupervisor} />
                 </AvGroup>
                 <AvGroup>
                   <Label id="driverNameLabel" for="driverName">
                     <Translate contentKey="storeHouseApp.tTN.driverName">Driver Name</Translate>
                   </Label>
-                  <AvField id="ttn-driverName" type="text" name="driverName" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="productsAmountLabel" for="productsAmount">
-                    <Translate contentKey="storeHouseApp.tTN.productsAmount">Products Amount</Translate>
-                  </Label>
-                  <AvField id="ttn-productsAmount" type="string" className="form-control" name="productsAmount" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="numberOfProductEntriesLabel" for="numberOfProductEntries">
-                    <Translate contentKey="storeHouseApp.tTN.numberOfProductEntries">Number Of Product Entries</Translate>
-                  </Label>
-                  <AvField id="ttn-numberOfProductEntries" type="string" className="form-control" name="numberOfProductEntries" />
+                  <AvField id="ttn-driverName" type="text" name="driverName" readOnly={isSupervisor} />
                 </AvGroup>
                 <AvGroup>
                   <Label id="dateTimeOfRegistrationLabel" for="dateTimeOfRegistration">
@@ -286,11 +275,12 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
+                    readOnly={isSupervisor}
                   />
                 </AvGroup>
                 <AvGroup>
                   <Label id="statusLabel">Status</Label>
-                  <AvInput id="ttn-status" type="select" className="form-control" name="status">
+                  <AvInput id="ttn-status" type="select" className="form-control" name="status" readOnly={isSupervisor}>
                     {isAuthenticated && (isDispatcher || isManager) && <option value="REGISTERED">REGISTERED</option>}
                     {isAuthenticated && isSupervisor && <option value="CHECKED">CHECKED</option>}
                     {isAuthenticated && isDispatcher && <option value="DECORATED">DECORATED</option>}
@@ -304,7 +294,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                       <Label id="senderLabel" for="sender">
                         <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
                       </Label>
-                      <AvField id="ttn-sender" type="text" name="sender" />
+                      <AvField id="ttn-sender" type="text" name="sender" readOnly={isSupervisor} />
                     </AvGroup>
                   )}
                 {isAuthenticated &&
@@ -313,14 +303,14 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                       <Label id="recipientLabel" for="recipient">
                         Recipient
                       </Label>
-                      <AvField id="ttn-recipient" type="text" name="recipient" />
+                      <AvField id="ttn-recipient" type="text" name="recipient" readOnly={isSupervisor} />
                     </AvGroup>
                   )}
                 <AvGroup>
                   <Label for="transport.id">
                     <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
                   </Label>
-                  <AvInput id="ttn-transport" type="select" className="form-control" name="transportId">
+                  <AvInput id="ttn-transport" type="select" className="form-control" name="transportId" readOnly={isSupervisor}>
                     <option value="" key="0" />
                     {transports
                       ? transports.map(otherEntity => (
@@ -335,7 +325,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   <Label for="transporter.companyName">
                     <Translate contentKey="storeHouseApp.tTN.transporter">Transporter</Translate>
                   </Label>
-                  <AvInput id="ttn-transporter" type="select" className="form-control" name="transporterId">
+                  <AvInput id="ttn-transporter" type="select" className="form-control" name="transporterId" readOnly={isSupervisor}>
                     <option value="" key="0" />
                     {transporters
                       ? transporters.map(otherEntity => (
@@ -346,19 +336,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/ttn" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
               </AvForm>
             )}
             <div className="position-relative">
@@ -366,7 +343,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                 <Label className="mr-auto" for="productsTable">
                   <Translate contentKey="storeHouseApp.tTN.products">Products</Translate>
                 </Label>
-                <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal}>
+                <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal} disabled={isSupervisor}>
                   <Translate contentKey="storeHouseApp.tTN.addProduct">Add product</Translate>
                 </Button>
               </div>
