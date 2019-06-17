@@ -1,5 +1,6 @@
 package com.itechart.studlab.app.service;
 
+import com.itechart.studlab.app.domain.StorageRoom;
 import com.itechart.studlab.app.domain.Storehouse;
 import com.itechart.studlab.app.repository.StorehouseRepository;
 import com.itechart.studlab.app.repository.search.StorehouseSearchRepository;
@@ -50,6 +51,9 @@ public class StorehouseService {
     public StorehouseDTO save(StorehouseDTO storehouseDTO) {
         log.debug("Request to save Storehouse : {}", storehouseDTO);
         Storehouse storehouse = storehouseMapper.toEntity(storehouseDTO);
+        for (StorageRoom room : storehouse.getRooms()) {
+            room.setStorehouse(storehouse);
+        }
         storehouse = storehouseRepository.save(storehouse);
 
         StorehouseDTO result = storehouseMapper.toDto(storehouse);
