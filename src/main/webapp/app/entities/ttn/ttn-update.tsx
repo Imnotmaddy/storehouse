@@ -310,7 +310,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   <Label for="transport.id">
                     <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
                   </Label>
-                  <AvInput id="ttn-transport" type="select" className="form-control" name="transportId" readOnly={isSupervisor}>
+                  <AvInput id="ttn-transport" type="select" className="form-control" name="transportId" disabled={isSupervisor}>
                     <option value="" key="0" />
                     {transports
                       ? transports.map(otherEntity => (
@@ -325,7 +325,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   <Label for="transporter.companyName">
                     <Translate contentKey="storeHouseApp.tTN.transporter">Transporter</Translate>
                   </Label>
-                  <AvInput id="ttn-transporter" type="select" className="form-control" name="transporterId" readOnly={isSupervisor}>
+                  <AvInput id="ttn-transporter" type="select" className="form-control" name="transporterId" disabled={isSupervisor}>
                     <option value="" key="0" />
                     {transporters
                       ? transporters.map(otherEntity => (

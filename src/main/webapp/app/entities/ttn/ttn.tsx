@@ -107,12 +107,6 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                   <Translate contentKey="storeHouseApp.tTN.driverName">Driver Name</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="storeHouseApp.tTN.productsAmount">Products Amount</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.tTN.numberOfProductEntries">Number Of Product Entries</Translate>
-                </th>
-                <th>
                   <Translate contentKey="storeHouseApp.tTN.dateTimeOfRegistration">Date Time Of Registration</Translate>
                 </th>
                 <th>Status</th>
@@ -155,8 +149,6 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
                   </td>
                   <td>{tTN.description}</td>
                   <td>{tTN.driverName}</td>
-                  <td>{tTN.productsAmount}</td>
-                  <td>{tTN.numberOfProductEntries}</td>
                   <td>
                     <TextFormat type="date" value={tTN.dateTimeOfRegistration} format={APP_DATE_FORMAT} />
                   </td>

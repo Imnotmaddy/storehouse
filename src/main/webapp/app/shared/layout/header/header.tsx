@@ -2,7 +2,7 @@ import './header.css';
 
 import React from 'react';
 import { Storage, Translate } from 'react-jhipster';
-import { Brand, Companies, Home, Transporter, Ttn, Transport, Users, Act } from './header-components';
+import { Brand, Companies, Home, Transporter, Ttn, Transport, Users, Act, Product } from './header-components';
 import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
 import { AccountMenu, AdminMenu, EntitiesMenu, LocaleMenu } from './menus';
@@ -79,10 +79,11 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <Nav id="header-tabs" className="ml-auto" navbar>
               <Home />
               {isAuthenticated && (isManager || isDispatcher || isSupervisor || isOwner) && <Ttn />}
-              {isAuthenticated && (isDispatcher || isOwner) && <Transporter />}
-              {isAuthenticated && (isDispatcher || isOwner) && <Transport />}
+              {isAuthenticated && (isDispatcher || isOwner || isManager) && <Transporter />}
+              {isAuthenticated && (isDispatcher || isOwner || isManager) && <Transport />}
               {isAuthenticated && isAdmin && <Companies />}
               {isAuthenticated && (isSupervisor || isOwner) && <Act />}
+              {isAuthenticated && isSupervisor && <Product />}
               {isAuthenticated && (isStorehouseAdmin || isOwner) && <Users />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
               <AccountMenu isAuthenticated={isAuthenticated} />

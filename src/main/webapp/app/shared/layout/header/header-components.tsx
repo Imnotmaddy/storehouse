@@ -95,3 +95,11 @@ export const Act = props => (
     </NavLink>
   </NavItem>
 );
+
+export const Product = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/product" className="d-flex align-items-center">
+      <Translate contentKey="global.menu.entities.product">Product</Translate>
+    </NavLink>
+  </NavItem>
+);
