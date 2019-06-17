@@ -61,9 +61,6 @@ public class StorehouseResourceIntTest {
     @Autowired
     private StorehouseService storehouseService;
 
-    @Autowired
-    private StorageRoomService storageRoomService;
-
     /**
      * This repository is mocked in the com.itechart.studlab.app.repository.search test package.
      *
@@ -94,7 +91,7 @@ public class StorehouseResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final StorehouseResource storehouseResource = new StorehouseResource(storehouseService, storageRoomService);
+        final StorehouseResource storehouseResource = new StorehouseResource(storehouseService);
         this.restStorehouseMockMvc = MockMvcBuilders.standaloneSetup(storehouseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

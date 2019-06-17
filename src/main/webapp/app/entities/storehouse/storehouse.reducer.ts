@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { ICrudSearchAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudSearchAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 
-import { IStorehouse, defaultValue } from 'app/shared/model/storehouse.model';
+import { defaultValue, IStorehouse } from 'app/shared/model/storehouse.model';
 
 export const ACTION_TYPES = {
   SEARCH_STOREHOUSES: 'storehouse/SEARCH_STOREHOUSES',
@@ -149,13 +149,13 @@ export const updateEntity: ICrudPutAction<IStorehouse> = entity => async dispatc
   return result;
 };
 
-export const deleteEntity: ICrudDeleteAction<IStorehouse> = id => async dispatch => {
+export const deleteEntity = (id, company: string) => async dispatch => {
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_STOREHOUSE,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
+  dispatch(getCompanyStorehouses(company));
   return result;
 };
 

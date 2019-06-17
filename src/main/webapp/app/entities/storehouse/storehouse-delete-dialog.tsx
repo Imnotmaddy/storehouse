@@ -15,7 +15,7 @@ export class StorehouseDeleteDialog extends React.Component<IStorehouseDeleteDia
   }
 
   confirmDelete = event => {
-    this.props.deleteEntity(this.props.storehouseEntity.id);
+    this.props.deleteEntity(this.props.storehouseEntity.id, this.props.storehouseEntity.companyName);
     this.handleClose(event);
   };
 

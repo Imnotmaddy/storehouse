@@ -57,13 +57,14 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
     if (this.state.isNew) {
       this.props.reset();
     } else {
-      const entity = this.props.getEntity(this.props.match.params.id);
-      const promise = new Promise(resolve => {
-        resolve(entity);
-      });
-      promise.then(value => {
-        this.setState({ storageRooms: value.value.data.rooms });
-      });
+      this.props
+        .getEntity(this.props.match.params.id)
+        .then(response => {
+          this.setState({ storageRooms: response.value.data.rooms });
+        })
+        .catch(() => {
+          this.setState({ storageRooms: [] });
+        });
     }
 
     this.props.getUsers();
@@ -88,13 +89,11 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
   deleteRow = event => {
     const elementId = event.currentTarget.value;
     const newRows = [...this.state.storageRooms];
-    newRows.splice(elementId, 1); // filter, const value from event
+    newRows.splice(elementId, 1);
     this.setState({ storageRooms: newRows });
   };
 
   handleModalValues = (value: IStorageRoom) => {
-    // value.storehouseId = this.props.storehouseEntity.id;
-
     const storageRooms = this.state.storageRooms.concat(value);
     this.setState({
       storageRooms,

@@ -33,11 +33,9 @@ public class StorehouseResource {
 
     private final StorehouseService storehouseService;
 
-    private final StorageRoomService storageRoomService;
 
-    public StorehouseResource(StorehouseService storehouseService, StorageRoomService storageRoomService) {
+    public StorehouseResource(StorehouseService storehouseService) {
         this.storehouseService = storehouseService;
-        this.storageRoomService = storageRoomService;
     }
 
     /**
@@ -54,9 +52,8 @@ public class StorehouseResource {
             throw new BadRequestAlertException("A new storehouse cannot already have an ID", ENTITY_NAME, "idexists");
         }
         StorehouseDTO result = storehouseService.save(storehouseDTO);
-        //storageRoomService.saveAllForStorehouse(storehouseDTO.getRooms(), result.getId());
         return ResponseEntity.created(new URI("/api/storehouses/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getName()))
             .body(result);
     }
 
@@ -77,7 +74,7 @@ public class StorehouseResource {
         }
         StorehouseDTO result = storehouseService.save(storehouseDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, storehouseDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, storehouseDTO.getName()))
             .body(result);
     }
 
