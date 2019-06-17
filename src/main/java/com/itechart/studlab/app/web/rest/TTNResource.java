@@ -54,7 +54,6 @@ public class TTNResource {
             throw new BadRequestAlertException("A new tTN cannot already have an ID", ENTITY_NAME, "idexists");
         }
         TTNDTO result = tTNService.save(tTNDTO);
-        productService.saveAllForTTN(tTNDTO.getProducts(), result.getId());
         return ResponseEntity.created(new URI("/api/ttns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
