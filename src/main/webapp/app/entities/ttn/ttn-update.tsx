@@ -280,7 +280,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                 </AvGroup>
                 <AvGroup>
                   <Label id="statusLabel">Status</Label>
-                  <AvInput id="ttn-status" type="select" className="form-control" name="status" readOnly={isSupervisor}>
+                  <AvInput id="ttn-status" type="select" className="form-control" name="status">
                     {isAuthenticated && (isDispatcher || isManager) && <option value="REGISTERED">REGISTERED</option>}
                     {isAuthenticated && isSupervisor && <option value="CHECKED">CHECKED</option>}
                     {isAuthenticated && isDispatcher && <option value="DECORATED">DECORATED</option>}
