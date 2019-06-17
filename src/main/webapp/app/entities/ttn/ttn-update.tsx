@@ -7,7 +7,7 @@ import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validatio
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-
+import axios from 'axios';
 import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { ITransport } from 'app/shared/model/transport.model';
@@ -21,11 +21,11 @@ import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/u
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 import { AddProductModal } from 'app/entities/ttn/add-product-modal';
-import { AddProduct } from 'app/entities/ttn/add-product';
 import { IProduct } from 'app/shared/model/product.model';
 
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
+import { IStorageRoom } from 'app/shared/model/storage-room.model';
 
 export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
   isAuthenticated: boolean;
@@ -44,6 +44,7 @@ export interface ITTNUpdateState {
   transportId: string;
   transporterId: string;
   products: IProduct[];
+  rooms: IStorageRoom[];
   nameValue: string;
   quantityValue: string;
   costValue: string;
@@ -64,6 +65,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       transporterId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id,
       products: [],
+      rooms: [],
       nameValue: '',
       quantityValue: '',
       costValue: '',
@@ -107,6 +109,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
         <td>{row.weight}</td>
         <td>{row.requiredFacility}</td>
         <td>{row.state}</td>
+        <td>{row.storageRoomId}</td>
         <td>
           <Button color="danger" size="sm" value={i} onClick={this.deleteRow}>
             <FontAwesomeIcon icon="trash" />{' '}
@@ -117,6 +120,13 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
         </td>
       </tr>
     ));
+
+  getRooms = () => {
+    axios.get(`/storage-rooms/getByStorehouseId/${1}`).then(response => {
+      this.setState({ rooms: response.value.data.storageRooms });
+      return response.value.data.storageRooms;
+    });
+  };
 
   deleteRow = event => {
     const elementId = event.currentTarget.value;
@@ -368,12 +378,20 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     <th>
                       <Translate contentKey="storeHouseApp.tTN.currentState">Current State</Translate>
                     </th>
+                    <th>
+                      <span>Current Storage Room</span>
+                    </th>
                     <th />
                   </tr>
                 </thead>
                 <tbody>{this.genRows()}</tbody>
               </Table>
-              <AddProductModal show={this.state.showAddModal} toggle={this.toggleAddModal} getValues={this.handleModalValues} />
+              <AddProductModal
+                show={this.state.showAddModal}
+                selectRooms={this.getRooms}
+                toggle={this.toggleAddModal}
+                getValues={this.handleModalValues}
+              />
             </div>
             <Button tag={Link} id="createAct" to={`/act/new?ttnId=${tTNEntity.id}`} replace color="info" hidden={!isSupervisor}>
               <span className="d-none d-md-inline">Create Act</span>

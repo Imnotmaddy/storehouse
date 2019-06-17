@@ -68,6 +68,14 @@ public class StorageRoomService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    @Transactional(readOnly = true)
+    public List<StorageRoomDTO> findAllByStorehouseId(Long storehouseId){
+        log.debug("Request to get StorageRooms by storehouseID");
+        return storageRoomRepository.findAllByStorehouseId(storehouseId)
+            .stream().map(storageRoomMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
 
     /**
      * Get one storageRoom by id.
