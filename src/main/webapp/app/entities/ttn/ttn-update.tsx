@@ -4,7 +4,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label, Table } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, log } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import axios from 'axios';
@@ -14,7 +14,7 @@ import { ITransport } from 'app/shared/model/transport.model';
 import { getEntities as getTransports } from 'app/entities/transport/transport.reducer';
 import { ITransporter } from 'app/shared/model/transporter.model';
 import { getEntities as getTransporters } from 'app/entities/transporter/transporter.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './ttn.reducer';
+import { getEntity, updateEntity, createEntity, reset, getRooms } from './ttn.reducer';
 import { ITTN } from 'app/shared/model/ttn.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
@@ -86,19 +86,37 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
     if (this.state.isNew) {
       this.props.reset();
     } else {
-      const entity = this.props.getEntity(this.props.match.params.id);
-      const promise = new Promise(resolve => {
-        resolve(entity);
-      });
-      promise.then(value => {
-        this.setState({ products: value.value.data.products });
-      });
+      this.props
+        .getEntity(this.props.match.params.id)
+        .then(response => {
+          this.setState({ products: response.value.data.products });
+        })
+        .catch(() => {
+          this.setState({ products: [] });
+        });
     }
-
     this.props.getUsers();
     this.props.getTransports();
     this.props.getTransporters();
   }
+
+  getRooms = () => {
+    /* const promise = axios.get(`/api/storage-rooms/getByStorehouseId/${1}`).then(response => {
+            this.setState({rooms: response.value.data.rooms});
+            console.log({"Promise":response});
+        }).catch(error =>{console.log({"PROMISE DIDNT WORK" : error})});
+        return this.state.rooms;*/
+    this.props
+      .getRooms(1)
+      .then(response => {
+        this.setState({ rooms: response.value.data.rooms });
+        console.log({ 'Promise succeed': response });
+      })
+      .catch(error => {
+        this.setState({ rooms: [] });
+        console.log({ 'I failed promise': error });
+      });
+  };
 
   genRows = () =>
     this.state.products.map((row, i) => (
@@ -120,13 +138,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
         </td>
       </tr>
     ));
-
-  getRooms = () => {
-    axios.get(`/storage-rooms/getByStorehouseId/${1}`).then(response => {
-      this.setState({ rooms: response.value.data.storageRooms });
-      return response.value.data.storageRooms;
-    });
-  };
 
   deleteRow = event => {
     const elementId = event.currentTarget.value;
@@ -353,7 +364,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                 <Label className="mr-auto" for="productsTable">
                   <Translate contentKey="storeHouseApp.tTN.products">Products</Translate>
                 </Label>
-                <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal} disabled={isSupervisor}>
+                <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal} hidden={isSupervisor}>
                   <Translate contentKey="storeHouseApp.tTN.addProduct">Add product</Translate>
                 </Button>
               </div>
@@ -416,7 +427,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   }
 }
 
-const mapStateToProps = (storeState: IRootState, authentication: IRootState) => ({
+const mapStateToProps = (storeState: IRootState) => ({
   isAuthenticated: storeState.authentication.isAuthenticated,
   isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN]),
   isDispatcher: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
@@ -437,6 +448,7 @@ const mapDispatchToProps = {
   getTransports,
   getTransporters,
   getEntity,
+  getRooms,
   updateEntity,
   createEntity,
   reset

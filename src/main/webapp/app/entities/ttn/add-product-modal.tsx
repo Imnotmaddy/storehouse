@@ -55,7 +55,7 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
   };
 
   componentDidMount() {
-    this.props.selectRooms();
+    this.setState({ roomsValue: this.props.selectRooms() });
   }
 
   handleNameChange = event => {
@@ -243,16 +243,16 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
                 type="select"
                 value={this.state.roomsValue}
                 onChange={this.handleRoomChange}
-                validate={{
+                /*validate={{
                   required: {
                     value: true,
                     errorMessage: translate('entity.validation.required')
                   }
-                }}
+                }}*/
               >
                 <option defaultChecked />
-                {roomsValue
-                  ? roomsValue.map(otherEntity => (
+                {this.state.roomsValue
+                  ? this.state.roomsValue.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
                         {otherEntity.roomNumber}
                       </option>
