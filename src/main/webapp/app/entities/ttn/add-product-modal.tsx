@@ -2,7 +2,6 @@ import React from 'react';
 import { translate, Translate } from 'react-jhipster';
 import { Button, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { AvField, AvForm, AvGroup } from 'availity-reactstrap-validation';
-import { number } from 'prop-types';
 import { IStorageRoom } from 'app/shared/model/storage-room.model';
 
 export interface IAddProductModalState {
@@ -12,7 +11,8 @@ export interface IAddProductModalState {
   weightValue: string;
   requiredFacilityValue: string;
   stateValue: string;
-  roomsValue: IStorageRoom[];
+  rooms: IStorageRoom[];
+  roomValue: string;
 }
 
 export interface IAddProductModalProps {
@@ -30,7 +30,8 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
     weightValue: '',
     requiredFacilityValue: '',
     stateValue: '',
-    roomsValue: []
+    rooms: [],
+    roomValue: ''
   };
 
   submit = () => {
@@ -41,7 +42,8 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
       weight: this.state.weightValue,
       requiredFacility: this.state.requiredFacilityValue,
       state: this.state.stateValue,
-      rooms: this.state.roomsValue
+      rooms: this.state.rooms,
+      storageRoomId: this.state.roomValue
     });
     this.setState({
       nameValue: '',
@@ -50,12 +52,19 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
       weightValue: '',
       requiredFacilityValue: '',
       stateValue: '',
-      roomsValue: []
+      roomValue: ''
     });
   };
 
   componentDidMount() {
-    this.setState({ roomsValue: this.props.selectRooms() });
+    this.props
+      .selectRooms()
+      .then(response => {
+        this.setState({ rooms: response.value.data });
+      })
+      .catch(error => {
+        this.setState({ rooms: [] });
+      });
   }
 
   handleNameChange = event => {
@@ -83,11 +92,11 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
   };
 
   handleRoomChange = event => {
-    this.setState({ roomsValue: event.target.value });
+    this.setState({ roomValue: event.target.value });
   };
 
   render() {
-    const { roomsValue } = this.state;
+    const { rooms } = this.state;
     return (
       <Modal isOpen={this.props.show} toggle={this.props.toggle}>
         <AvForm onValidSubmit={this.submit}>
@@ -241,20 +250,19 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
               <AvField
                 name="rooms"
                 type="select"
-                value={this.state.roomsValue}
                 onChange={this.handleRoomChange}
-                /*validate={{
+                validate={{
                   required: {
                     value: true,
                     errorMessage: translate('entity.validation.required')
                   }
-                }}*/
+                }}
               >
                 <option defaultChecked />
-                {this.state.roomsValue
-                  ? this.state.roomsValue.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.roomNumber}
+                {rooms
+                  ? rooms.map((otherEntity, i) => (
+                      <option value={otherEntity.id} key={i}>
+                        {otherEntity.roomNumber + ' ' + otherEntity.type}
                       </option>
                     ))
                   : null}

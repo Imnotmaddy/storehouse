@@ -4,7 +4,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label, Table } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, log } from 'react-jhipster';
+import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, log, IPayload } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import axios from 'axios';
@@ -45,6 +45,7 @@ export interface ITTNUpdateState {
   transporterId: string;
   products: IProduct[];
   rooms: IStorageRoom[];
+  storageRoomId: string;
   nameValue: string;
   quantityValue: string;
   costValue: string;
@@ -66,6 +67,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       isNew: !this.props.match.params || !this.props.match.params.id,
       products: [],
       rooms: [],
+      storageRoomId: '0',
       nameValue: '',
       quantityValue: '',
       costValue: '',
@@ -102,20 +104,22 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
 
   getRooms = () => {
     /* const promise = axios.get(`/api/storage-rooms/getByStorehouseId/${1}`).then(response => {
-            this.setState({rooms: response.value.data.rooms});
-            console.log({"Promise":response});
-        }).catch(error =>{console.log({"PROMISE DIDNT WORK" : error})});
-        return this.state.rooms;*/
-    this.props
-      .getRooms(1)
-      .then(response => {
-        this.setState({ rooms: response.value.data.rooms });
-        console.log({ 'Promise succeed': response });
-      })
-      .catch(error => {
-        this.setState({ rooms: [] });
-        console.log({ 'I failed promise': error });
-      });
+                this.setState({rooms: response.value.data.rooms});
+                console.log({"Promise":response});
+            }).catch(error =>{console.log({"PROMISE DIDNT WORK" : error})});
+            return this.state.rooms;
+
+
+            .then(response => {
+                this.setState({rooms: response.value.data.rooms});
+                console.log({'Promise succeed': response});
+            })
+            .catch(error => {
+                this.setState({rooms: []});
+                console.log({'I failed promise': error});
+            });
+            */
+    return this.props.getRooms(1);
   };
 
   genRows = () =>
@@ -147,8 +151,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   };
 
   handleModalValues = (value: IProduct) => {
+    console.log('before products', this.state.products);
     const products = this.state.products.concat(value);
-    console.log('new products', products);
     this.setState({
       products,
       nameValue: '',
@@ -157,8 +161,11 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       weightValue: '',
       requiredFacilityValue: '',
       stateValue: '',
+      rooms: [],
+      storageRoomId: '',
       showAddModal: false
     });
+    console.log('after products', this.state.products);
   };
 
   toggleAddModal = () => {
