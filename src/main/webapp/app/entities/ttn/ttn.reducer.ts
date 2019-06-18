@@ -123,14 +123,6 @@ export const getEntity: ICrudGetAction<ITTN> = id => {
   };
 };
 
-export const getRooms: ICrudGetAction<any> = id => {
-  const requestUrl = `/api/storage-rooms/getByStorehouseId/${id}`;
-  return {
-    type: ACTION_TYPES.FETCH_TTN,
-    payload: axios.get<IStorageRoom>(requestUrl)
-  };
-};
-
 export const createEntity: ICrudPutAction<ITTN> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_TTN,
