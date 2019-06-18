@@ -48,7 +48,6 @@ export interface ITTNUpdateState {
   costValue: string;
   weightValue: string;
   requiredFacilityValue: string;
-  stateValue: string;
   showAddModal: boolean;
   rows: boolean[];
 }
@@ -73,7 +72,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       costValue: '',
       weightValue: '',
       requiredFacilityValue: '',
-      stateValue: '',
       showAddModal: false
     };
   }
@@ -186,7 +184,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       costValue: '',
       weightValue: '',
       requiredFacilityValue: '',
-      stateValue: '',
       rooms: [],
       storageRoomId: '',
       showAddModal: false

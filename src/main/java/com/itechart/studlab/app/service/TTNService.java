@@ -64,7 +64,7 @@ public class TTNService {
         tTNDTO = asignCompanyToDTO(tTNDTO);
         TTN tTN = tTNMapper.toEntity(tTNDTO);
         for (Product product : tTN.getProducts()) {
-            if (product.getId() != null) {
+            if (tTN.getDispatcher() == null && product.getId() != null) {
                 productRepository.deleteById(product.getId());
                 product.setId(null);
             }
