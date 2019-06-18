@@ -42,7 +42,7 @@ public class Storehouse implements Serializable {
     private List<User> employees = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "storehouse")
+    @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<StorageRoom> rooms = new ArrayList<>();
 

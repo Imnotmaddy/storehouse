@@ -91,6 +91,7 @@ public class StorehouseDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", companyName='" + getCompanyName() + "'" +
             ", employees='" + getEmployees() + "'" +
+            ", rooms='" + getRooms() + "'" +
             "}";
     }
 }
