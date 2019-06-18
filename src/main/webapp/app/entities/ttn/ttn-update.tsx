@@ -151,7 +151,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   };
 
   handleModalValues = (value: IProduct) => {
-    console.log('before products', this.state.products);
     const products = this.state.products.concat(value);
     this.setState({
       products,
@@ -349,11 +348,13 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     }}
                   >
                     <option value="" key="0" defaultChecked />
-                    {isAuthenticated && (isDispatcher || isManager) && <option value="REGISTERED">REGISTERED</option>}
-                    {isAuthenticated && isSupervisor && <option value="CHECKED">CHECKED</option>}
-                    {isAuthenticated && isDispatcher && <option value="DECORATED">DECORATED</option>}
-                    {isAuthenticated && isSupervisor && <option value="RELEASE_ALLOWED">RELEASE_ALLOWED</option>}
-                    {isAuthenticated && isSupervisor && <option value="REMOVED_FROM_STORAGE">REMOVED_FROM_STORAGE</option>}
+                    {isAuthenticated && isDispatcher && <option value="EDITING_BY_DISPATCHER">Editing</option>}
+                    {isAuthenticated && isManager && <option value="EDITING_BY_MANAGER">Editing</option>}
+                    {isAuthenticated && (isDispatcher || isManager) && <option value="REGISTERED">Registered</option>}
+                    {isAuthenticated && isSupervisor && <option value="CHECKED">Checked</option>}
+                    {isAuthenticated && isDispatcher && <option value="ACCEPTED_TO_STORAGE">Accepted to storage</option>}
+                    {isAuthenticated && isSupervisor && <option value="RELEASE_ALLOWED">Release allowed</option>}
+                    {isAuthenticated && isSupervisor && <option value="REMOVED_FROM_STORAGE">Removed from storage</option>}
                   </AvInput>
                 </AvGroup>
                 {isAuthenticated &&

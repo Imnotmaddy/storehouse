@@ -163,13 +163,13 @@ public class TTNService {
 
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
         if(user.getAuthorities().contains(dispatcher)){
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.DECORATED).stream()
+            list.addAll( tTNRepository.findAllByStatus(TtnStatus.EDITING_BY_DISPATCHER).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
             list.addAll( tTNRepository.findAllByStatus(TtnStatus.CHECKED).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.RELEASE_ALLOWED).stream()
+            list.addAll( tTNRepository.findAllByStatus(TtnStatus.ACCEPTED_TO_STORAGE).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
         }
@@ -181,6 +181,9 @@ public class TTNService {
         }
 
         if(user.getAuthorities().contains(manager)){
+            list.addAll( tTNRepository.findAllByStatus(TtnStatus.EDITING_BY_MANAGER).stream()
+                .map(tTNMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new)));
             list.addAll( tTNRepository.findAllByStatus(TtnStatus.REMOVED_FROM_STORAGE).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
