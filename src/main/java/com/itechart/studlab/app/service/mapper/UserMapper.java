@@ -3,6 +3,7 @@ package com.itechart.studlab.app.service.mapper;
 import com.itechart.studlab.app.domain.Authority;
 import com.itechart.studlab.app.domain.User;
 import com.itechart.studlab.app.service.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -19,6 +20,12 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserMapper {
+
+    private StorehouseMapper storehouseMapper;
+
+    public void setStorehouseMapper (StorehouseMapper storehouseMapper) {
+        this.storehouseMapper = storehouseMapper;
+    }
 
     public List<UserDTO> usersToUserDTOs(List<User> users) {
         return users.stream()
@@ -58,6 +65,7 @@ public class UserMapper {
             user.setLangKey(userDTO.getLangKey());
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
             user.setAuthorities(authorities);
+            user.setStorehouse(storehouseMapper.fromId(userDTO.getStorehouseId()));
             return user;
         }
     }

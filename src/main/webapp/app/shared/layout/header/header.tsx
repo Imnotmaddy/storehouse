@@ -2,10 +2,10 @@ import './header.css';
 
 import React from 'react';
 import { Storage, Translate } from 'react-jhipster';
-import { Brand, Companies, Home, Transporter, Ttn, Transport, Users, Act, Product } from './header-components';
+import { Brand, Companies, Home, Storehouse, Transporter, Ttn, Transport, Users, Act, Product } from './header-components';
 import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
-import { AccountMenu, AdminMenu, EntitiesMenu, LocaleMenu } from './menus';
+import { AccountMenu, EntitiesMenu, LocaleMenu } from './menus';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -82,6 +82,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
               {isAuthenticated && (isDispatcher || isOwner || isManager) && <Transporter />}
               {isAuthenticated && (isDispatcher || isOwner || isManager) && <Transport />}
               {isAuthenticated && isAdmin && <Companies />}
+              {isAuthenticated && isStorehouseAdmin && <Storehouse />}
               {isAuthenticated && (isSupervisor || isOwner) && <Act />}
               {isAuthenticated && isSupervisor && <Product />}
               {isAuthenticated && (isStorehouseAdmin || isOwner) && <Users />}

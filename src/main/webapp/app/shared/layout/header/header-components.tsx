@@ -88,6 +88,14 @@ export const Users = props => (
   </NavItem>
 );
 
+export const Storehouse = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/storehouse" className="d-flex align-items-center">
+      <Translate contentKey="global.menu.storehouse">Add storehouse</Translate>
+      </NavLink>
+  </NavItem>
+ );
+
 export const Act = props => (
   <NavItem>
     <NavLink tag={Link} to="/act" className="d-flex align-items-center">

@@ -6,6 +6,7 @@ import com.itechart.studlab.app.domain.Storehouse;
 import com.itechart.studlab.app.domain.User;
 import com.itechart.studlab.app.repository.StorehouseRepository;
 import com.itechart.studlab.app.repository.search.StorehouseSearchRepository;
+import com.itechart.studlab.app.service.StorageRoomService;
 import com.itechart.studlab.app.service.StorehouseService;
 import com.itechart.studlab.app.service.dto.StorehouseDTO;
 import com.itechart.studlab.app.service.mapper.StorehouseMapper;
@@ -112,15 +113,13 @@ public class StorehouseResourceIntTest {
         User user = UserResourceIntTest.createEntity(em);
         em.persist(user);
         em.flush();
-        storehouse.setOwner(user);
+        //storehouse.setOwner(user);
         // Add required entity
-        storehouse.setAdministrator(user);
+        //storehouse.setDispatcher(user);
         // Add required entity
-        storehouse.setDispatcher(user);
+        //storehouse.setManager(user);
         // Add required entity
-        storehouse.setManager(user);
-        // Add required entity
-        storehouse.setSupervisor(user);
+        //storehouse.setSupervisor(user);
         return storehouse;
     }
 

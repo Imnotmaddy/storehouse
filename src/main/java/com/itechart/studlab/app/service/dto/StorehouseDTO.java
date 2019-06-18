@@ -1,6 +1,8 @@
 package com.itechart.studlab.app.service.dto;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -13,26 +15,13 @@ public class StorehouseDTO implements Serializable {
     @NotNull
     private String name;
 
+    @NotNull
+    private String companyName;
 
-    private Long ownerId;
 
-    private String ownerLastName;
+    private List<StorageRoomDTO> rooms;
 
-    private Long administratorId;
-
-    private String administratorLastName;
-
-    private Long dispatcherId;
-
-    private String dispatcherLastName;
-
-    private Long managerId;
-
-    private String managerLastName;
-
-    private Long supervisorId;
-
-    private String supervisorLastName;
+    private List<UserDTO> employees;
 
     public Long getId() {
         return id;
@@ -50,84 +39,28 @@ public class StorehouseDTO implements Serializable {
         this.name = name;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setOwnerId(Long userId) {
-        this.ownerId = userId;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public String getOwnerLastName() {
-        return ownerLastName;
+    public List<StorageRoomDTO> getRooms() {
+        return rooms;
     }
 
-    public void setOwnerLastName(String userLastName) {
-        this.ownerLastName = userLastName;
+    public void setRooms(List<StorageRoomDTO> storageRoomDTOSet) {
+        this.rooms = storageRoomDTOSet;
     }
 
-    public Long getAdministratorId() {
-        return administratorId;
+    public List<UserDTO> getEmployees() {
+        return employees;
     }
 
-    public void setAdministratorId(Long userId) {
-        this.administratorId = userId;
-    }
-
-    public String getAdministratorLastName() {
-        return administratorLastName;
-    }
-
-    public void setAdministratorLastName(String userLastName) {
-        this.administratorLastName = userLastName;
-    }
-
-    public Long getDispatcherId() {
-        return dispatcherId;
-    }
-
-    public void setDispatcherId(Long userId) {
-        this.dispatcherId = userId;
-    }
-
-    public String getDispatcherLastName() {
-        return dispatcherLastName;
-    }
-
-    public void setDispatcherLastName(String userLastName) {
-        this.dispatcherLastName = userLastName;
-    }
-
-    public Long getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Long userId) {
-        this.managerId = userId;
-    }
-
-    public String getManagerLastName() {
-        return managerLastName;
-    }
-
-    public void setManagerLastName(String userLastName) {
-        this.managerLastName = userLastName;
-    }
-
-    public Long getSupervisorId() {
-        return supervisorId;
-    }
-
-    public void setSupervisorId(Long userId) {
-        this.supervisorId = userId;
-    }
-
-    public String getSupervisorLastName() {
-        return supervisorLastName;
-    }
-
-    public void setSupervisorLastName(String userLastName) {
-        this.supervisorLastName = userLastName;
+    public void setEmployees(List<UserDTO> employees) {
+        this.employees = employees;
     }
 
     @Override
@@ -156,16 +89,9 @@ public class StorehouseDTO implements Serializable {
         return "StorehouseDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", owner=" + getOwnerId() +
-            ", owner='" + getOwnerLastName() + "'" +
-            ", administrator=" + getAdministratorId() +
-            ", administrator='" + getAdministratorLastName() + "'" +
-            ", dispatcher=" + getDispatcherId() +
-            ", dispatcher='" + getDispatcherLastName() + "'" +
-            ", manager=" + getManagerId() +
-            ", manager='" + getManagerLastName() + "'" +
-            ", supervisor=" + getSupervisorId() +
-            ", supervisor='" + getSupervisorLastName() + "'" +
+            ", companyName='" + getCompanyName() + "'" +
+            ", employees='" + getEmployees() + "'" +
+            ", rooms='" + getRooms() + "'" +
             "}";
     }
 }

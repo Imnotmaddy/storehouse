@@ -4,6 +4,7 @@ import com.itechart.studlab.app.config.Constants;
 import com.itechart.studlab.app.domain.Authority;
 import com.itechart.studlab.app.domain.User;
 import com.itechart.studlab.app.repository.AuthorityRepository;
+import com.itechart.studlab.app.repository.StorehouseRepository;
 import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.UserSearchRepository;
 import com.itechart.studlab.app.security.AuthoritiesConstants;
@@ -45,15 +46,18 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
+    private final StorehouseRepository storehouseRepository;
+
     private final CacheManager cacheManager;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
                        UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository,
-                       CacheManager cacheManager) {
+                       StorehouseRepository storehouseRepository, CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
+        this.storehouseRepository = storehouseRepository;
         this.cacheManager = cacheManager;
     }
 
@@ -172,6 +176,10 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
+        if (userDTO.getStorehouseId() != null) {
+            storehouseRepository.findById(userDTO.getStorehouseId())
+                .ifPresent(storehouse -> user.setStorehouse(storehouse));
+        }
         userRepository.save(user);
         userSearchRepository.save(user);
         this.clearUserCaches(user);
@@ -231,11 +239,15 @@ public class UserService {
                 user.setLangKey(userDTO.getLangKey());
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
+
                 userDTO.getAuthorities().stream()
                     .map(authorityRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
+
+                storehouseRepository.findById(userDTO.getStorehouseId())
+                    .ifPresent(storehouse -> user.setStorehouse(storehouse));
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);

@@ -22,7 +22,12 @@
       "dispatcher": "Dispatcher",
       "manager": "Manager",
       "supervisor": "Supervisor",
-      "rooms": "Rooms"
+      "employees": "Сотрудники",
+      "rooms": "Rooms",
+      "roomNumber": "Номер комнаты",
+      "type": "Тип",
+      "storageRooms": "Помещения",
+      "addRoom": "Добавить помещение"
     }
   }
 }

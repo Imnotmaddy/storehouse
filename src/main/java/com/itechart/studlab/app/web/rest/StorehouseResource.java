@@ -1,4 +1,5 @@
 package com.itechart.studlab.app.web.rest;
+import com.itechart.studlab.app.service.StorageRoomService;
 import com.itechart.studlab.app.service.StorehouseService;
 import com.itechart.studlab.app.web.rest.errors.BadRequestAlertException;
 import com.itechart.studlab.app.web.rest.util.HeaderUtil;
@@ -32,6 +33,7 @@ public class StorehouseResource {
 
     private final StorehouseService storehouseService;
 
+
     public StorehouseResource(StorehouseService storehouseService) {
         this.storehouseService = storehouseService;
     }
@@ -51,7 +53,7 @@ public class StorehouseResource {
         }
         StorehouseDTO result = storehouseService.save(storehouseDTO);
         return ResponseEntity.created(new URI("/api/storehouses/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getName()))
             .body(result);
     }
 
@@ -72,7 +74,7 @@ public class StorehouseResource {
         }
         StorehouseDTO result = storehouseService.save(storehouseDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, storehouseDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, storehouseDTO.getName()))
             .body(result);
     }
 
@@ -85,6 +87,12 @@ public class StorehouseResource {
     public List<StorehouseDTO> getAllStorehouses() {
         log.debug("REST request to get all Storehouses");
         return storehouseService.findAll();
+    }
+
+    @GetMapping("/storehouses/company")
+    public List<StorehouseDTO> getAllCompanyStoreHouses(@RequestParam("companyName") String companyName) {
+        log.debug("REST request to get all Storehouses for company {}", companyName);
+        return storehouseService.findAllForCompany(companyName);
     }
 
     /**
