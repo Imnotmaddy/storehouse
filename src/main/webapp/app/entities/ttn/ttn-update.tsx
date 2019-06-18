@@ -7,18 +7,13 @@ import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validatio
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, log, IPayload } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-import axios from 'axios';
-import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { ITransport } from 'app/shared/model/transport.model';
+import { getEntities as getProducts } from 'app/entities/product/product.reducer';
 import { getEntities as getTransports } from 'app/entities/transport/transport.reducer';
-import { ITransporter } from 'app/shared/model/transporter.model';
 import { getEntities as getTransporters } from 'app/entities/transporter/transporter.reducer';
-import { getEntity, updateEntity, createEntity, reset, getRooms } from './ttn.reducer';
-import { ITTN } from 'app/shared/model/ttn.model';
+import { getEntity, updateEntity, createEntity, reset } from './ttn.reducer';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 
 import { AddProductModal } from 'app/entities/ttn/add-product-modal';
 import { IProduct } from 'app/shared/model/product.model';
@@ -26,6 +21,7 @@ import { IProduct } from 'app/shared/model/product.model';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
 import { IStorageRoom } from 'app/shared/model/storage-room.model';
+import axios from 'axios';
 
 export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
   isAuthenticated: boolean;
@@ -44,6 +40,7 @@ export interface ITTNUpdateState {
   transportId: string;
   transporterId: string;
   products: IProduct[];
+  managerProducts: IProduct[];
   rooms: IStorageRoom[];
   storageRoomId: string;
   nameValue: string;
@@ -65,6 +62,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       transportId: '0',
       transporterId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id,
+      managerProducts: [],
       products: [],
       rooms: [],
       storageRoomId: '0',
@@ -97,6 +95,19 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
           this.setState({ products: [] });
         });
     }
+
+    const requestUrl = `/api/products/getByStorehouseId/${this.props.storehouseId}`;
+    axios
+      .get<IProduct[]>(requestUrl)
+      .then(response => {
+        const newState = { ...this.state, managerProducts: response.data };
+        this.setState(newState);
+      })
+      .catch(error => {
+        console.log('ERROR', error);
+        this.setState({ managerProducts: [] });
+      });
+
     this.props.getUsers();
     this.props.getTransports();
     this.props.getTransporters();
@@ -148,7 +159,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       storageRoomId: '',
       showAddModal: false
     });
-    console.log('after products', this.state.products);
   };
 
   toggleAddModal = () => {
@@ -183,21 +193,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   };
 
   render() {
-    const {
-      tTNEntity,
-      users,
-      transports,
-      transporters,
-      loading,
-      updating,
-      isAuthenticated,
-      isAdmin,
-      isDispatcher,
-      isManager,
-      isStorehouseAdmin,
-      isSupervisor
-    } = this.props;
-    const { isNew } = this.state;
+    const { tTNEntity, transports, transporters, loading, updating, isAuthenticated, isDispatcher, isManager, isSupervisor } = this.props;
+    const { isNew, managerProducts } = this.state;
 
     return (
       <div>
@@ -418,53 +415,72 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                       : null}
                   </AvInput>
                 </AvGroup>
+                {isAuthenticated &&
+                  isManager && (
+                    <AvGroup>
+                      <Label for="allProducts">Product</Label>
+                      <AvInput id="allProducts" type="select" className="form-control" name="allProducts">
+                        <option value="" key="0" defaultChecked />
+                        {managerProducts
+                          ? managerProducts.map(otherEntity => (
+                              <option value={otherEntity.id} key={otherEntity.id}>
+                                {otherEntity.name}
+                              </option>
+                            ))
+                          : null}
+                      </AvInput>
+                    </AvGroup>
+                  )}
               </AvForm>
             )}
-            <div className="position-relative">
-              <div className="d-flex">
-                <Label className="mr-auto" for="productsTable">
-                  <Translate contentKey="storeHouseApp.tTN.products">Products</Translate>
-                </Label>
-                <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal} hidden={isSupervisor}>
-                  <Translate contentKey="storeHouseApp.tTN.addProduct">Add product</Translate>
-                </Button>
-              </div>
-              <Table name="productsTable" responsive size="sm">
-                <thead>
-                  <tr>
-                    <th>
-                      <Translate contentKey="storeHouseApp.tTN.name">Product Name</Translate>
-                    </th>
-                    <th>
-                      <Translate contentKey="storeHouseApp.tTN.quantity">Quantity</Translate>
-                    </th>
-                    <th>
-                      <Translate contentKey="storeHouseApp.tTN.cost">Cost</Translate>
-                    </th>
-                    <th>
-                      <Translate contentKey="storeHouseApp.tTN.weight">Weight</Translate>
-                    </th>
-                    <th>
-                      <Translate contentKey="storeHouseApp.tTN.requiredFacility">Required Facility</Translate>
-                    </th>
-                    <th>
-                      <Translate contentKey="storeHouseApp.tTN.currentState">Current State</Translate>
-                    </th>
-                    <th>
-                      <span>Current Storage Room</span>
-                    </th>
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>{this.genRows()}</tbody>
-              </Table>
-              <AddProductModal
-                show={this.state.showAddModal}
-                storehouseId={this.getRooms}
-                toggle={this.toggleAddModal}
-                getValues={this.handleModalValues}
-              />
-            </div>
+            {isAuthenticated &&
+              (isDispatcher || isSupervisor) && (
+                <div className="position-relative">
+                  <div className="d-flex">
+                    <Label className="mr-auto" for="productsTable">
+                      <Translate contentKey="storeHouseApp.tTN.products">Products</Translate>
+                    </Label>
+                    <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal} hidden={isSupervisor}>
+                      <Translate contentKey="storeHouseApp.tTN.addProduct">Add product</Translate>
+                    </Button>
+                  </div>
+                  <Table name="productsTable" responsive size="sm">
+                    <thead>
+                      <tr>
+                        <th>
+                          <Translate contentKey="storeHouseApp.tTN.name">Product Name</Translate>
+                        </th>
+                        <th>
+                          <Translate contentKey="storeHouseApp.tTN.quantity">Quantity</Translate>
+                        </th>
+                        <th>
+                          <Translate contentKey="storeHouseApp.tTN.cost">Cost</Translate>
+                        </th>
+                        <th>
+                          <Translate contentKey="storeHouseApp.tTN.weight">Weight</Translate>
+                        </th>
+                        <th>
+                          <Translate contentKey="storeHouseApp.tTN.requiredFacility">Required Facility</Translate>
+                        </th>
+                        <th>
+                          <Translate contentKey="storeHouseApp.tTN.currentState">Current State</Translate>
+                        </th>
+                        <th>
+                          <span>Current Storage Room</span>
+                        </th>
+                        <th />
+                      </tr>
+                    </thead>
+                    <tbody>{this.genRows()}</tbody>
+                  </Table>
+                  <AddProductModal
+                    show={this.state.showAddModal}
+                    storehouseId={this.getRooms}
+                    toggle={this.toggleAddModal}
+                    getValues={this.handleModalValues}
+                  />
+                </div>
+              )}
             <Button tag={Link} id="createAct" to={`/act/new?ttnId=${tTNEntity.id}`} replace color="info" hidden={!isSupervisor}>
               <span className="d-none d-md-inline">Create Act</span>
             </Button>
