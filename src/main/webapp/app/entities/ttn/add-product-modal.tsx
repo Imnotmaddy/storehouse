@@ -2,7 +2,7 @@ import React from 'react';
 import { translate, Translate } from 'react-jhipster';
 import { Button, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { AvField, AvForm, AvGroup } from 'availity-reactstrap-validation';
-import { number } from 'prop-types';
+import { IStorageRoom } from 'app/shared/model/storage-room.model';
 
 export interface IAddProductModalState {
   nameValue: string;
@@ -11,22 +11,27 @@ export interface IAddProductModalState {
   weightValue: string;
   requiredFacilityValue: string;
   stateValue: string;
+  rooms: IStorageRoom[];
+  roomValue: string;
 }
 
 export interface IAddProductModalProps {
   show: boolean;
   toggle: Function;
   getValues: Function;
+  selectRooms: Function;
 }
 
 export class AddProductModal extends React.Component<IAddProductModalProps, IAddProductModalState> {
   state = {
-    nameValue: null,
-    quantityValue: null,
-    costValue: null,
-    weightValue: null,
-    requiredFacilityValue: null,
-    stateValue: null
+    nameValue: '',
+    quantityValue: '',
+    costValue: '',
+    weightValue: '',
+    requiredFacilityValue: '',
+    stateValue: '',
+    rooms: [],
+    roomValue: ''
   };
 
   submit = () => {
@@ -36,7 +41,9 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
       cost: this.state.costValue,
       weight: this.state.weightValue,
       requiredFacility: this.state.requiredFacilityValue,
-      state: this.state.stateValue
+      state: this.state.stateValue,
+      rooms: this.state.rooms,
+      storageRoomId: this.state.roomValue
     });
     this.setState({
       nameValue: '',
@@ -44,9 +51,21 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
       costValue: '',
       weightValue: '',
       requiredFacilityValue: '',
-      stateValue: ''
+      stateValue: '',
+      roomValue: ''
     });
   };
+
+  componentDidMount() {
+    this.props
+      .selectRooms()
+      .then(response => {
+        this.setState({ rooms: response.value.data });
+      })
+      .catch(error => {
+        this.setState({ rooms: [] });
+      });
+  }
 
   handleNameChange = event => {
     this.setState({ nameValue: event.target.value });
@@ -72,7 +91,12 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
     this.setState({ stateValue: event.target.value });
   };
 
+  handleRoomChange = event => {
+    this.setState({ roomValue: event.target.value });
+  };
+
   render() {
+    const { rooms } = this.state;
     return (
       <Modal isOpen={this.props.show} toggle={this.props.toggle}>
         <AvForm onValidSubmit={this.submit}>
@@ -217,6 +241,31 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
                 <option value="UNSTORED">UNSTORED</option>
                 <option value="READY_TO_LEAVE">READY_TO_LEAVE</option>
                 <option value="REMOVED_FROM_STORAGE">REMOVED_FROM_STORAGE</option>
+              </AvField>
+            </AvGroup>
+            <AvGroup>
+              <Label for="rooms">
+                <span>Storage room</span>
+              </Label>
+              <AvField
+                name="rooms"
+                type="select"
+                onChange={this.handleRoomChange}
+                validate={{
+                  required: {
+                    value: true,
+                    errorMessage: translate('entity.validation.required')
+                  }
+                }}
+              >
+                <option defaultChecked />
+                {rooms
+                  ? rooms.map((otherEntity, i) => (
+                      <option value={otherEntity.id} key={i}>
+                        {otherEntity.roomNumber + ' ' + otherEntity.type}
+                      </option>
+                    ))
+                  : null}
               </AvField>
             </AvGroup>
           </ModalBody>

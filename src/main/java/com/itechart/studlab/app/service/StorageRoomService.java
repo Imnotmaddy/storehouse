@@ -67,6 +67,7 @@ public class StorageRoomService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
     public List<StorageRoomDTO> saveAllForStorehouse(List<StorageRoomDTO> storageRoomDTOList, Long storehouseId) {
         log.debug("Request to save rooms for storehouse id: {}, {}", storehouseId, storageRoomDTOList);
         log.debug("Update dto list: {}", storageRoomDTOList);
@@ -76,6 +77,16 @@ public class StorageRoomService {
         storageRoomSearchRepository.saveAll(rooms);
         return result;
     }
+
+    @Transactional(readOnly = true)
+    public List<StorageRoomDTO> findAllByStorehouseId(Long storehouseId){
+        log.debug("Request to get StorageRooms by storehouseID");
+        return storageRoomRepository.findAllByStorehouseId(storehouseId)
+            .stream().map(storageRoomMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
+
 
     /**
      * Get one storageRoom by id.
