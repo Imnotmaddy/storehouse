@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test class for the TransporterResource REST controller.
  *
  * @see TransporterResource
- */
+ *//*
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = StoreHouseApp.class)
 public class TransporterResourceIntTest {
@@ -59,11 +59,7 @@ public class TransporterResourceIntTest {
     @Autowired
     private TransporterService transporterService;
 
-    /**
-     * This repository is mocked in the com.itechart.studlab.app.repository.search test package.
-     *
-     * @see com.itechart.studlab.app.repository.search.TransporterSearchRepositoryMockConfiguration
-     */
+
     @Autowired
     private TransporterSearchRepository mockTransporterSearchRepository;
 
@@ -98,12 +94,7 @@ public class TransporterResourceIntTest {
             .setValidator(validator).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
+
     public static Transporter createEntity(EntityManager em) {
         Transporter transporter = new Transporter()
             .companyName(DEFAULT_COMPANY_NAME);
@@ -342,3 +333,4 @@ public class TransporterResourceIntTest {
         assertThat(transporterMapper.fromId(null)).isNull();
     }
 }
+*/

@@ -21,6 +21,7 @@ export interface ITTNProps extends StateProps, DispatchProps, RouteComponentProp
   isManager: boolean;
   isStorehouseAdmin: boolean;
   isOwner: boolean;
+  isSupervisor: boolean;
 }
 
 export interface ITTNState {
@@ -51,12 +52,12 @@ export class TTN extends React.Component<ITTNProps, ITTNState> {
   handleSearch = event => this.setState({ search: event.target.value });
 
   render() {
-    const { tTNList, match, isAuthenticated, isAdmin, isDispatcher, isManager, isStorehouseAdmin, isOwner } = this.props;
+    const { tTNList, match, isAuthenticated, isAdmin, isDispatcher, isManager, isStorehouseAdmin, isOwner, isSupervisor } = this.props;
     return (
       <div>
         <h2 id="ttn-heading">
           <Translate contentKey="storeHouseApp.tTN.home.title">TTNS</Translate>
-          {!isOwner && (
+          {!(isOwner || isSupervisor) && (
             <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
               <FontAwesomeIcon icon="plus" />
               &nbsp;
@@ -203,7 +204,8 @@ const mapStateToProps = ({ authentication, tTN }: IRootState) => ({
   isDispatcher: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
   isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
   isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
-  isOwner: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.OWNER])
+  isOwner: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.OWNER]),
+  isSupervisor: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.SUPERVISOR])
 });
 
 const mapDispatchToProps = {

@@ -24,9 +24,6 @@ const accountMenuItems = (
     <DropdownItem id="login-item" tag={Link} to="/login">
       <FontAwesomeIcon icon="sign-in-alt" fixedWidth /> <Translate contentKey="global.menu.account.login">Sign in</Translate>
     </DropdownItem>
-    <DropdownItem tag={Link} to="/register">
-      <FontAwesomeIcon icon="sign-in-alt" fixedWidth /> <Translate contentKey="global.menu.account.register">Register</Translate>
-    </DropdownItem>
   </>
 );
 
