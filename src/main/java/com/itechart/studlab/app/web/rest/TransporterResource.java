@@ -35,11 +35,11 @@ public class TransporterResource {
 
     private final TransporterService transporterService;
 
-    @Autowired
     private UserRepository userRepository;
 
-    public TransporterResource(TransporterService transporterService) {
+    public TransporterResource(TransporterService transporterService, UserRepository userRepository) {
         this.transporterService = transporterService;
+        this.userRepository = userRepository;
     }
 
     /**

@@ -1,16 +1,24 @@
 package com.itechart.studlab.app.web.rest;
+import com.itechart.studlab.app.domain.TTN;
+import com.itechart.studlab.app.domain.User;
+import com.itechart.studlab.app.repository.TTNRepository;
+import com.itechart.studlab.app.repository.UserRepository;
+import com.itechart.studlab.app.security.SecurityUtils;
 import com.itechart.studlab.app.service.ProductService;
 import com.itechart.studlab.app.service.TTNService;
 import com.itechart.studlab.app.web.rest.errors.BadRequestAlertException;
+import com.itechart.studlab.app.web.rest.errors.InternalServerErrorException;
 import com.itechart.studlab.app.web.rest.util.HeaderUtil;
 import com.itechart.studlab.app.service.dto.TTNDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -35,9 +43,15 @@ public class TTNResource {
 
     private final ProductService productService;
 
-    public TTNResource(TTNService tTNService, ProductService productService) {
+    private TTNRepository ttnRepository;
+
+    private UserRepository userRepository;
+
+    public TTNResource(TTNService tTNService, ProductService productService, UserRepository userRepository, TTNRepository ttnRepository) {
         this.tTNService = tTNService;
         this.productService = productService;
+        this.userRepository = userRepository;
+        this.ttnRepository = ttnRepository;
     }
 
     /**
@@ -52,6 +66,13 @@ public class TTNResource {
         log.debug("REST request to save TTN : {}", tTNDTO);
         if (tTNDTO.getId() != null) {
             throw new BadRequestAlertException("A new tTN cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        String serialNumber = tTNDTO.getSerialNumber();
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        String userCompany = user.getCompany();
+        List<TTN> list = ttnRepository.findAllByTransporter_DispatcherCompanyNameAndSerialNumber(userCompany, serialNumber);
+        if (!(list.isEmpty())){
+            throw new ValidationException("TTN with such serial number already exist in this company");
         }
         TTNDTO result = tTNService.save(tTNDTO);
         return ResponseEntity.created(new URI("/api/ttns/" + result.getId()))

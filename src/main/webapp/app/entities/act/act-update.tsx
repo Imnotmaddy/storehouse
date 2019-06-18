@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, match, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
@@ -39,6 +39,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
   }
 
   componentDidMount() {
+    console.log('MATCH', this.props);
     if (this.state.isNew) {
       this.props.reset();
     } else {
@@ -145,7 +146,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
                     </option>
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/act" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/act" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">
