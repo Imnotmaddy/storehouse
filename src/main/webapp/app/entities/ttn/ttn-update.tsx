@@ -103,23 +103,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   }
 
   getRooms = () => {
-    /* const promise = axios.get(`/api/storage-rooms/getByStorehouseId/${1}`).then(response => {
-                    this.setState({rooms: response.value.data.rooms});
-                    console.log({"Promise":response});
-                }).catch(error =>{console.log({"PROMISE DIDNT WORK" : error})});
-                return this.state.rooms;
-
-
-                .then(response => {
-                    this.setState({rooms: response.value.data.rooms});
-                    console.log({'Promise succeed': response});
-                })
-                .catch(error => {
-                    this.setState({rooms: []});
-                    console.log({'I failed promise': error});
-                });
-                */
-    return this.props.getRooms(1);
+    return this.props.storehouseId;
   };
 
   genRows = () =>
@@ -236,15 +220,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     <Label for="id">
                       <Translate contentKey="global.field.id">ID</Translate>
                     </Label>
-                    <AvInput
-                      id="ttn-id"
-                      type="text"
-                      className="form-control"
-                      name="id"
-                      required
-                      readOnly
-                      value={isNew ? null : this.props.tTNEntity.id}
-                    />
+                    <AvInput id="ttn-id" type="text" className="form-control" name="id" required readOnly />
                   </AvGroup>
                 ) : null}
                 <AvGroup>
@@ -255,7 +231,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     id="ttn-serialNumber"
                     type="text"
                     name="serialNumber"
-                    value={isNew ? null : this.props.tTNEntity.serialNumber}
                     validate={{
                       required: {
                         value: true,
@@ -274,7 +249,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     type="date"
                     className="form-control"
                     name="dateOfCreation"
-                    value={isNew ? null : this.props.tTNEntity.dateOfCreation}
                     validate={{
                       required: {
                         value: true,
@@ -288,13 +262,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   <Label id="descriptionLabel" for="description">
                     <Translate contentKey="storeHouseApp.tTN.description">Description</Translate>
                   </Label>
-                  <AvField
-                    id="ttn-description"
-                    type="text"
-                    name="description"
-                    value={isNew ? null : this.props.tTNEntity.description}
-                    readOnly={isSupervisor}
-                  />
+                  <AvField id="ttn-description" type="text" name="description" readOnly={isSupervisor} />
                 </AvGroup>
                 <AvGroup>
                   <Label id="driverNameLabel" for="driverName">
@@ -311,7 +279,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
-                    value={isNew ? null : this.props.tTNEntity.driverName}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -373,7 +340,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                             errorMessage: translate('entity.validation.required')
                           }
                         }}
-                        value={isNew ? null : this.props.tTNEntity.sender}
                       />
                     </AvGroup>
                   )}
@@ -394,7 +360,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                           }
                         }}
                         readOnly={isSupervisor}
-                        value={isNew ? null : this.props.tTNEntity.recipient}
                       />
                     </AvGroup>
                   )}
@@ -494,7 +459,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
               </Table>
               <AddProductModal
                 show={this.state.showAddModal}
-                selectRooms={this.getRooms}
+                storehouseId={this.getRooms}
                 toggle={this.toggleAddModal}
                 getValues={this.handleModalValues}
               />
@@ -535,7 +500,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   tTNEntity: storeState.tTN.entity,
   loading: storeState.tTN.loading,
   updating: storeState.tTN.updating,
-  updateSuccess: storeState.tTN.updateSuccess
+  updateSuccess: storeState.tTN.updateSuccess,
+  storehouseId: storeState.authentication.account.storehouseId
 });
 
 const mapDispatchToProps = {
@@ -543,7 +509,6 @@ const mapDispatchToProps = {
   getTransports,
   getTransporters,
   getEntity,
-  getRooms,
   updateEntity,
   createEntity,
   reset
