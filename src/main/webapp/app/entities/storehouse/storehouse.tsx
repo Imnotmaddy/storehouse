@@ -59,18 +59,6 @@ export class Storehouse extends React.Component<IStorehouseProps, IStorehouseSta
                 <th>
                   <Translate contentKey="storeHouseApp.storehouse.name">Name</Translate>
                 </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.storehouse.dispatcher">Dispatcher</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.storehouse.manager">Manager</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="storeHouseApp.storehouse.supervisor">Supervisor</Translate>
-                </th>
                 <th />
               </tr>
             </thead>
@@ -82,10 +70,6 @@ export class Storehouse extends React.Component<IStorehouseProps, IStorehouseSta
                       {storehouse.name}
                     </Button>
                   </td>
-                  <td>{storehouse.ownerLastName ? storehouse.ownerLastName : ''}</td>
-                  <td>{storehouse.dispatcherLastName ? storehouse.dispatcherLastName : ''}</td>
-                  <td>{storehouse.managerLastName ? storehouse.managerLastName : ''}</td>
-                  <td>{storehouse.supervisorLastName ? storehouse.supervisorLastName : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${storehouse.id}`} color="info" size="sm">

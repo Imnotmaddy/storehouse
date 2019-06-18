@@ -85,9 +85,9 @@ public class UserDTO {
         this.city = user.getCity();
         this.address = user.getAddress();
 
-        try {
+        if (user.getStorehouse() != null && user.getStorehouse().getId() != null) {
             this.storehouseId = user.getStorehouse().getId();
-        } catch (NullPointerException e) {}
+        }
 
         this.langKey = user.getLangKey();
         this.createdBy = user.getCreatedBy();
