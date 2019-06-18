@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label, Table } from 'reactstrap';
+import { Button, Row, Col, Label, Table, Input } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, log, IPayload } from 'react-jhipster';
@@ -50,6 +50,7 @@ export interface ITTNUpdateState {
   requiredFacilityValue: string;
   stateValue: string;
   showAddModal: boolean;
+  rows: boolean[];
 }
 
 export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState> {
@@ -65,6 +66,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       managerProducts: [],
       products: [],
       rooms: [],
+      rows: [],
       storageRoomId: '0',
       nameValue: '',
       quantityValue: '',
@@ -100,7 +102,11 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
     axios
       .get<IProduct[]>(requestUrl)
       .then(response => {
-        const newState = { ...this.state, managerProducts: response.data };
+        const rows = new Array(response.data.length);
+        for (let i = 0; i < rows.length; i++) {
+          rows[i] = false;
+        }
+        const newState = { ...this.state, managerProducts: response.data, rows: rows };
         this.setState(newState);
       })
       .catch(error => {
@@ -141,8 +147,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   genRowsForManager = () =>
     this.state.managerProducts.map((row, i) => (
       <tr key={i}>
-        <td>
-          <input type="checkbox" />
+        <td style={{ paddingTop: '20px' }}>
+          <Input type="checkbox" value={row} name={'checkbox' + i} onChange={this.handleCheckbox} />
         </td>
         <td>{row.name}</td>
         <td>{row.quantity}</td>
@@ -153,6 +159,16 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
         <td>{row.storageRoomId}</td>
       </tr>
     ));
+
+  parseId = (componentName: string) => parseInt(componentName.charAt(componentName.length - 1), 10);
+
+  handleCheckbox = event => {
+    const target = event.currentTarget;
+    const index = this.parseId(target.name);
+    const arr = [...this.state.rows];
+    arr[index] = target.checked;
+    this.setState({ rows: arr });
+  };
 
   deleteRow = event => {
     const elementId = event.currentTarget.value;
@@ -187,7 +203,11 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
 
   saveEntity = (event, errors, values) => {
     values.dateTimeOfRegistration = convertDateTimeToServer(values.dateTimeOfRegistration);
-
+    const products = this.state.products;
+    this.state.rows.forEach((row, i) => {
+      if (row === true) products.push(this.state.managerProducts[i]);
+    });
+    console.log('PRODUCTS', this.state.products);
     if (errors.length === 0) {
       const { tTNEntity } = this.props;
       const entity = {
