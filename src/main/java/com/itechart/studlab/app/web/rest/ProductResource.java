@@ -87,6 +87,12 @@ public class ProductResource {
         return productService.findAll();
     }
 
+    @GetMapping("/products/ttn")
+    public List<ProductDTO> getAllTtnProducts(@RequestParam(name = "id") Long id) {
+        log.debug("REST request to get all TTN ID {} products", id);
+        return productService.findAllForTtn(id);
+    }
+
     /**
      * GET  /products/:id : get the "id" product.
      *

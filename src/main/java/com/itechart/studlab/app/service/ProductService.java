@@ -1,15 +1,14 @@
 package com.itechart.studlab.app.service;
 
 import com.itechart.studlab.app.domain.Product;
-import com.itechart.studlab.app.domain.StorageRoom;
+import com.itechart.studlab.app.domain.TTN;
 import com.itechart.studlab.app.repository.ProductRepository;
+import com.itechart.studlab.app.repository.TTNRepository;
 import com.itechart.studlab.app.repository.search.ProductSearchRepository;
 import com.itechart.studlab.app.service.dto.ProductDTO;
-import com.itechart.studlab.app.service.dto.StorageRoomDTO;
 import com.itechart.studlab.app.service.mapper.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Product.
@@ -30,14 +29,18 @@ public class ProductService {
 
     private final Logger log = LoggerFactory.getLogger(ProductService.class);
 
+    private final TTNRepository ttnRepository;
+
     private final ProductRepository productRepository;
 
     private final ProductMapper productMapper;
 
     private final ProductSearchRepository productSearchRepository;
 
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper, ProductSearchRepository productSearchRepository) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper,
+                          ProductSearchRepository productSearchRepository, TTNRepository ttnRepository) {
         this.productRepository = productRepository;
+        this.ttnRepository = ttnRepository;
         this.productMapper = productMapper;
         this.productSearchRepository = productSearchRepository;
     }
@@ -70,15 +73,11 @@ public class ProductService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public List<ProductDTO> saveAllForTTN(List<ProductDTO> dtos, Long ttnId){
-        log.debug("Request to save products for ttn id: {}, {}", ttnId, dtos);
-        dtos.forEach(product -> product.setTTNId(ttnId));
-        log.debug("Update dto list: {}", dtos);
-        List<Product> products = productMapper.toEntity(dtos);
-        products = productRepository.saveAll(products);
-        List<ProductDTO> result = productMapper.toDto(products);
-        productSearchRepository.saveAll(products);
-        return result;
+    @Transactional(readOnly = true)
+    public List<ProductDTO> findAllForTtn(Long id) {
+        TTN ttn = ttnRepository.getOne(id);
+        return productRepository.getAllByTTNIs(ttn).stream()
+            .map(productMapper::toDto).collect(Collectors.toList());
     }
 
 

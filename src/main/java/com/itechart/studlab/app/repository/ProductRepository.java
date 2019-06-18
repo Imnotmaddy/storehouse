@@ -1,8 +1,11 @@
 package com.itechart.studlab.app.repository;
 
 import com.itechart.studlab.app.domain.Product;
-import org.springframework.data.jpa.repository.*;
+import com.itechart.studlab.app.domain.TTN;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**
@@ -11,5 +14,5 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-
+    List<Product> getAllByTTNIs(TTN ttn);
 }
