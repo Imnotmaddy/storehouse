@@ -4,6 +4,8 @@ import com.itechart.studlab.app.StoreHouseApp;
 
 import com.itechart.studlab.app.domain.Transport;
 import com.itechart.studlab.app.repository.TransportRepository;
+import com.itechart.studlab.app.repository.TransporterRepository;
+import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.TransportSearchRepository;
 import com.itechart.studlab.app.service.TransportService;
 import com.itechart.studlab.app.service.dto.TransportDTO;
@@ -83,8 +85,13 @@ public class TransportResourceIntTest {
     @Autowired
     private EntityManager em;
 
-    @Autowired
     private Validator validator;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TransporterRepository transporterRepository;
 
     private MockMvc restTransportMockMvc;
 
@@ -93,7 +100,7 @@ public class TransportResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TransportResource transportResource = new TransportResource(transportService);
+        final TransportResource transportResource = new TransportResource(transportService, userRepository, transporterRepository);
         this.restTransportMockMvc = MockMvcBuilders.standaloneSetup(transportResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

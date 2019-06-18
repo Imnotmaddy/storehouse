@@ -80,7 +80,7 @@ public class ProductService {
 
     public List<ProductDTO> saveAllForTTN(List<ProductDTO> dtos, Long ttnId){
         log.debug("Request to save products for ttn id: {}, {}", ttnId, dtos);
-        dtos.forEach(product -> product.setTTNId(ttnId));
+        dtos.forEach(product -> product.settTNId(ttnId));
         log.debug("Update dto list: {}", dtos);
         List<Product> products = productMapper.toEntity(dtos);
         products = productRepository.saveAll(products);

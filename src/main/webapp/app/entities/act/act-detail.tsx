@@ -53,14 +53,14 @@ export class ActDetail extends React.Component<IActDetailProps> {
             </dt>
             <dd>{actEntity.userId ? actEntity.userId : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/act" replace color="info">
+          <Button tag={Link} to="/act" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/act/${actEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/act/${actEntity.id}/edit`} replace color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

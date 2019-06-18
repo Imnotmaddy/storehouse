@@ -13,12 +13,14 @@ public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
 
     @Mapping(source = "act.id", target = "actId")
     @Mapping(source = "storageRoom.id", target = "storageRoomId")
-    @Mapping(source = "TTN.id", target = "TTNId")
+    @Mapping(source = "storageRoom.roomNumber", target = "storageRoomRoomNumber")
+    @Mapping(source = "TTN.id", target = "tTNId")
+    @Mapping(source = "TTN.serialNumber", target = "tTNSerialNumber")
     ProductDTO toDto(Product product);
 
     @Mapping(source = "actId", target = "act")
     @Mapping(source = "storageRoomId", target = "storageRoom")
-    @Mapping(source = "TTNId", target = "TTN")
+    @Mapping(source = "tTNId", target = "TTN")
     Product toEntity(ProductDTO productDTO);
 
     default Product fromId(Long id) {

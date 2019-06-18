@@ -351,7 +351,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     {isAuthenticated && isSupervisor && <option value="CHECKED">Checked</option>}
                     {isAuthenticated && isDispatcher && <option value="ACCEPTED_TO_STORAGE">Accepted to storage</option>}
                     {isAuthenticated && isSupervisor && <option value="RELEASE_ALLOWED">Release allowed</option>}
-                    {isAuthenticated && isSupervisor && <option value="REMOVED_FROM_STORAGE">Removed from storage</option>}
+                    {isAuthenticated && isDispatcher && <option value="REMOVED_FROM_STORAGE">Removed from storage</option>}
                   </AvInput>
                 </AvGroup>
                 {isAuthenticated &&

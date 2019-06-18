@@ -68,10 +68,8 @@ public class TTNResource {
             throw new BadRequestAlertException("A new tTN cannot already have an ID", ENTITY_NAME, "idexists");
         }
         String serialNumber = tTNDTO.getSerialNumber();
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
-        String userCompany = user.getCompany();
-        List<TTN> list = ttnRepository.findAllByTransporter_DispatcherCompanyNameAndSerialNumber(userCompany, serialNumber);
-        if (!(list.isEmpty())){
+
+        if (tTNService.checkIfExist(serialNumber)){
             throw new ValidationException("TTN with such serial number already exist in this company");
         }
         TTNDTO result = tTNService.save(tTNDTO);
