@@ -1,4 +1,5 @@
 package com.itechart.studlab.app.web.rest;
+import com.itechart.studlab.app.service.ProductService;
 import com.itechart.studlab.app.service.TTNService;
 import com.itechart.studlab.app.web.rest.errors.BadRequestAlertException;
 import com.itechart.studlab.app.web.rest.util.HeaderUtil;
@@ -32,8 +33,11 @@ public class TTNResource {
 
     private final TTNService tTNService;
 
-    public TTNResource(TTNService tTNService) {
+    private final ProductService productService;
+
+    public TTNResource(TTNService tTNService, ProductService productService) {
         this.tTNService = tTNService;
+        this.productService = productService;
     }
 
     /**

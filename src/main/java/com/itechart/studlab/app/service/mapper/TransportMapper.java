@@ -12,6 +12,7 @@ import org.mapstruct.*;
 public interface TransportMapper extends EntityMapper<TransportDTO, Transport> {
 
     @Mapping(source = "company.id", target = "companyId")
+    @Mapping(source = "company.companyName", target = "transporterCompanyName")
     TransportDTO toDto(Transport transport);
 
     @Mapping(source = "companyId", target = "company")

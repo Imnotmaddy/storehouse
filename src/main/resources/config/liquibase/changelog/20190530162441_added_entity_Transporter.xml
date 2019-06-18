@@ -25,7 +25,9 @@
             <column name="company_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-
+            <column name="dispatcher_company_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

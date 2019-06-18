@@ -110,11 +110,15 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                     <Translate contentKey="storeHouseApp.product.name">Name</Translate>
                   </Label>
                   <AvField
+                    readOnly
                     id="product-name"
                     type="text"
                     name="name"
                     validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                      required: {
+                        value: true,
+                        errorMessage: translate('entity.validation.required')
+                      }
                     }}
                   />
                 </AvGroup>
@@ -123,12 +127,16 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                     <Translate contentKey="storeHouseApp.product.quantity">Quantity</Translate>
                   </Label>
                   <AvField
+                    readOnly
                     id="product-quantity"
                     type="string"
                     className="form-control"
                     name="quantity"
                     validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') },
+                      required: {
+                        value: true,
+                        errorMessage: translate('entity.validation.required')
+                      },
                       number: { value: true, errorMessage: translate('entity.validation.number') }
                     }}
                   />
@@ -183,22 +191,20 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label id="daysInStorageLabel" for="daysInStorage">
-                    <Translate contentKey="storeHouseApp.product.daysInStorage">Days In Storage</Translate>
-                  </Label>
-                  <AvField id="product-daysInStorage" type="string" className="form-control" name="daysInStorage" />
-                </AvGroup>
-                <AvGroup>
                   <Label id="costLabel" for="cost">
                     <Translate contentKey="storeHouseApp.product.cost">Cost</Translate>
                   </Label>
                   <AvField
+                    readOnly
                     id="product-cost"
                     type="string"
                     className="form-control"
                     name="cost"
                     validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') },
+                      required: {
+                        value: true,
+                        errorMessage: translate('entity.validation.required')
+                      },
                       number: { value: true, errorMessage: translate('entity.validation.number') }
                     }}
                   />
@@ -208,6 +214,7 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                     <Translate contentKey="storeHouseApp.product.requiredFacility">Required Facility</Translate>
                   </Label>
                   <AvInput
+                    disabled
                     id="product-requiredFacility"
                     type="select"
                     className="form-control"
@@ -233,60 +240,19 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                     <Translate contentKey="storeHouseApp.product.weight">Weight</Translate>
                   </Label>
                   <AvField
+                    readOnly
                     id="product-weight"
                     type="string"
                     className="form-control"
                     name="weight"
                     validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') },
+                      required: {
+                        value: true,
+                        errorMessage: translate('entity.validation.required')
+                      },
                       number: { value: true, errorMessage: translate('entity.validation.number') }
                     }}
                   />
-                </AvGroup>
-                <AvGroup>
-                  <Label for="act.id">
-                    <Translate contentKey="storeHouseApp.product.act">Act</Translate>
-                  </Label>
-                  <AvInput id="product-act" type="select" className="form-control" name="actId">
-                    <option value="" key="0" />
-                    {acts
-                      ? acts.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="storageRoom.id">
-                    <Translate contentKey="storeHouseApp.product.storageRoom">Storage Room</Translate>
-                  </Label>
-                  <AvInput id="product-storageRoom" type="select" className="form-control" name="storageRoomId">
-                    <option value="" key="0" />
-                    {storageRooms
-                      ? storageRooms.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="tTN.id">
-                    <Translate contentKey="storeHouseApp.product.tTN">T TN</Translate>
-                  </Label>
-                  <AvInput id="product-tTN" type="select" className="form-control" name="tTNId">
-                    <option value="" key="0" />
-                    {tTNS
-                      ? tTNS.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
                 </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/product" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />

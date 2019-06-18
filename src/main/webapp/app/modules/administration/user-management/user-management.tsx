@@ -14,12 +14,21 @@ import {
 } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { updateUser, getEmployees } from './user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
-export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isDispatcher: boolean;
+  isManager: boolean;
+  isStorehouseAdmin: boolean;
+  isSupervisor: boolean;
+  isOwner: boolean;
+}
 
 export class UserManagement extends React.Component<IUserManagementProps, IPaginationBaseState> {
   state: IPaginationBaseState = {
@@ -60,14 +69,28 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   };
 
   render() {
-    const { users, account, match, totalItems } = this.props;
+    const {
+      users,
+      account,
+      match,
+      totalItems,
+      isAuthenticated,
+      isAdmin,
+      isDispatcher,
+      isManager,
+      isStorehouseAdmin,
+      isSupervisor,
+      isOwner
+    } = this.props;
     return (
       <div>
         <h2 id="user-management-page-heading">
           <Translate contentKey="userManagement.home.title">Users</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
-            <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel">Create a new user</Translate>
-          </Link>
+          {!isOwner && (
+            <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
+              <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel">Create a new user</Translate>
+            </Link>
+          )}
         </h2>
         <Table responsive striped>
           <thead>
@@ -84,7 +107,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                 <Translate contentKey="userManagement.email">Email</Translate>
                 <FontAwesomeIcon icon="sort" />
               </th>
-              <th />
+              {!isOwner && <th />}
               <th className="hand" onClick={this.sort('langKey')}>
                 <Translate contentKey="userManagement.langKey">Lang Key</Translate>
                 <FontAwesomeIcon icon="sort" />
@@ -117,17 +140,19 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                 </td>
                 <td>{user.login}</td>
                 <td>{user.email}</td>
-                <td>
-                  {user.activated ? (
-                    <Button color="success" onClick={this.toggleActive(user)}>
-                      Activated
-                    </Button>
-                  ) : (
-                    <Button color="danger" onClick={this.toggleActive(user)}>
-                      Deactivated
-                    </Button>
-                  )}
-                </td>
+                {!isOwner && (
+                  <td>
+                    {user.activated ? (
+                      <Button color="success" onClick={this.toggleActive(user)}>
+                        Activated
+                      </Button>
+                    ) : (
+                      <Button color="danger" onClick={this.toggleActive(user)}>
+                        Deactivated
+                      </Button>
+                    )}
+                  </td>
+                )}
                 <td>{user.langKey}</td>
                 <td>
                   {user.authorities
@@ -145,34 +170,36 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                 <td>
                   <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
                 </td>
-                <td className="text-right">
-                  <div className="btn-group flex-btn-group-container">
-                    <Button tag={Link} to={`${match.url}/${user.login}`} color="info" size="sm">
-                      <FontAwesomeIcon icon="eye" />{' '}
-                      <span className="d-none d-md-inline">
-                        <Translate contentKey="entity.action.view">View</Translate>
-                      </span>
-                    </Button>
-                    <Button tag={Link} to={`${match.url}/${user.login}/edit`} color="primary" size="sm">
-                      <FontAwesomeIcon icon="pencil-alt" />{' '}
-                      <span className="d-none d-md-inline">
-                        <Translate contentKey="entity.action.edit">Edit</Translate>
-                      </span>
-                    </Button>
-                    <Button
-                      tag={Link}
-                      to={`${match.url}/${user.login}/delete`}
-                      color="danger"
-                      size="sm"
-                      disabled={account.login === user.login}
-                    >
-                      <FontAwesomeIcon icon="trash" />{' '}
-                      <span className="d-none d-md-inline">
-                        <Translate contentKey="entity.action.delete">Delete</Translate>
-                      </span>
-                    </Button>
-                  </div>
-                </td>
+                {!isOwner && (
+                  <td className="text-right">
+                    <div className="btn-group flex-btn-group-container">
+                      <Button tag={Link} to={`${match.url}/${user.login}`} color="info" size="sm">
+                        <FontAwesomeIcon icon="eye" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.view">View</Translate>
+                        </span>
+                      </Button>
+                      <Button tag={Link} to={`${match.url}/${user.login}/edit`} color="primary" size="sm">
+                        <FontAwesomeIcon icon="pencil-alt" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.edit">Edit</Translate>
+                        </span>
+                      </Button>
+                      <Button
+                        tag={Link}
+                        to={`${match.url}/${user.login}/delete`}
+                        color="danger"
+                        size="sm"
+                        disabled={account.login === user.login}
+                      >
+                        <FontAwesomeIcon icon="trash" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.delete">Delete</Translate>
+                        </span>
+                      </Button>
+                    </div>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -190,10 +217,17 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   }
 }
 
-const mapStateToProps = (storeState: IRootState) => ({
+const mapStateToProps = (storeState: IRootState, authentication: IRootState) => ({
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
-  account: storeState.authentication.account
+  account: storeState.authentication.account,
+  isAuthenticated: storeState.authentication.isAuthenticated,
+  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isDispatcher: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
+  isManager: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isStorehouseAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  isSupervisor: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.SUPERVISOR]),
+  isOwner: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.OWNER])
 });
 
 const mapDispatchToProps = { getEmployees, updateUser };

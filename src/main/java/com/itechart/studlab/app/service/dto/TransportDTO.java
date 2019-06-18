@@ -19,6 +19,8 @@ public class TransportDTO implements Serializable {
 
     private Long companyId;
 
+    private String transporterCompanyName;
+
     public Long getId() {
         return id;
     }
@@ -49,6 +51,14 @@ public class TransportDTO implements Serializable {
 
     public void setCompanyId(Long transporterId) {
         this.companyId = transporterId;
+    }
+
+    public String getTransporterCompanyName() {
+        return transporterCompanyName;
+    }
+
+    public void setTransporterCompanyName(String transporterCompanyName) {
+        this.transporterCompanyName = transporterCompanyName;
     }
 
     @Override

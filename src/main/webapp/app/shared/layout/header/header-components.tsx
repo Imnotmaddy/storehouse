@@ -92,6 +92,22 @@ export const Storehouse = props => (
   <NavItem>
     <NavLink tag={Link} to="/storehouse" className="d-flex align-items-center">
       <Translate contentKey="global.menu.storehouse">Add storehouse</Translate>
+      </NavLink>
+  </NavItem>
+ );
+
+export const Act = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/act" className="d-flex align-items-center">
+      <Translate contentKey="global.menu.entities.act">Act</Translate>
+    </NavLink>
+  </NavItem>
+);
+
+export const Product = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/product" className="d-flex align-items-center">
+      <Translate contentKey="global.menu.entities.product">Product</Translate>
     </NavLink>
   </NavItem>
 );

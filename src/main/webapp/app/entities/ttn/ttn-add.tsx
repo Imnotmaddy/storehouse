@@ -66,9 +66,9 @@ export const TTNAdd = props => (
             />
           </AvGroup>
           <AvGroup>
-            <Label id="isAcceptedLabel" check>
-              <AvInput id="ttn-isAccepted" type="checkbox" className="form-control" name="isAccepted" />
-              <Translate contentKey="storeHouseApp.tTN.isAccepted">Is Accepted</Translate>
+            <Label id="statusLabel" check>
+              <AvInput id="ttn-status" type="select" className="form-control" name="status" />
+              Status
             </Label>
           </AvGroup>
           <AvGroup>
@@ -88,12 +88,16 @@ export const TTNAdd = props => (
             </AvInput>
           </AvGroup>
           <AvGroup>
-            <Label for="sender.name">
+            <Label id="senderLabel" for="sender">
               <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
             </Label>
-            <AvInput id="ttn-sender" type="select" className="form-control" name="sender.id">
-              <option value="" key="0" />
-            </AvInput>
+            <AvField id="ttn-sender" type="text" name="sender" />
+          </AvGroup>
+          <AvGroup>
+            <Label id="recipientLabel" for="recipient">
+              Recipient
+            </Label>
+            <AvField id="ttn-recipient" type="text" name="recipient" />
           </AvGroup>
           <AvGroup>
             <Label for="transporter.companyName">

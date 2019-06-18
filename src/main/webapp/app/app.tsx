@@ -16,6 +16,7 @@ import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
+import has = Reflect.has;
 
 export interface IAppProps extends StateProps, DispatchProps {}
 
@@ -40,8 +41,10 @@ export class App extends React.Component<IAppProps> {
               isAuthenticated={this.props.isAuthenticated}
               isAdmin={this.props.isAdmin}
               isDispatcher={this.props.isDispatcher}
+              isSupervisor={this.props.isSupervisor}
               isManager={this.props.isManager}
               isStorehouseAdmin={this.props.isStorehouseAdmin}
+              isOwner={this.props.isOwner}
               companyName={this.props.companyName}
               currentLocale={this.props.currentLocale}
               onLocaleChange={this.props.setLocale}
@@ -69,7 +72,9 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
   isDispatcher: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
   isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isSupervisor: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.SUPERVISOR]),
   isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  isOwner: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.OWNER]),
   companyName: authentication.account.company,
   ribbonEnv: applicationProfile.ribbonEnv,
   isInProduction: applicationProfile.inProduction,

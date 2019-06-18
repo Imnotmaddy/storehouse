@@ -68,6 +68,7 @@ public class Product implements Serializable {
     private StorageRoom storageRoom;
 
     @ManyToOne
+    @JoinColumn(name = "ttn_id")
     @JsonIgnoreProperties("products")
     private TTN tTN;
 

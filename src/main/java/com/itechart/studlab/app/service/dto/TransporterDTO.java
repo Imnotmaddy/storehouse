@@ -13,6 +13,8 @@ public class TransporterDTO implements Serializable {
     @NotNull
     private String companyName;
 
+    private String dispatcherCompanyName;
+
 
     public Long getId() {
         return id;
@@ -28,6 +30,14 @@ public class TransporterDTO implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getDispatcherCompanyName() {
+        return dispatcherCompanyName;
+    }
+
+    public void setDispatcherCompanyName(String dispatcherCompanyName) {
+        this.dispatcherCompanyName = dispatcherCompanyName;
     }
 
     @Override
@@ -56,6 +66,7 @@ public class TransporterDTO implements Serializable {
         return "TransporterDTO{" +
             "id=" + getId() +
             ", companyName='" + getCompanyName() + "'" +
+            ", dispatcherCompanyName='" + getDispatcherCompanyName() + "'" +
             "}";
     }
 }

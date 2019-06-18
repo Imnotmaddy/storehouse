@@ -2,8 +2,8 @@ import './header.css';
 
 import React from 'react';
 import { Storage, Translate } from 'react-jhipster';
-import { Brand, Companies, Home, Storehouse, Transport, Transporter, Ttn, Users } from './header-components';
-import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap';
+import { Brand, Companies, Home, Storehouse, Transporter, Ttn, Transport, Users, Act, Product } from './header-components';
+import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
 import { AccountMenu, EntitiesMenu, LocaleMenu } from './menus';
 
@@ -13,6 +13,8 @@ export interface IHeaderProps {
   isDispatcher: boolean;
   isManager: boolean;
   isStorehouseAdmin: boolean;
+  isSupervisor: boolean;
+  isOwner: boolean;
   companyName: string;
   ribbonEnv: string;
   isInProduction: boolean;
@@ -57,6 +59,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       isDispatcher,
       isManager,
       isStorehouseAdmin,
+      isSupervisor,
+      isOwner,
       companyName,
       isSwaggerEnabled,
       isInProduction
@@ -74,13 +78,14 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
               <Home />
-              {isAuthenticated && (isManager || isDispatcher) && <Ttn />}
-              {isAuthenticated && isDispatcher && <Transporter />}
-              {isAuthenticated && isDispatcher && <Transport />}
-              {isAuthenticated && <EntitiesMenu />}
+              {isAuthenticated && (isManager || isDispatcher || isSupervisor || isOwner) && <Ttn />}
+              {isAuthenticated && (isDispatcher || isOwner || isManager) && <Transporter />}
+              {isAuthenticated && (isDispatcher || isOwner || isManager) && <Transport />}
               {isAuthenticated && isAdmin && <Companies />}
               {isAuthenticated && isStorehouseAdmin && <Storehouse />}
-              {isAuthenticated && isStorehouseAdmin && <Users />}
+              {isAuthenticated && (isSupervisor || isOwner) && <Act />}
+              {isAuthenticated && isSupervisor && <Product />}
+              {isAuthenticated && (isStorehouseAdmin || isOwner) && <Users />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
               <AccountMenu isAuthenticated={isAuthenticated} />
             </Nav>

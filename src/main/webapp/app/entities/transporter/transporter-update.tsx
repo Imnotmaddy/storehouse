@@ -59,7 +59,7 @@ export class TransporterUpdate extends React.Component<ITransporterUpdateProps, 
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/transporter');
+    this.props.history.push('/transporter');
   };
 
   render() {
@@ -102,7 +102,7 @@ export class TransporterUpdate extends React.Component<ITransporterUpdateProps, 
                     }}
                   />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/transporter" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/transporter" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

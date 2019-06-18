@@ -7,10 +7,11 @@
       "companies": "Компании",
       "employees": "Сотрудники",
       "storehouse": "Склад",
+      "addProduct": "Добавить товары",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Сущности",
-        "act": "Act",
+        "act": "Акт",
         "storehouse": "Storehouse",
         "storageRoom": "Storage Room",
         "product": "Product",

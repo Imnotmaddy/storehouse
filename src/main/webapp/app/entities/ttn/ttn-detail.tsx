@@ -10,9 +10,17 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './ttn.reducer';
 import { ITTN } from 'app/shared/model/ttn.model';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
-export interface ITTNDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface ITTNDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isDispatcher: boolean;
+  isManager: boolean;
+  isStorehouseAdmin: boolean;
+  isOwner: boolean;
+}
 
 export class TTNDetail extends React.Component<ITTNDetailProps> {
   componentDidMount() {
@@ -20,7 +28,7 @@ export class TTNDetail extends React.Component<ITTNDetailProps> {
   }
 
   render() {
-    const { tTNEntity } = this.props;
+    const { tTNEntity, isAuthenticated, isAdmin, isDispatcher, isManager, isStorehouseAdmin, isOwner } = this.props;
     return (
       <Row>
         <Col md="8">
@@ -79,7 +87,7 @@ export class TTNDetail extends React.Component<ITTNDetailProps> {
                 <Translate contentKey="storeHouseApp.tTN.isAccepted">Is Accepted</Translate>
               </span>
             </dt>
-            <dd>{tTNEntity.isAccepted ? 'true' : 'false'}</dd>
+            <dd>{tTNEntity.status}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.tTN.dispatcher">Dispatcher</Translate>
             </dt>
@@ -89,39 +97,53 @@ export class TTNDetail extends React.Component<ITTNDetailProps> {
             </dt>
             <dd>{tTNEntity.managerLastName ? tTNEntity.managerLastName : ''}</dd>
             <dt>
-              <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
+              <span id="sender">
+                <Translate contentKey="storeHouseApp.tTN.sender">Sender</Translate>
+              </span>
             </dt>
-            <dd>{tTNEntity.senderLastName ? tTNEntity.senderLastName : ''}</dd>
+            <dd>{tTNEntity.sender}</dd>
+            <dt>
+              <span id="recipient">Recipient</span>
+            </dt>
+            <dd>{tTNEntity.recipient}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
             </dt>
-            <dd>{tTNEntity.transportId ? tTNEntity.transportId : ''}</dd>
+            <dd>{tTNEntity.transportVehicleNumber ? tTNEntity.transportVehicleNumber : ''}</dd>
             <dt>
               <Translate contentKey="storeHouseApp.tTN.transporter">Transporter</Translate>
             </dt>
             <dd>{tTNEntity.transporterCompanyName ? tTNEntity.transporterCompanyName : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/ttn" replace color="info">
+          <Button tag={Link} to="/ttn" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/ttn/${tTNEntity.id}/edit`} replace color="primary">
-            <FontAwesomeIcon icon="pencil-alt" />{' '}
-            <span className="d-none d-md-inline">
-              <Translate contentKey="entity.action.edit">Edit</Translate>
-            </span>
-          </Button>
+          {!isOwner && (
+            <Button tag={Link} to={`/ttn/${tTNEntity.id}/edit`} replace color="primary">
+              <FontAwesomeIcon icon="pencil-alt" />{' '}
+              <span className="d-none d-md-inline">
+                <Translate contentKey="entity.action.edit">Edit</Translate>
+              </span>
+            </Button>
+          )}
         </Col>
       </Row>
     );
   }
 }
 
-const mapStateToProps = ({ tTN }: IRootState) => ({
-  tTNEntity: tTN.entity
+const mapStateToProps = ({ authentication, tTN }: IRootState) => ({
+  tTNEntity: tTN.entity,
+  isAuthenticated: authentication.isAuthenticated,
+  isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isDispatcher: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
+  isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  isOwner: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.OWNER])
 });
 
 const mapDispatchToProps = { getEntity };

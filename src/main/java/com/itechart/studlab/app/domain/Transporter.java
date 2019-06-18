@@ -1,7 +1,6 @@
 package com.itechart.studlab.app.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -33,9 +32,18 @@ public class Transporter implements Serializable {
     @Column(name = "company_name", nullable = false)
     private String companyName;
 
+    @Column(name = "dispatcher_company_name", nullable = true)
+    private String dispatcherCompanyName;
+
     @OneToMany(mappedBy = "company")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Transport> vehicles = new HashSet<>();
+
+    public Transporter(String dispatcherCompanyName) {
+        this.dispatcherCompanyName = dispatcherCompanyName;
+    }
+
+    public Transporter(){}
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -56,6 +64,19 @@ public class Transporter implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getDispatcherCompanyName() {
+        return dispatcherCompanyName;
+    }
+
+    public void setDispatcherCompanyName(String dispatcherCompanyName) {
+        this.dispatcherCompanyName = dispatcherCompanyName;
+    }
+
+    public Transporter dispatcherCompanyName(String dispatcherCompanyName) {
+        this.dispatcherCompanyName = dispatcherCompanyName;
+        return this;
     }
 
     public Set<Transport> getVehicles() {
@@ -109,6 +130,7 @@ public class Transporter implements Serializable {
         return "Transporter{" +
             "id=" + getId() +
             ", companyName='" + getCompanyName() + "'" +
+            ", dispatcherCompanyName='" + getDispatcherCompanyName() + "'" +
             "}";
     }
 }
