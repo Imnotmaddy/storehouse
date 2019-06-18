@@ -1,20 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { Button, Col, Label, Row, Table } from 'reactstrap';
+import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
+import { createEntity, getEntity, reset, updateEntity } from './storehouse.reducer';
+import { IStorageRoom } from 'app/shared/model/storage-room.model';
+import { AddModal } from 'app/entities/storehouse/addModal';
 
-import { IUser } from 'app/shared/model/user.model';
-import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './storehouse.reducer';
-import { IStorehouse } from 'app/shared/model/storehouse.model';
 // tslint:disable-next-line:no-unused-variable
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IStorehouseUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -25,6 +22,10 @@ export interface IStorehouseUpdateState {
   dispatcherId: string;
   managerId: string;
   supervisorId: string;
+  roomNumberValue: string;
+  typeValue: string;
+  showAddModal: boolean;
+  storageRooms: IStorageRoom[];
 }
 
 export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IStorehouseUpdateState> {
@@ -36,7 +37,11 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
       dispatcherId: '0',
       managerId: '0',
       supervisorId: '0',
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
+      roomNumberValue: '',
+      typeValue: '',
+      showAddModal: false,
+      storageRooms: []
     };
   }
 
@@ -50,18 +55,70 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
     if (this.state.isNew) {
       this.props.reset();
     } else {
-      this.props.getEntity(this.props.match.params.id);
+      console.log(this.props.getEntity(this.props.match.params.id));
+      this.props
+        .getEntity(this.props.match.params.id)
+        // @ts-ignore
+        .then(response => {
+          this.setState({ storageRooms: response.value.data.rooms });
+        })
+        .catch(() => {
+          this.setState({ storageRooms: [] });
+        });
     }
-
-    this.props.getUsers();
   }
+
+  genRows = () =>
+    this.state.storageRooms.map((row, i) => (
+      <tr key={i}>
+        <td>{row.roomNumber}</td>
+        <td>{row.type}</td>
+        <td>
+          <Button color="danger" size="sm" value={i} onClick={this.deleteRow}>
+            <FontAwesomeIcon icon="trash" />{' '}
+            <span className="d-none d-md-inline">
+              <Translate contentKey="entity.action.delete">Delete</Translate>
+            </span>
+          </Button>
+        </td>
+      </tr>
+    ));
+
+  deleteRow = event => {
+    const elementId = event.currentTarget.value;
+    const newRows = [...this.state.storageRooms];
+    newRows.splice(elementId, 1);
+    this.setState({ storageRooms: newRows });
+  };
+
+  handleModalValues = (value: IStorageRoom) => {
+    const storageRooms = this.state.storageRooms.concat(value);
+    this.setState({
+      storageRooms,
+      roomNumberValue: '',
+      typeValue: '',
+      showAddModal: false
+    });
+  };
+
+  toggleAddModal = () => {
+    const state = {
+      ...this.state
+    };
+    state.showAddModal = !state.showAddModal;
+    this.setState(state);
+  };
+
+  checkRoomNumber = (value: string) => !this.state.storageRooms.filter(room => room.roomNumber === value).length;
 
   saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
       const { storehouseEntity } = this.props;
       const entity = {
         ...storehouseEntity,
-        ...values
+        ...values,
+        rooms: this.state.storageRooms,
+        companyName: this.props.companyName
       };
 
       if (this.state.isNew) {
@@ -73,11 +130,11 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/storehouse');
+    this.props.history.push('/storehouse');
   };
 
   render() {
-    const { storehouseEntity, users, loading, updating } = this.props;
+    const { storehouseEntity, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -94,15 +151,8 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? {} : storehouseEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="id">
-                      <Translate contentKey="global.field.id">ID</Translate>
-                    </Label>
-                    <AvInput id="storehouse-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
+              <AvForm model={isNew ? {} : storehouseEntity} id="storehouseForm" onSubmit={this.saveEntity}>
+                {!isNew ? <AvInput id="storehouse-id" type="hidden" className="form-control" name="id" required readOnly /> : null}
                 <AvGroup>
                   <Label id="nameLabel" for="name">
                     <Translate contentKey="storeHouseApp.storehouse.name">Name</Translate>
@@ -112,95 +162,56 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
                     type="text"
                     name="name"
                     validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                      required: {
+                        value: true,
+                        errorMessage: translate('entity.validation.required')
+                      }
                     }}
                   />
                 </AvGroup>
-                <AvGroup>
-                  <Label for="owner.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.owner">Owner</Translate>
-                  </Label>
-                  <AvInput id="storehouse-owner" type="select" className="form-control" name="ownerId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="administrator.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.administrator">Administrator</Translate>
-                  </Label>
-                  <AvInput id="storehouse-administrator" type="select" className="form-control" name="administratorId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="dispatcher.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.dispatcher">Dispatcher</Translate>
-                  </Label>
-                  <AvInput id="storehouse-dispatcher" type="select" className="form-control" name="dispatcherId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="manager.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.manager">Manager</Translate>
-                  </Label>
-                  <AvInput id="storehouse-manager" type="select" className="form-control" name="managerId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="supervisor.lastName">
-                    <Translate contentKey="storeHouseApp.storehouse.supervisor">Supervisor</Translate>
-                  </Label>
-                  <AvInput id="storehouse-supervisor" type="select" className="form-control" name="supervisorId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.lastName}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/storehouse" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
               </AvForm>
             )}
+            <div className="d-flex">
+              <Label className="mr-auto" for="storageRoomsTable">
+                <Translate contentKey="storeHouseApp.storehouse.storageRooms">Storage rooms</Translate>
+              </Label>
+              <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal}>
+                <Translate contentKey="storeHouseApp.storehouse.addRoom">Add room</Translate>
+              </Button>
+            </div>
+            <Table name="storageRoomsTable" responsive size="sm">
+              <thead>
+                <tr>
+                  <th>
+                    <Translate contentKey="storeHouseApp.storehouse.roomNumber">Room number</Translate>
+                  </th>
+                  <th>
+                    <Translate contentKey="storeHouseApp.storehouse.type">Type</Translate>
+                  </th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>{this.genRows()}</tbody>
+            </Table>
+            <AddModal
+              show={this.state.showAddModal}
+              toggle={this.toggleAddModal}
+              getValues={this.handleModalValues}
+              checkRoomNumber={this.checkRoomNumber}
+            />
+            <Button tag={Link} id="cancel-save" to="/storehouse" replace color="info">
+              <FontAwesomeIcon icon="arrow-left" />
+              &nbsp;
+              <span className="d-none d-md-inline">
+                <Translate contentKey="entity.action.back">Back</Translate>
+              </span>
+            </Button>
+            &nbsp;
+            <Button color="primary" id="save-entity" type="submit" form="storehouseForm" disabled={updating}>
+              <FontAwesomeIcon icon="save" />
+              &nbsp;
+              <Translate contentKey="entity.action.save">Save</Translate>
+            </Button>
           </Col>
         </Row>
       </div>
@@ -209,7 +220,7 @@ export class StorehouseUpdate extends React.Component<IStorehouseUpdateProps, IS
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  users: storeState.userManagement.users,
+  companyName: storeState.authentication.account.company,
   storehouseEntity: storeState.storehouse.entity,
   loading: storeState.storehouse.loading,
   updating: storeState.storehouse.updating,
@@ -217,7 +228,6 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getUsers,
   getEntity,
   updateEntity,
   createEntity,

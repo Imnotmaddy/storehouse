@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { languages, locales } from 'app/config/translation';
 import { createUser, getUser, reset, updateUser } from './companies.reducer';
 import { IRootState } from 'app/shared/reducers';
-import { AUTHORITIES } from 'app/config/constants';
 
 export interface ICompaniesUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 

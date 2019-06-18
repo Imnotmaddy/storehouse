@@ -12,6 +12,7 @@ export interface IUser {
   country?: string;
   city?: string;
   address?: string;
+  storehouseId?: string;
   createdBy?: string;
   createdDate?: Date;
   lastModifiedBy?: string;
@@ -33,6 +34,7 @@ export const defaultValue: Readonly<IUser> = {
   country: '',
   city: '',
   address: '',
+  storehouseId: '',
   createdBy: '',
   createdDate: null,
   lastModifiedBy: '',

@@ -1,18 +1,11 @@
 import { IStorageRoom } from 'app/shared/model/storage-room.model';
+import { IUser } from 'app/shared/model/user.model';
 
 export interface IStorehouse {
   id?: number;
   name?: string;
-  ownerLastName?: string;
-  ownerId?: number;
-  administratorLastName?: string;
-  administratorId?: number;
-  dispatcherLastName?: string;
-  dispatcherId?: number;
-  managerLastName?: string;
-  managerId?: number;
-  supervisorLastName?: string;
-  supervisorId?: number;
+  companyName?: string;
+  employees?: IUser[];
   rooms?: IStorageRoom[];
 }
 

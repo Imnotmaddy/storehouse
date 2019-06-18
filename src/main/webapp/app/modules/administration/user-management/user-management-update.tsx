@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Label, Row, Col } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvField, AvFeedback } from 'availity-reactstrap-validation';
+import { Button, Col, Label, Row } from 'reactstrap';
+import { AvFeedback, AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { locales, languages } from 'app/config/translation';
-import { getUser, getRoles, updateUser, createUser, reset } from './user-management.reducer';
+import { languages, locales } from 'app/config/translation';
+import { createUser, getRoles, getUser, reset, updateUser } from './user-management.reducer';
+import { getCompanyStorehouses } from 'app/entities/storehouse/storehouse.reducer';
+import { getSession } from 'app/shared/reducers/authentication';
 import { IRootState } from 'app/shared/reducers';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
@@ -27,7 +29,9 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     } else {
       this.props.getUser(this.props.match.params.login);
     }
+    this.props.getSession();
     this.props.getRoles();
+    this.props.getCompanyStorehouses(this.props.companyName);
   }
 
   componentWillUnmount() {
@@ -49,7 +53,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
 
   render() {
     const isInvalid = false;
-    const { user, loading, updating, roles } = this.props;
+    const { user, loading, updating, roles, storehouses } = this.props;
     return (
       <div>
         <Row className="justify-content-center">
@@ -73,7 +77,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     <AvField type="text" className="form-control" name="id" required readOnly value={user.id} />
                   </AvGroup>
                 ) : null}
-                <AvField type="hidden" className="form-control" name="company" value={document.querySelector('#companyName').textContent} />
+                <AvField type="hidden" className="form-control" name="company" value={this.props.companyName} />
                 <AvGroup>
                   <Label for="login">
                     <Translate contentKey="userManagement.login">Login</Translate>
@@ -476,6 +480,21 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   <AvInput name="address" type="text" className="form-control" value={user.address} />
                 </AvGroup>
                 <AvGroup>
+                  <Label for="storehouseId">
+                    <Translate contentKey="userManagement.storehouse">Storehouse</Translate>
+                  </Label>
+                  <AvInput name="storehouseId" type="select" className="form-control" value={user.storehouseId}>
+                    <option defaultChecked />
+                    {storehouses
+                      ? storehouses.map(storehouse => (
+                          <option value={storehouse.id} key={storehouse.id}>
+                            {storehouse.name}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
+                <AvGroup>
                   <Label for="authorities">
                     <Translate contentKey="userManagement.profiles">Language Key</Translate>
                   </Label>
@@ -513,10 +532,12 @@ const mapStateToProps = (storeState: IRootState) => ({
   user: storeState.userManagement.user,
   roles: storeState.userManagement.authorities,
   loading: storeState.userManagement.loading,
-  updating: storeState.userManagement.updating
+  updating: storeState.userManagement.updating,
+  storehouses: storeState.storehouse.entities,
+  companyName: storeState.authentication.account.company
 });
 
-const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset };
+const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset, getCompanyStorehouses, getSession };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

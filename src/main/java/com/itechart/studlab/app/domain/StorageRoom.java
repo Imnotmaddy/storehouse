@@ -1,21 +1,20 @@
 package com.itechart.studlab.app.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.itechart.studlab.app.domain.enumeration.Facility;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-
-import com.itechart.studlab.app.domain.enumeration.Facility;
+import java.util.Set;
 
 /**
  * A StorageRoom.
@@ -27,7 +26,7 @@ import com.itechart.studlab.app.domain.enumeration.Facility;
 public class StorageRoom implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,8 +43,10 @@ public class StorageRoom implements Serializable {
     @OneToMany(mappedBy = "storageRoom")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Product> products = new HashSet<>();
-    @ManyToOne
-    @JsonIgnoreProperties("rooms")
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "storehouse_id")
     private Storehouse storehouse;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

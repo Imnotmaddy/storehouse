@@ -1,9 +1,11 @@
 package com.itechart.studlab.app.service;
 
+import com.itechart.studlab.app.domain.StorageRoom;
 import com.itechart.studlab.app.domain.Storehouse;
 import com.itechart.studlab.app.repository.StorehouseRepository;
 import com.itechart.studlab.app.repository.search.StorehouseSearchRepository;
 import com.itechart.studlab.app.service.dto.StorehouseDTO;
+import com.itechart.studlab.app.service.mapper.StorageRoomMapper;
 import com.itechart.studlab.app.service.mapper.StorehouseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +51,11 @@ public class StorehouseService {
     public StorehouseDTO save(StorehouseDTO storehouseDTO) {
         log.debug("Request to save Storehouse : {}", storehouseDTO);
         Storehouse storehouse = storehouseMapper.toEntity(storehouseDTO);
+        for (StorageRoom room : storehouse.getRooms()) {
+            room.setStorehouse(storehouse);
+        }
         storehouse = storehouseRepository.save(storehouse);
+
         StorehouseDTO result = storehouseMapper.toDto(storehouse);
         storehouseSearchRepository.save(storehouse);
         return result;
@@ -66,6 +72,12 @@ public class StorehouseService {
         return storehouseRepository.findAll().stream()
             .map(storehouseMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    public List<StorehouseDTO> findAllForCompany(String company) {
+        log.debug("Request to get all Storehouses for company {}", company);
+        return storehouseRepository.findAllByCompanyNameIs(company).stream()
+            .map(storehouseMapper::toDto).collect(Collectors.toList());
     }
 
 

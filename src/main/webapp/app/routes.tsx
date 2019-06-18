@@ -18,6 +18,7 @@ import Transporter from 'app/entities/transporter';
 import Transport from 'app/entities/transport';
 import Companies from 'app/modules/companies';
 import UserManagement from 'app/modules/administration/user-management';
+import Storehouse from 'app/entities/storehouse';
 import Act from 'app/entities/act/act-update';
 import Product from 'app/entities/product';
 
@@ -63,6 +64,8 @@ const Routes = ({ match }) => (
       <PrivateRoute path="/product" component={Product} hasAnyAuthorities={[AUTHORITIES.SUPERVISOR]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.MANAGER]} />
       <PrivateRoute path="/companies" component={Companies} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
+      <PrivateRoute path="/storehouse" component={Storehouse} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN]} />
+      <PrivateRoute path="/employees" component={UserManagement} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN]} />
       <PrivateRoute path="/employees" component={UserManagement} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN, AUTHORITIES.OWNER]} />
       <ErrorBoundaryRoute path="/" component={Home} />
     </Switch>

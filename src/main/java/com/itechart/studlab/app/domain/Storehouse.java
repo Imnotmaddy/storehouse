@@ -1,17 +1,16 @@
 package com.itechart.studlab.app.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,7 +23,7 @@ import java.util.Objects;
 public class Storehouse implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,34 +32,20 @@ public class Storehouse implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToOne(optional = false)    @NotNull
+    @NotNull
+    @Column(name = "company_name")
+    private String companyName;
 
-    @JoinColumn(unique = true)
-    private User owner;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "storehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotNull
+    private List<User> employees = new ArrayList<>();
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
-    private User administrator;
-
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
-    private User dispatcher;
-
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
-    private User manager;
-
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
-    private User supervisor;
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "storehouse")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<StorageRoom> rooms = new HashSet<>();
+    private List<StorageRoom> rooms = new ArrayList<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -83,93 +68,37 @@ public class Storehouse implements Serializable {
         this.name = name;
     }
 
-    public User getOwner() {
-        return owner;
+    public List<User> getEmployees() {
+        return employees;
     }
 
-    public Storehouse owner(User user) {
-        this.owner = user;
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public Storehouse employees(List<User> users) {
+        this.employees = users;
         return this;
     }
 
-    public void setOwner(User user) {
-        this.owner = user;
+    public void setEmployees(List<User> users) {
+        this.employees = users;
     }
 
-    public User getAdministrator() {
-        return administrator;
-    }
-
-    public Storehouse administrator(User user) {
-        this.administrator = user;
-        return this;
-    }
-
-    public void setAdministrator(User user) {
-        this.administrator = user;
-    }
-
-    public User getDispatcher() {
-        return dispatcher;
-    }
-
-    public Storehouse dispatcher(User user) {
-        this.dispatcher = user;
-        return this;
-    }
-
-    public void setDispatcher(User user) {
-        this.dispatcher = user;
-    }
-
-    public User getManager() {
-        return manager;
-    }
-
-    public Storehouse manager(User user) {
-        this.manager = user;
-        return this;
-    }
-
-    public void setManager(User user) {
-        this.manager = user;
-    }
-
-    public User getSupervisor() {
-        return supervisor;
-    }
-
-    public Storehouse supervisor(User user) {
-        this.supervisor = user;
-        return this;
-    }
-
-    public void setSupervisor(User user) {
-        this.supervisor = user;
-    }
-
-    public Set<StorageRoom> getRooms() {
+    public List<StorageRoom> getRooms() {
         return rooms;
     }
 
-    public Storehouse rooms(Set<StorageRoom> storageRooms) {
+    public Storehouse rooms(List<StorageRoom> storageRooms) {
         this.rooms = storageRooms;
         return this;
     }
 
-    public Storehouse addRooms(StorageRoom storageRoom) {
-        this.rooms.add(storageRoom);
-        storageRoom.setStorehouse(this);
-        return this;
-    }
-
-    public Storehouse removeRooms(StorageRoom storageRoom) {
-        this.rooms.remove(storageRoom);
-        storageRoom.setStorehouse(null);
-        return this;
-    }
-
-    public void setRooms(Set<StorageRoom> storageRooms) {
+    public void setRooms(List<StorageRoom> storageRooms) {
         this.rooms = storageRooms;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
