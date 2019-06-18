@@ -74,7 +74,8 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
       const entity = {
         ...actEntity,
         ...values,
-        products: this.getActProducts()
+        products: this.getActProducts(),
+        userId: this.props.userId
       };
       if (this.state.isNew) {
         this.props.createEntity(entity);
@@ -243,7 +244,6 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
                         required: { value: true, errorMessage: translate('entity.validation.required') },
                         number: { value: true, errorMessage: translate('entity.validation.number') }
                       }}
-                      readOnly
                     />
                   </AvGroup>
                   <AvGroup>
@@ -305,7 +305,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  users: storeState.userManagement.users,
+  userId: storeState.authentication.account.id,
   actEntity: storeState.act.entity,
   loading: storeState.act.loading,
   updating: storeState.act.updating,
