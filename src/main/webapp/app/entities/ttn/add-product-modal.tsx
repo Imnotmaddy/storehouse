@@ -11,7 +11,6 @@ export interface IAddProductModalState {
   costValue: string;
   weightValue: string;
   requiredFacilityValue: string;
-  stateValue: string;
   rooms: IStorageRoom[];
   roomValue: string;
 }
@@ -30,7 +29,6 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
     costValue: '',
     weightValue: '',
     requiredFacilityValue: '',
-    stateValue: '',
     rooms: [],
     roomValue: ''
   };
@@ -42,7 +40,6 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
       cost: this.state.costValue,
       weight: this.state.weightValue,
       requiredFacility: this.state.requiredFacilityValue,
-      state: this.state.stateValue,
       rooms: this.state.rooms,
       storageRoomId: this.state.roomValue
     });
@@ -52,7 +49,6 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
       costValue: '',
       weightValue: '',
       requiredFacilityValue: '',
-      stateValue: '',
       roomValue: ''
     });
   };
@@ -89,10 +85,6 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
 
   handleRequiredFacilityChange = event => {
     this.setState({ requiredFacilityValue: event.target.value });
-  };
-
-  handleStateChange = event => {
-    this.setState({ stateValue: event.target.value });
   };
 
   handleRoomChange = event => {
@@ -214,37 +206,6 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
                 <option value="OPEN_SPACE">OPEN_SPACE</option>
                 <option value="HEATED_SPACE">HEATED_SPACE</option>
                 <option value="ORDINARY_ROOM">ORDINARY_ROOM</option>
-              </AvField>
-            </AvGroup>
-            <AvGroup>
-              <Label for="state">
-                <Translate contentKey="storeHouseApp.tTN.currentState">Current State</Translate>
-              </Label>
-              <AvField
-                name="state"
-                type="select"
-                value={this.state.stateValue}
-                onChange={this.handleStateChange}
-                validate={{
-                  required: {
-                    value: true,
-                    errorMessage: translate('entity.validation.required')
-                  }
-                }}
-              >
-                <option defaultChecked />
-                <option value="REGISTRATED">REGISTRATED</option>
-                <option value="APPROVED">APPROVED</option>
-                <option value="STORED">STORED</option>
-                <option value="LOST_BY_TRANSPORTER">LOST_BY_TRANSPORTER</option>
-                <option value="GONE_FROM_STORAGE">GONE_FROM_STORAGE</option>
-                <option value="STOLEN_FROM_STORAGE">STOLEN_FROM_STORAGE</option>
-                <option value="TRANSPORTER_SHORTAGE">TRANSPORTER_SHORTAGE</option>
-                <option value="CONFISCATED">CONFISCATED</option>
-                <option value="RECYCLED">RECYCLED</option>
-                <option value="UNSTORED">UNSTORED</option>
-                <option value="READY_TO_LEAVE">READY_TO_LEAVE</option>
-                <option value="REMOVED_FROM_STORAGE">REMOVED_FROM_STORAGE</option>
               </AvField>
             </AvGroup>
             <AvGroup>

@@ -5,7 +5,6 @@ export const enum ActType {
   THEFT = 'THEFT',
   INCONSISTENCE = 'INCONSISTENCE',
   LOSS = 'LOSS',
-  SHORTAGE = 'SHORTAGE',
   WRITE_OFF = 'WRITE_OFF'
 }
 

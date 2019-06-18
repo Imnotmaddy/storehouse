@@ -57,6 +57,14 @@ public class ProductService {
         return result;
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductDTO> findAllByStorehouseId(Long id){
+        log.debug("Request to get all Products by storehouseID");
+        return productRepository.findAllByStorageRoom_Storehouse_Id(id).stream()
+            .map(productMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
     /**
      * Get all the products.
      *

@@ -6,6 +6,7 @@ import com.itechart.studlab.app.domain.TTN;
 import com.itechart.studlab.app.domain.User;
 import com.itechart.studlab.app.domain.enumeration.ProductState;
 import com.itechart.studlab.app.domain.enumeration.TtnStatus;
+import com.itechart.studlab.app.repository.ProductRepository;
 import com.itechart.studlab.app.repository.TTNRepository;
 import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.TTNSearchRepository;
@@ -20,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -43,17 +41,22 @@ public class TTNService {
     private final TTNMapper tTNMapper;
 
     private final TTNSearchRepository tTNSearchRepository;
+  
+    private final ProductRepository productRepository;
 
     private TTNRepository ttnRepository;
 
     private UserRepository userRepository;
 
-    public TTNService(TTNRepository tTNRepository, TTNMapper tTNMapper, TTNSearchRepository tTNSearchRepository, TTNRepository ttnRepository, UserRepository userRepository) {
+
+    public TTNService(TTNRepository tTNRepository, TTNMapper tTNMapper, TTNSearchRepository tTNSearchRepository, ProductRepository productRepository, TTNRepository ttnRepository, UserRepository userRepository) {
         this.tTNRepository = tTNRepository;
         this.tTNMapper = tTNMapper;
         this.tTNSearchRepository = tTNSearchRepository;
         this.userRepository = userRepository;
         this.ttnRepository = ttnRepository;
+  this.productRepository = productRepository;
+
     }
 
     /**
@@ -68,7 +71,11 @@ public class TTNService {
         tTNDTO = asignCompanyToDTO(tTNDTO);
         TTN tTN = tTNMapper.toEntity(tTNDTO);
         for (Product product : tTN.getProducts()) {
-            product.setTTN(tTN);
+            if (tTN.getDispatcher() == null && product.getId() != null) {
+                productRepository.deleteById(product.getId());
+                product.setId(null);
+            }
+                product.setTTN(tTN);
         }
         tTN = asignStatusToProduct(tTN);
         tTN = tTNRepository.save(tTN);
@@ -76,6 +83,7 @@ public class TTNService {
       //  tTNSearchRepository.save(tTN);
         return result;
     }
+
 
     /**
      * Get all the tTNS.

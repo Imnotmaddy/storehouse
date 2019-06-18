@@ -87,6 +87,12 @@ public class ProductResource {
         return productService.findAll();
     }
 
+    @GetMapping("/products/getByStorehouseId/{id}")
+    public List<ProductDTO> getProductsByStorehouseId(@PathVariable Long id){
+        log.debug("REST request to get all StorageRooms");
+        return productService.findAllByStorehouseId(id);
+    }
+
     /**
      * GET  /products/:id : get the "id" product.
      *
