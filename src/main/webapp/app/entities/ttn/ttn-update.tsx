@@ -138,6 +138,22 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       </tr>
     ));
 
+  genRowsForManager = () =>
+    this.state.managerProducts.map((row, i) => (
+      <tr key={i}>
+        <td>
+          <input type="checkbox" />
+        </td>
+        <td>{row.name}</td>
+        <td>{row.quantity}</td>
+        <td>{row.cost}</td>
+        <td>{row.weight}</td>
+        <td>{row.requiredFacility}</td>
+        <td>{row.state}</td>
+        <td>{row.storageRoomId}</td>
+      </tr>
+    ));
+
   deleteRow = event => {
     const elementId = event.currentTarget.value;
     const newRows = [...this.state.products];
@@ -415,38 +431,23 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                       : null}
                   </AvInput>
                 </AvGroup>
-                {isAuthenticated &&
-                  isManager && (
-                    <AvGroup>
-                      <Label for="allProducts">Product</Label>
-                      <AvInput id="allProducts" type="select" className="form-control" name="allProducts">
-                        <option value="" key="0" defaultChecked />
-                        {managerProducts
-                          ? managerProducts.map(otherEntity => (
-                              <option value={otherEntity.id} key={otherEntity.id}>
-                                {otherEntity.name}
-                              </option>
-                            ))
-                          : null}
-                      </AvInput>
-                    </AvGroup>
-                  )}
               </AvForm>
             )}
             {isAuthenticated &&
-              (isDispatcher || isSupervisor) && (
+              (isDispatcher || isSupervisor || isManager) && (
                 <div className="position-relative">
                   <div className="d-flex">
                     <Label className="mr-auto" for="productsTable">
                       <Translate contentKey="storeHouseApp.tTN.products">Products</Translate>
                     </Label>
-                    <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal} hidden={isSupervisor}>
+                    <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal} hidden={isSupervisor || isManager}>
                       <Translate contentKey="storeHouseApp.tTN.addProduct">Add product</Translate>
                     </Button>
                   </div>
                   <Table name="productsTable" responsive size="sm">
                     <thead>
                       <tr>
+                        {isManager && <th />}
                         <th>
                           <Translate contentKey="storeHouseApp.tTN.name">Product Name</Translate>
                         </th>
@@ -468,17 +469,20 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         <th>
                           <span>Current Storage Room</span>
                         </th>
-                        <th />
+                        {!isManager && <th />}
                       </tr>
                     </thead>
-                    <tbody>{this.genRows()}</tbody>
+                    {(isDispatcher || isSupervisor) && <tbody>{this.genRows()}</tbody>}
+                    {isManager && <tbody>{this.genRowsForManager()}</tbody>}
                   </Table>
-                  <AddProductModal
-                    show={this.state.showAddModal}
-                    storehouseId={this.getRooms}
-                    toggle={this.toggleAddModal}
-                    getValues={this.handleModalValues}
-                  />
+                  {(isDispatcher || isSupervisor) && (
+                    <AddProductModal
+                      show={this.state.showAddModal}
+                      storehouseId={this.getRooms}
+                      toggle={this.toggleAddModal}
+                      getValues={this.handleModalValues}
+                    />
+                  )}
                 </div>
               )}
             <Button tag={Link} id="createAct" to={`/act/new?ttnId=${tTNEntity.id}`} replace color="info" hidden={!isSupervisor}>
