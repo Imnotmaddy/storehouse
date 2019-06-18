@@ -31,7 +31,9 @@ export interface IProduct {
   weight?: number;
   actId?: number;
   storageRoomId?: number;
+  storageRoomRoomNumber: number;
   tTNId?: number;
+  tTNSerialNumber: string;
 }
 
 export const defaultValue: Readonly<IProduct> = {};

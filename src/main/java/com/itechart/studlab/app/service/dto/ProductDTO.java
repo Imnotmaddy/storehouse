@@ -36,7 +36,11 @@ public class ProductDTO implements Serializable {
 
     private Long storageRoomId;
 
+    private String storageRoomRoomNumber;
+
     private Long tTNId;
+
+    private String tTNSerialNumber;
 
     public Long getId() {
         return id;
@@ -118,12 +122,28 @@ public class ProductDTO implements Serializable {
         this.storageRoomId = storageRoomId;
     }
 
-    public Long getTTNId() {
+    public Long gettTNId() {
         return tTNId;
     }
 
-    public void setTTNId(Long tTNId) {
+    public void settTNId(Long tTNId) {
         this.tTNId = tTNId;
+    }
+
+    public String getStorageRoomRoomNumber() {
+        return storageRoomRoomNumber;
+    }
+
+    public void setStorageRoomRoomNumber(String storageRoomRoomNumber) {
+        this.storageRoomRoomNumber = storageRoomRoomNumber;
+    }
+
+    public String gettTNSerialNumber() {
+        return tTNSerialNumber;
+    }
+
+    public void settTNSerialNumber(String tTNSerialNumber) {
+        this.tTNSerialNumber = tTNSerialNumber;
     }
 
     @Override
@@ -160,7 +180,7 @@ public class ProductDTO implements Serializable {
             ", weight=" + getWeight() +
             ", act=" + getActId() +
             ", storageRoom=" + getStorageRoomId() +
-            ", tTN=" + getTTNId() +
+            ", tTN=" + gettTNId() +
             "}";
     }
 }

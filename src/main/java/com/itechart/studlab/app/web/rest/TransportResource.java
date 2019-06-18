@@ -1,4 +1,6 @@
 package com.itechart.studlab.app.web.rest;
+import com.itechart.studlab.app.domain.Transporter;
+import com.itechart.studlab.app.repository.TransportRepository;
 import com.itechart.studlab.app.repository.TransporterRepository;
 import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.security.SecurityUtils;
@@ -36,14 +38,14 @@ public class TransportResource {
 
     private final TransportService transportService;
 
-    @Autowired
     private TransporterRepository transporterRepository;
 
-    @Autowired
     private UserRepository userRepository;
 
-    public TransportResource(TransportService transportService) {
+    public TransportResource(TransportService transportService, UserRepository userRepository, TransporterRepository transporterRepository) {
         this.transportService = transportService;
+        this.userRepository = userRepository;
+        this.transporterRepository = transporterRepository;
     }
 
     /**
