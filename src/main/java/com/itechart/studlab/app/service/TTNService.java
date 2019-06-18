@@ -44,13 +44,16 @@ public class TTNService {
 
     private final TTNSearchRepository tTNSearchRepository;
 
-    @Autowired
+    private TTNRepository ttnRepository;
+
     private UserRepository userRepository;
 
-    public TTNService(TTNRepository tTNRepository, TTNMapper tTNMapper, TTNSearchRepository tTNSearchRepository) {
+    public TTNService(TTNRepository tTNRepository, TTNMapper tTNMapper, TTNSearchRepository tTNSearchRepository, TTNRepository ttnRepository, UserRepository userRepository) {
         this.tTNRepository = tTNRepository;
         this.tTNMapper = tTNMapper;
         this.tTNSearchRepository = tTNSearchRepository;
+        this.userRepository = userRepository;
+        this.ttnRepository = ttnRepository;
     }
 
     /**
@@ -205,7 +208,7 @@ public class TTNService {
 
     private TTN asignStatusToProduct(TTN ttn){
         //this is for received
-        if (ttn.getStatus()==TtnStatus.REGISTERED&&(ttn.getDispatcher()!=null)){
+        if ((ttn.getStatus()==TtnStatus.REGISTERED||ttn.getStatus()==TtnStatus.EDITING_BY_DISPATCHER)&&(ttn.getDispatcher()!=null)){
             for (Product product : ttn.getProducts()) {
                 product.setState(ProductState.REGISTRATED);
             }
@@ -221,7 +224,7 @@ public class TTNService {
             }
         }
         //this is for arrival ttn
-        if (ttn.getStatus()==TtnStatus.REGISTERED&&(ttn.getManager()!=null)){
+        if ((ttn.getStatus()==TtnStatus.REGISTERED||ttn.getStatus()==TtnStatus.EDITING_BY_MANAGER)&&(ttn.getManager()!=null)){
             for (Product product : ttn.getProducts()) {
                 product.setState(ProductState.UNSTORED);
             }
@@ -238,5 +241,13 @@ public class TTNService {
         }
 
         return ttn;
+    }
+
+    public boolean checkIfExist(String serialNumber){
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        String userCompany = user.getCompany();
+        List<TTN> list = ttnRepository.findAllByTransporter_DispatcherCompanyNameAndSerialNumber(userCompany, serialNumber);
+        if(list.isEmpty()) {return false;}
+        return true;
     }
 }
