@@ -4,6 +4,7 @@ import com.itechart.studlab.app.domain.Product;
 import com.itechart.studlab.app.domain.Authority;
 import com.itechart.studlab.app.domain.TTN;
 import com.itechart.studlab.app.domain.User;
+import com.itechart.studlab.app.domain.enumeration.ProductState;
 import com.itechart.studlab.app.domain.enumeration.TtnStatus;
 import com.itechart.studlab.app.repository.TTNRepository;
 import com.itechart.studlab.app.repository.UserRepository;
@@ -43,13 +44,16 @@ public class TTNService {
 
     private final TTNSearchRepository tTNSearchRepository;
 
-    @Autowired
+    private TTNRepository ttnRepository;
+
     private UserRepository userRepository;
 
-    public TTNService(TTNRepository tTNRepository, TTNMapper tTNMapper, TTNSearchRepository tTNSearchRepository) {
+    public TTNService(TTNRepository tTNRepository, TTNMapper tTNMapper, TTNSearchRepository tTNSearchRepository, TTNRepository ttnRepository, UserRepository userRepository) {
         this.tTNRepository = tTNRepository;
         this.tTNMapper = tTNMapper;
         this.tTNSearchRepository = tTNSearchRepository;
+        this.userRepository = userRepository;
+        this.ttnRepository = ttnRepository;
     }
 
     /**
@@ -66,6 +70,7 @@ public class TTNService {
         for (Product product : tTN.getProducts()) {
             product.setTTN(tTN);
         }
+        tTN = asignStatusToProduct(tTN);
         tTN = tTNRepository.save(tTN);
         TTNDTO result = tTNMapper.toDto(tTN);
       //  tTNSearchRepository.save(tTN);
@@ -172,6 +177,9 @@ public class TTNService {
             list.addAll( tTNRepository.findAllByStatus(TtnStatus.ACCEPTED_TO_STORAGE).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
+            list.addAll( tTNRepository.findAllByStatus(TtnStatus.RELEASE_ALLOWED).stream()
+                .map(tTNMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new)));
         }
 
         if(user.getAuthorities().contains(supervisor)){
@@ -196,5 +204,50 @@ public class TTNService {
         }
 
         return list;
+    }
+
+    private TTN asignStatusToProduct(TTN ttn){
+        //this is for received
+        if ((ttn.getStatus()==TtnStatus.REGISTERED||ttn.getStatus()==TtnStatus.EDITING_BY_DISPATCHER)&&(ttn.getDispatcher()!=null)){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.REGISTRATED);
+            }
+        }
+        if (ttn.getStatus()==TtnStatus.CHECKED&&(ttn.getDispatcher()!=null)){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.APPROVED);
+            }
+        }
+        if (ttn.getStatus()==TtnStatus.ACCEPTED_TO_STORAGE){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.STORED);
+            }
+        }
+        //this is for arrival ttn
+        if ((ttn.getStatus()==TtnStatus.REGISTERED||ttn.getStatus()==TtnStatus.EDITING_BY_MANAGER)&&(ttn.getManager()!=null)){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.UNSTORED);
+            }
+        }
+        if (ttn.getStatus()==TtnStatus.RELEASE_ALLOWED){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.READY_TO_LEAVE);
+            }
+        }
+        if (ttn.getStatus()==TtnStatus.REMOVED_FROM_STORAGE){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.REMOVED_FROM_STORAGE);
+            }
+        }
+
+        return ttn;
+    }
+
+    public boolean checkIfExist(String serialNumber){
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        String userCompany = user.getCompany();
+        List<TTN> list = ttnRepository.findAllByTransporter_DispatcherCompanyNameAndSerialNumber(userCompany, serialNumber);
+        if(list.isEmpty()) {return false;}
+        return true;
     }
 }

@@ -137,8 +137,10 @@ export class Product extends React.Component<IProductProps, IProductState> {
                   </td>
                   <td>{product.weight}</td>
                   <td>{product.actId ? <Link to={`act/${product.actId}`}>{product.actId}</Link> : ''}</td>
-                  <td>{product.storageRoomId ? <Link to={`storage-room/${product.storageRoomId}`}>{product.storageRoomId}</Link> : ''}</td>
-                  <td>{product.tTNId ? <Link to={`ttn/${product.tTNId}`}>{product.tTNId}</Link> : ''}</td>
+                  <td>
+                    {product.storageRoomId ? <Link to={`storage-room/${product.storageRoomId}`}>{product.storageRoomRoomNumber}</Link> : ''}
+                  </td>
+                  <td>{product.tTNId ? <Link to={`ttn/${product.tTNId}`}>{product.tTNSerialNumber}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${product.id}`} color="info" size="sm">
