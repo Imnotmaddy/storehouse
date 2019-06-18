@@ -25,16 +25,8 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="owner_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_storehouse_owner_id" />
-            </column>            <column name="administrator_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_storehouse_administrator_id" />
-            </column>            <column name="dispatcher_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_storehouse_dispatcher_id" />
-            </column>            <column name="manager_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_storehouse_manager_id" />
-            </column>            <column name="supervisor_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_storehouse_supervisor_id" />
+            <column name="company_name" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
