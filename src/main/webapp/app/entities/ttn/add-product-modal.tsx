@@ -3,6 +3,7 @@ import { translate, Translate } from 'react-jhipster';
 import { Button, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { AvField, AvForm, AvGroup } from 'availity-reactstrap-validation';
 import { IStorageRoom } from 'app/shared/model/storage-room.model';
+import axios from 'axios';
 
 export interface IAddProductModalState {
   nameValue: string;
@@ -19,7 +20,7 @@ export interface IAddProductModalProps {
   show: boolean;
   toggle: Function;
   getValues: Function;
-  selectRooms: Function;
+  storehouseId: Function;
 }
 
 export class AddProductModal extends React.Component<IAddProductModalProps, IAddProductModalState> {
@@ -57,12 +58,15 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
   };
 
   componentDidMount() {
-    this.props
-      .selectRooms()
+    const requestUrl = `/api/storage-rooms/getByStorehouseId/${this.props.storehouseId()}`;
+    axios
+      .get<IStorageRoom[]>(requestUrl)
       .then(response => {
-        this.setState({ rooms: response.value.data });
+        const newState = { ...this.state, rooms: response.data };
+        this.setState(newState);
       })
       .catch(error => {
+        console.log('ERROR', error);
         this.setState({ rooms: [] });
       });
   }
