@@ -65,7 +65,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/act');
+    this.props.history.push('/act');
   };
 
   render() {

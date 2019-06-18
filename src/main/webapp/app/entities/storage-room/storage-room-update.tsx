@@ -65,7 +65,7 @@ export class StorageRoomUpdate extends React.Component<IStorageRoomUpdateProps, 
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/storage-room');
+    this.props.history.push('/storage-room');
   };
 
   render() {
@@ -148,7 +148,7 @@ export class StorageRoomUpdate extends React.Component<IStorageRoomUpdateProps, 
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/storage-room" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/storage-room" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

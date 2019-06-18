@@ -45,14 +45,14 @@ export class StorageRoomDetail extends React.Component<IStorageRoomDetailProps> 
             </dt>
             <dd>{storageRoomEntity.storehouseId ? storageRoomEntity.storehouseId : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/storage-room" replace color="info">
+          <Button tag={Link} to="/storage-room" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/storage-room/${storageRoomEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/storage-room/${storageRoomEntity.id}/edit`} replace color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>
