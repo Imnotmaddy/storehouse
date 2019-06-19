@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row, Table } from 'reactstrap';
+import { Button, Col, Label, Row, Table, Input } from 'reactstrap';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate } from 'react-jhipster';
@@ -226,7 +226,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
 
   render() {
     const { tTNEntity, transports, transporters, loading, updating, isAuthenticated, isDispatcher, isManager, isSupervisor } = this.props;
-    const { isNew, managerProducts } = this.state;
+    const { isNew } = this.state;
 
     return (
       <div>
@@ -488,7 +488,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         {!isManager && <th />}
                       </tr>
                     </thead>
-                    {(isDispatcher || isSupervisor) && <tbody>{this.genRows()}</tbody>}
+                    {(isDispatcher || isSupervisor) && <tbody>{this.genRows()} </tbody>}
                     {isManager && <tbody>{this.genRowsForManager()}</tbody>}
                   </Table>
                   {(isDispatcher || isSupervisor) && (

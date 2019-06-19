@@ -11,6 +11,7 @@ import com.itechart.studlab.app.repository.TTNRepository;
 import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.TTNSearchRepository;
 import com.itechart.studlab.app.security.SecurityUtils;
+import com.itechart.studlab.app.service.dto.ProductDTO;
 import com.itechart.studlab.app.service.dto.TTNDTO;
 import com.itechart.studlab.app.service.mapper.ProductMapper;
 import com.itechart.studlab.app.service.mapper.TTNMapper;
@@ -41,7 +42,7 @@ public class TTNService {
     private final TTNMapper tTNMapper;
 
     private final TTNSearchRepository tTNSearchRepository;
-  
+
     private final ProductRepository productRepository;
 
     private TTNRepository ttnRepository;
@@ -55,7 +56,7 @@ public class TTNService {
         this.tTNSearchRepository = tTNSearchRepository;
         this.userRepository = userRepository;
         this.ttnRepository = ttnRepository;
-  this.productRepository = productRepository;
+        this.productRepository = productRepository;
 
     }
 
@@ -67,21 +68,30 @@ public class TTNService {
      */
     public TTNDTO save(TTNDTO tTNDTO) {
         log.debug("Request to save TTN : {}", tTNDTO);
-        tTNDTO = asignUserToDTO(tTNDTO);
-        tTNDTO = asignCompanyToDTO(tTNDTO);
+        asignUserToDTO(tTNDTO);
+        asignCompanyToDTO(tTNDTO);
         TTN tTN = tTNMapper.toEntity(tTNDTO);
-        for (Product product : tTN.getProducts()) {
-            if (tTN.getDispatcher() == null && product.getId() != null) {
-                product.setArrivalTTN(tTN);
-            } else {
+        Set<Product> products = tTN.getProducts();
+        asignStatusToProduct(tTN);
+
+
+        if (tTN.getDispatcher() == null && (!products.isEmpty() && products.iterator().next().getId() != null)) {
+            tTN.setProducts(new HashSet<>());
+            tTN = tTNRepository.save(tTN);
+            saveManagerProducts(products, tTN);
+        } else {
+            for (Product product : tTN.getProducts()) {
                 product.setTTN(tTN);
             }
+            tTN = tTNRepository.save(tTN);
         }
-        tTN = asignStatusToProduct(tTN);
-        tTN = tTNRepository.save(tTN);
-        TTNDTO result = tTNMapper.toDto(tTN);
-      //  tTNSearchRepository.save(tTN);
-        return result;
+        //  tTNSearchRepository.save(tTN);
+        return tTNMapper.toDto(tTN);
+    }
+
+    private void saveManagerProducts(Set<Product> products, TTN ttn) {
+        products.forEach(product -> product.setArrivalTTN(ttn));
+        productRepository.saveAll(products);
     }
 
 
@@ -106,8 +116,11 @@ public class TTNService {
     @Transactional(readOnly = true)
     public Optional<TTNDTO> findOne(Long id) {
         log.debug("Request to get TTN : {}", id);
-        return tTNRepository.findById(id)
-            .map(tTNMapper::toDto);
+        Optional<TTN> ttn = tTNRepository.findById(id);
+        if (ttn.get().getManager() != null){
+            ttn.get().setProducts(productRepository.findAllByArrivalTTNId(ttn.get().getId()));
+        }
+        return ttn.map(tTNMapper::toDto);
     }
 
     /**
@@ -136,34 +149,34 @@ public class TTNService {
             .collect(Collectors.toList());
     }
 
-    private TTNDTO asignCompanyToDTO(TTNDTO ttndto){
-        if(ttndto.getRecipient()==null){
+    private TTNDTO asignCompanyToDTO(TTNDTO ttndto) {
+        if (ttndto.getRecipient() == null) {
             ttndto.setRecipient(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getCompany());
         }
-        if(ttndto.getSender()==null){
+        if (ttndto.getSender() == null) {
             ttndto.setSender(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getCompany());
         }
         return ttndto;
     }
 
-    private TTNDTO asignUserToDTO(TTNDTO ttndto){
+    private TTNDTO asignUserToDTO(TTNDTO ttndto) {
         Authority dispatcher = new Authority();
         Authority manager = new Authority();
         dispatcher.setName("ROLE_DISPATCHER");
         manager.setName("ROLE_MANAGER");
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
-        if(user.getAuthorities().contains(dispatcher)){
+        if (user.getAuthorities().contains(dispatcher)) {
             ttndto.setDispatcherLastName(user.getLastName());
             ttndto.setDispatcherId(user.getId());
         }
-        if (user.getAuthorities().contains(manager)){
+        if (user.getAuthorities().contains(manager)) {
             ttndto.setManagerLastName(user.getLastName());
             ttndto.setManagerId(user.getId());
         }
         return ttndto;
     }
 
-    private List<TTNDTO> getTtnByStatus(){
+    private List<TTNDTO> getTtnByStatus() {
         List<TTNDTO> list = new LinkedList<>();
         Authority dispatcher = new Authority();
         Authority manager = new Authority();
@@ -175,38 +188,38 @@ public class TTNService {
         owner.setName("ROLE_OWNER");
 
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
-        if(user.getAuthorities().contains(dispatcher)){
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.EDITING_BY_DISPATCHER).stream()
+        if (user.getAuthorities().contains(dispatcher)) {
+            list.addAll(tTNRepository.findAllByStatus(TtnStatus.EDITING_BY_DISPATCHER).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.CHECKED).stream()
+            list.addAll(tTNRepository.findAllByStatus(TtnStatus.CHECKED).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.ACCEPTED_TO_STORAGE).stream()
+            list.addAll(tTNRepository.findAllByStatus(TtnStatus.ACCEPTED_TO_STORAGE).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.RELEASE_ALLOWED).stream()
-                .map(tTNMapper::toDto)
-                .collect(Collectors.toCollection(LinkedList::new)));
-        }
-
-        if(user.getAuthorities().contains(supervisor)){
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.REGISTERED).stream()
+            list.addAll(tTNRepository.findAllByStatus(TtnStatus.RELEASE_ALLOWED).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
         }
 
-        if(user.getAuthorities().contains(manager)){
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.EDITING_BY_MANAGER).stream()
-                .map(tTNMapper::toDto)
-                .collect(Collectors.toCollection(LinkedList::new)));
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.REMOVED_FROM_STORAGE).stream()
+        if (user.getAuthorities().contains(supervisor)) {
+            list.addAll(tTNRepository.findAllByStatus(TtnStatus.REGISTERED).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
         }
 
-        if(user.getAuthorities().contains(owner)){
-            list.addAll( tTNRepository.findAll().stream()
+        if (user.getAuthorities().contains(manager)) {
+            list.addAll(tTNRepository.findAllByStatus(TtnStatus.EDITING_BY_MANAGER).stream()
+                .map(tTNMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new)));
+            list.addAll(tTNRepository.findAllByStatus(TtnStatus.REMOVED_FROM_STORAGE).stream()
+                .map(tTNMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new)));
+        }
+
+        if (user.getAuthorities().contains(owner)) {
+            list.addAll(tTNRepository.findAll().stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
         }
@@ -214,35 +227,35 @@ public class TTNService {
         return list;
     }
 
-    private TTN asignStatusToProduct(TTN ttn){
+    private TTN asignStatusToProduct(TTN ttn) {
         //this is for received
-        if ((ttn.getStatus()==TtnStatus.REGISTERED||ttn.getStatus()==TtnStatus.EDITING_BY_DISPATCHER)&&(ttn.getDispatcher()!=null)){
+        if ((ttn.getStatus() == TtnStatus.REGISTERED || ttn.getStatus() == TtnStatus.EDITING_BY_DISPATCHER) && (ttn.getDispatcher() != null)) {
             for (Product product : ttn.getProducts()) {
                 product.setState(ProductState.REGISTRATED);
             }
         }
-        if (ttn.getStatus()==TtnStatus.CHECKED&&(ttn.getDispatcher()!=null)){
+        if (ttn.getStatus() == TtnStatus.CHECKED && (ttn.getDispatcher() != null)) {
             for (Product product : ttn.getProducts()) {
                 product.setState(ProductState.APPROVED);
             }
         }
-        if (ttn.getStatus()==TtnStatus.ACCEPTED_TO_STORAGE){
+        if (ttn.getStatus() == TtnStatus.ACCEPTED_TO_STORAGE) {
             for (Product product : ttn.getProducts()) {
                 product.setState(ProductState.STORED);
             }
         }
         //this is for arrival ttn
-        if ((ttn.getStatus()==TtnStatus.REGISTERED||ttn.getStatus()==TtnStatus.EDITING_BY_MANAGER)&&(ttn.getManager()!=null)){
+        if ((ttn.getStatus() == TtnStatus.REGISTERED || ttn.getStatus() == TtnStatus.EDITING_BY_MANAGER) && (ttn.getManager() != null)) {
             for (Product product : ttn.getProducts()) {
                 product.setState(ProductState.UNSTORED);
             }
         }
-        if (ttn.getStatus()==TtnStatus.RELEASE_ALLOWED){
+        if (ttn.getStatus() == TtnStatus.RELEASE_ALLOWED) {
             for (Product product : ttn.getProducts()) {
                 product.setState(ProductState.READY_TO_LEAVE);
             }
         }
-        if (ttn.getStatus()==TtnStatus.REMOVED_FROM_STORAGE){
+        if (ttn.getStatus() == TtnStatus.REMOVED_FROM_STORAGE) {
             for (Product product : ttn.getProducts()) {
                 product.setState(ProductState.REMOVED_FROM_STORAGE);
             }
@@ -251,11 +264,13 @@ public class TTNService {
         return ttn;
     }
 
-    public boolean checkIfExist(String serialNumber){
+    public boolean checkIfExist(String serialNumber) {
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
         String userCompany = user.getCompany();
         List<TTN> list = ttnRepository.findAllByTransporter_DispatcherCompanyNameAndSerialNumber(userCompany, serialNumber);
-        if(list.isEmpty()) {return false;}
+        if (list.isEmpty()) {
+            return false;
+        }
         return true;
     }
 }
