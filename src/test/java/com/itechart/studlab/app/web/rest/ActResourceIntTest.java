@@ -57,7 +57,7 @@ public class ActResourceIntTest {
     private static final Double UPDATED_COST = 2D;
 
     private static final ActType DEFAULT_TYPE = ActType.THEFT;
-    private static final ActType UPDATED_TYPE = ActType.INCONSISTENCE;
+    private static final ActType UPDATED_TYPE = ActType.INCONSISTENCY;
 
     @Autowired
     private ActRepository actRepository;

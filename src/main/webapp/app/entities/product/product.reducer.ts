@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { ICrudSearchAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudSearchAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 
-import { IProduct, defaultValue } from 'app/shared/model/product.model';
+import { defaultValue, IProduct } from 'app/shared/model/product.model';
 
 export const ACTION_TYPES = {
   SEARCH_PRODUCTS: 'product/SEARCH_PRODUCTS',
   FETCH_PRODUCT_LIST: 'product/FETCH_PRODUCT_LIST',
+  FETCH_TTN_PRODUCT_LIST: 'product/FETCH_TTN_PRODUCT_LIST',
   FETCH_PRODUCT: 'product/FETCH_PRODUCT',
   CREATE_PRODUCT: 'product/CREATE_PRODUCT',
   UPDATE_PRODUCT: 'product/UPDATE_PRODUCT',
@@ -33,6 +34,7 @@ export default (state: ProductState = initialState, action): ProductState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.SEARCH_PRODUCTS):
     case REQUEST(ACTION_TYPES.FETCH_PRODUCT_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_TTN_PRODUCT_LIST):
     case REQUEST(ACTION_TYPES.FETCH_PRODUCT):
       return {
         ...state,
@@ -51,6 +53,7 @@ export default (state: ProductState = initialState, action): ProductState => {
       };
     case FAILURE(ACTION_TYPES.SEARCH_PRODUCTS):
     case FAILURE(ACTION_TYPES.FETCH_PRODUCT_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_TTN_PRODUCT_LIST):
     case FAILURE(ACTION_TYPES.FETCH_PRODUCT):
     case FAILURE(ACTION_TYPES.CREATE_PRODUCT):
     case FAILURE(ACTION_TYPES.UPDATE_PRODUCT):
@@ -64,6 +67,7 @@ export default (state: ProductState = initialState, action): ProductState => {
       };
     case SUCCESS(ACTION_TYPES.SEARCH_PRODUCTS):
     case SUCCESS(ACTION_TYPES.FETCH_PRODUCT_LIST):
+    case SUCCESS(ACTION_TYPES.FETCH_TTN_PRODUCT_LIST):
       return {
         ...state,
         loading: false,
@@ -113,6 +117,14 @@ export const getEntities: ICrudGetAllAction<IProduct> = (page, size, sort) => ({
   type: ACTION_TYPES.FETCH_PRODUCT_LIST,
   payload: axios.get<IProduct>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
 });
+
+export const getTtnProducts = id => {
+  const requestUrl = `${apiUrl}/ttn?id=${id}`;
+  return {
+    type: ACTION_TYPES.FETCH_TTN_PRODUCT_LIST,
+    payload: axios.get(requestUrl)
+  };
+};
 
 export const getEntity: ICrudGetAction<IProduct> = id => {
   const requestUrl = `${apiUrl}/${id}`;

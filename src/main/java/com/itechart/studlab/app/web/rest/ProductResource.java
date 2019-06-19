@@ -86,12 +86,18 @@ public class ProductResource {
         log.debug("REST request to get all Products");
         return productService.findAll();
     }
+  
+    @GetMapping("/products/ttn")
+    public List<ProductDTO> getAllTtnProducts(@RequestParam(name = "id") Long id) {
+        log.debug("REST request to get all TTN ID {} products", id);
+        return productService.findAllForTtn(id);
+}
 
     @GetMapping("/products/getByStorehouseId/{id}")
     public List<ProductDTO> getProductsByStorehouseId(@PathVariable Long id){
         log.debug("REST request to get all StorageRooms");
         return productService.findAllByStorehouseId(id);
-    }
+}
 
     /**
      * GET  /products/:id : get the "id" product.

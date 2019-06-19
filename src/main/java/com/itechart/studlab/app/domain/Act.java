@@ -1,21 +1,19 @@
 package com.itechart.studlab.app.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.itechart.studlab.app.domain.enumeration.ActType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
-import com.itechart.studlab.app.domain.enumeration.ActType;
+import java.util.Set;
 
 /**
  * A Act.
@@ -27,7 +25,7 @@ import com.itechart.studlab.app.domain.enumeration.ActType;
 public class Act implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,7 +49,8 @@ public class Act implements Serializable {
 
     @OneToMany(mappedBy = "act")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Product> products = new HashSet<>();
+    private List<Product> products = new ArrayList<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -113,11 +112,11 @@ public class Act implements Serializable {
         this.user = user;
     }
 
-    public Set<Product> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public Act products(Set<Product> products) {
+    public Act products(List<Product> products) {
         this.products = products;
         return this;
     }
@@ -134,7 +133,7 @@ public class Act implements Serializable {
         return this;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

@@ -1,17 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label, Table, Input } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { Button, Col, Label, Row, Table } from 'reactstrap';
+import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, log, IPayload } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { getEntities as getProducts } from 'app/entities/product/product.reducer';
 import { getEntities as getTransports } from 'app/entities/transport/transport.reducer';
 import { getEntities as getTransporters } from 'app/entities/transporter/transporter.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './ttn.reducer';
+import { createEntity, getEntity, reset, updateEntity } from './ttn.reducer';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 
