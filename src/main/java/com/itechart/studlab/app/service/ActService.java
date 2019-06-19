@@ -1,23 +1,27 @@
 package com.itechart.studlab.app.service;
 
 import com.itechart.studlab.app.domain.Act;
+import com.itechart.studlab.app.domain.Product;
 import com.itechart.studlab.app.repository.ActRepository;
+import com.itechart.studlab.app.repository.ProductRepository;
 import com.itechart.studlab.app.repository.search.ActSearchRepository;
 import com.itechart.studlab.app.service.dto.ActDTO;
+import com.itechart.studlab.app.service.dto.ProductDTO;
 import com.itechart.studlab.app.service.mapper.ActMapper;
+import com.itechart.studlab.app.service.mapper.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Act.
@@ -30,13 +34,21 @@ public class ActService {
 
     private final ActRepository actRepository;
 
+    private final ProductRepository productRepository;
+
     private final ActMapper actMapper;
+
+    private final ProductMapper productMapper;
 
     private final ActSearchRepository actSearchRepository;
 
-    public ActService(ActRepository actRepository, ActMapper actMapper, ActSearchRepository actSearchRepository) {
+    public ActService(ActRepository actRepository, ActMapper actMapper,
+                      ProductMapper productMapper, ActSearchRepository actSearchRepository,
+                      ProductRepository productRepository) {
         this.actRepository = actRepository;
+        this.productRepository = productRepository;
         this.actMapper = actMapper;
+        this.productMapper = productMapper;
         this.actSearchRepository = actSearchRepository;
     }
 
@@ -50,6 +62,26 @@ public class ActService {
         log.debug("Request to save Act : {}", actDTO);
         Act act = actMapper.toEntity(actDTO);
         act = actRepository.save(act);
+        List<ProductDTO> productsDTO = actDTO.getProducts();
+
+        List<Product> productsFromDb = new ArrayList<>(productsDTO.size());
+        productsDTO.forEach(productDTO ->
+            productRepository.findById(productDTO.getId()).ifPresent(productsFromDb::add));
+
+        for (int i = 0; i < productsFromDb.size(); i++) {
+            productsFromDb.get(i).setQuantity(productsFromDb.get(i).getQuantity() - productsDTO.get(i).getQuantity());
+        }
+
+        productRepository.saveAll(productsFromDb);
+
+
+        final Long actId = act.getId();
+        productsDTO.forEach(productDTO -> {
+            productDTO.setId(null);
+            productDTO.setActId(actId);
+        });
+
+        productRepository.saveAll(productsDTO.stream().map(productMapper::toEntity).collect(Collectors.toList()));
         ActDTO result = actMapper.toDto(act);
         actSearchRepository.save(act);
         return result;

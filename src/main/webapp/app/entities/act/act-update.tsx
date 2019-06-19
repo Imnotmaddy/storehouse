@@ -80,6 +80,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
         products: this.getActProducts(),
         userId: this.props.userId
       };
+      console.log('sending act', entity);
       if (this.state.isNew) {
         this.props.createEntity(entity);
       } else {
@@ -254,17 +255,15 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
                       <Translate contentKey="storeHouseApp.act.type">Type</Translate>
                     </Label>
                     <AvInput id="act-type" type="select" className="form-control" name="type" value={(!isNew && actEntity.type) || 'THEFT'}>
+                      <option defaultChecked />
                       <option value="THEFT">
                         <Translate contentKey="storeHouseApp.ActType.THEFT" />
                       </option>
-                      <option value="INCONSISTENCE">
-                        <Translate contentKey="storeHouseApp.ActType.INCONSISTENCE" />
+                      <option value="INCONSISTENCY">
+                        <Translate contentKey="storeHouseApp.ActType.INCONSISTENCY" />
                       </option>
                       <option value="LOSS">
                         <Translate contentKey="storeHouseApp.ActType.LOSS" />
-                      </option>
-                      <option value="SHORTAGE">
-                        <Translate contentKey="storeHouseApp.ActType.SHORTAGE" />
                       </option>
                       <option value="WRITE_OFF">
                         <Translate contentKey="storeHouseApp.ActType.WRITE_OFF" />
