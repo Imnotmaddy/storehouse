@@ -8,14 +8,15 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Act and its DTO ActDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, ProductMapper.class})
 public interface ActMapper extends EntityMapper<ActDTO, Act> {
 
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "products", target = "products")
     ActDTO toDto(Act act);
 
     @Mapping(source = "userId", target = "user")
-    @Mapping(target = "products", ignore = true)
+    @Mapping(source = "products", target = "products")
     Act toEntity(ActDTO actDTO);
 
     default Act fromId(Long id) {
