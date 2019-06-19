@@ -10,6 +10,7 @@ import com.itechart.studlab.app.repository.ProductRepository;
 import com.itechart.studlab.app.repository.TTNRepository;
 import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.TTNSearchRepository;
+import com.itechart.studlab.app.security.AuthoritiesConstants;
 import com.itechart.studlab.app.security.SecurityUtils;
 import com.itechart.studlab.app.service.dto.ProductDTO;
 import com.itechart.studlab.app.service.dto.TTNDTO;
@@ -182,10 +183,10 @@ public class TTNService {
         Authority manager = new Authority();
         Authority supervisor = new Authority();
         Authority owner = new Authority();
-        dispatcher.setName("ROLE_DISPATCHER");
-        manager.setName("ROLE_MANAGER");
-        supervisor.setName("ROLE_SUPERVISOR");
-        owner.setName("ROLE_OWNER");
+        dispatcher.setName(AuthoritiesConstants.DISPATCHER);
+        manager.setName(AuthoritiesConstants.MANAGER);
+        supervisor.setName(AuthoritiesConstants.SUPERVISOR);
+        owner.setName(AuthoritiesConstants.OWNER);
 
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
         if (user.getAuthorities().contains(dispatcher)) {
@@ -260,7 +261,6 @@ public class TTNService {
                 product.setState(ProductState.REMOVED_FROM_STORAGE);
             }
         }
-
         return ttn;
     }
 
