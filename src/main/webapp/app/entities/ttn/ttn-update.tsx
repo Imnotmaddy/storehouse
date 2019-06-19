@@ -21,6 +21,7 @@ import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
 import { IStorageRoom } from 'app/shared/model/storage-room.model';
 import axios from 'axios';
+import { ITTN, Status as TTNStatus } from 'app/shared/model/ttn.model';
 
 export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
   isAuthenticated: boolean;
@@ -90,6 +91,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       this.props
         .getEntity(this.props.match.params.id)
         .then(response => {
+          console.log('response', response);
           this.setState({ products: response.value.data.products });
         })
         .catch(() => {
@@ -97,30 +99,30 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
         });
     }
 
-    const requestUrl = `/api/products/getByStorehouseId/${this.props.storehouseId}`;
-    axios
-      .get<IProduct[]>(requestUrl)
-      .then(response => {
-        const rows = new Array(response.data.length);
-        for (let i = 0; i < rows.length; i++) {
-          rows[i] = false;
-        }
-        const newState = { ...this.state, managerProducts: response.data, rows: rows };
-        this.setState(newState);
-      })
-      .catch(error => {
-        console.log('ERROR', error);
-        this.setState({ managerProducts: [] });
-      });
+    if (this.props.isManager) {
+      const requestUrl = `/api/products/getByStorehouseId/${this.props.storehouseId}`;
+      axios
+        .get<IProduct[]>(requestUrl)
+        .then(response => {
+          const rows = new Array(response.data.length);
+          for (let i = 0; i < rows.length; i++) {
+            rows[i] = false;
+          }
+          const newState = { ...this.state, managerProducts: response.data, rows };
+          this.setState(newState);
+        })
+        .catch(error => {
+          console.log('ERROR', error);
+          this.setState({ managerProducts: [] });
+        });
+    }
 
     this.props.getUsers();
     this.props.getTransports();
     this.props.getTransporters();
   }
 
-  getRooms = () => {
-    return this.props.storehouseId;
-  };
+  getRooms = () => this.props.storehouseId;
 
   genRows = () =>
     this.state.products.map((row, i) => (
@@ -227,6 +229,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   handleClose = () => {
     this.props.history.push('/ttn');
   };
+
+  checkTtnStatus = (ttn: ITTN, status: TTNStatus): boolean => ttn.status === status;
 
   render() {
     const { tTNEntity, transports, transporters, loading, updating, isAuthenticated, isDispatcher, isManager, isSupervisor } = this.props;
@@ -348,13 +352,21 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     }}
                   >
                     <option value="" key="0" defaultChecked />
-                    {isAuthenticated && isDispatcher && <option value="EDITING_BY_DISPATCHER">Editing</option>}
-                    {isAuthenticated && isManager && <option value="EDITING_BY_MANAGER">Editing</option>}
-                    {isAuthenticated && (isDispatcher || isManager) && <option value="REGISTERED">Registered</option>}
-                    {isAuthenticated && isSupervisor && <option value="CHECKED">Checked</option>}
-                    {isAuthenticated && isDispatcher && <option value="ACCEPTED_TO_STORAGE">Accepted to storage</option>}
-                    {isAuthenticated && isSupervisor && <option value="RELEASE_ALLOWED">Release allowed</option>}
-                    {isAuthenticated && isDispatcher && <option value="REMOVED_FROM_STORAGE">Removed from storage</option>}
+                    {isDispatcher && isNew && <option value="EDITING_BY_DISPATCHER">Editing</option>}
+                    {isManager && isNew && <option value="EDITING_BY_MANAGER">Editing</option>}
+                    {(isDispatcher || isManager) && isNew && <option value="REGISTERED">Registered</option>}
+                    {isSupervisor &&
+                      tTNEntity.managerId === null &&
+                      this.checkTtnStatus(tTNEntity, TTNStatus.REGISTERED) && <option value="CHECKED">Checked</option>}
+                    {isDispatcher &&
+                      this.checkTtnStatus(tTNEntity, TTNStatus.CHECKED) && <option value="ACCEPTED_TO_STORAGE">Accepted to storage</option>}
+                    {isSupervisor &&
+                      tTNEntity.dispatcherId === null &&
+                      this.checkTtnStatus(tTNEntity, TTNStatus.REGISTERED) && <option value="RELEASE_ALLOWED">Release allowed</option>}
+                    {isDispatcher &&
+                      this.checkTtnStatus(tTNEntity, TTNStatus.RELEASE_ALLOWED) && (
+                        <option value="REMOVED_FROM_STORAGE">Removed from storage</option>
+                      )}
                   </AvInput>
                 </AvGroup>
                 {isAuthenticated &&
