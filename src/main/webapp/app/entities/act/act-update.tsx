@@ -342,7 +342,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
                         <Translate contentKey="storeHouseApp.tTN.quantity">Quantity</Translate>
                       </th>
                       <th>
-                        <span>Products for Act</span>
+                        <span>Spoiled products</span>
                       </th>
                       <th>
                         <span>Status</span>
