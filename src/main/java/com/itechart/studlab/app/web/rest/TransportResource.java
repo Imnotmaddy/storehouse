@@ -96,7 +96,6 @@ public class TransportResource {
     @GetMapping("/transports")
     public List<TransportDTO> getAllTransports() {
         String dispatcherCompanyName = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getCompany();
-        long companyId = transporterRepository.findFirstByDispatcherCompanyName(dispatcherCompanyName).getId();
         log.debug("REST request to get all Transports");
         return transportService.findAllByTransporterDispatcherCompany(dispatcherCompanyName);
     }

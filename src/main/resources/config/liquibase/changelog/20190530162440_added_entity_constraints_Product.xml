@@ -26,5 +26,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="ttn"/>
 
+        <addForeignKeyConstraint baseColumnNames="arrival_ttn_id"
+                                 baseTableName="product"
+                                 constraintName="fk_product_arrival_ttn_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ttn"/>
+
     </changeSet>
 </databaseChangeLog>

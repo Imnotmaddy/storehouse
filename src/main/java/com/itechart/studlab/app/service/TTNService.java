@@ -72,10 +72,10 @@ public class TTNService {
         TTN tTN = tTNMapper.toEntity(tTNDTO);
         for (Product product : tTN.getProducts()) {
             if (tTN.getDispatcher() == null && product.getId() != null) {
-                productRepository.deleteById(product.getId());
-                product.setId(null);
-            }
+                product.setArrivalTTN(tTN);
+            } else {
                 product.setTTN(tTN);
+            }
         }
         tTN = asignStatusToProduct(tTN);
         tTN = tTNRepository.save(tTN);
