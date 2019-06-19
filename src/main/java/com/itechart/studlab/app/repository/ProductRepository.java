@@ -19,4 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   
     List<Product> findAllByStorageRoom_Storehouse_IdAndQuantityGreaterThan(Long storehouseId, Integer quantity);
     HashSet<Product> findAllByArrivalTTNId(Long id);
+
+    List<Product> getAllByArrivalTTNId(Long id);
 }

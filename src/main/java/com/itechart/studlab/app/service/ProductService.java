@@ -86,6 +86,10 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<ProductDTO> findAllForTtn(Long id) {
         TTN ttn = ttnRepository.getOne(id);
+        if (ttn.getDispatcher()==null){
+            return productRepository.getAllByArrivalTTNId(ttn.getId()).stream()
+                .map(productMapper::toDto).collect(Collectors.toList());
+        }
         return productRepository.getAllByTTNIs(ttn).stream()
             .map(productMapper::toDto).collect(Collectors.toList());
 }
