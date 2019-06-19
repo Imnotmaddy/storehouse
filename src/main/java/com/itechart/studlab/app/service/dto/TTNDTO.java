@@ -48,7 +48,7 @@ public class TTNDTO implements Serializable {
 
     private Long transportId;
 
-    private Long transportVehicleNumber;
+    private String transportVehicleNumber;
 
     private Long transporterId;
 
@@ -194,11 +194,11 @@ public class TTNDTO implements Serializable {
 
 
 
-    public Long getTransportVehicleNumber() {
+    public String getTransportVehicleNumber() {
         return transportVehicleNumber;
     }
 
-    public void setTransportVehicleNumber(Long transportVehicleNumber) {
+    public void setTransportVehicleNumber(String transportVehicleNumber) {
         this.transportVehicleNumber = transportVehicleNumber;
     }
 

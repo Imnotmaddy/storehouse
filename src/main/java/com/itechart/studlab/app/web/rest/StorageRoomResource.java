@@ -87,6 +87,12 @@ public class StorageRoomResource {
         return storageRoomService.findAll();
     }
 
+    @GetMapping("/storage-rooms/getByStorehouseId/{id}")
+    public List<StorageRoomDTO> getAllRoomsByStorehouseId(@PathVariable Long id){
+        log.debug("REST request to get all StorageRooms");
+        return storageRoomService.findAllByStorehouseId(id);
+    }
+
     /**
      * GET  /storage-rooms/:id : get the "id" storageRoom.
      *

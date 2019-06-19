@@ -4,7 +4,9 @@ import com.itechart.studlab.app.domain.Product;
 import com.itechart.studlab.app.domain.Authority;
 import com.itechart.studlab.app.domain.TTN;
 import com.itechart.studlab.app.domain.User;
+import com.itechart.studlab.app.domain.enumeration.ProductState;
 import com.itechart.studlab.app.domain.enumeration.TtnStatus;
+import com.itechart.studlab.app.repository.ProductRepository;
 import com.itechart.studlab.app.repository.TTNRepository;
 import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.TTNSearchRepository;
@@ -19,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -42,14 +41,22 @@ public class TTNService {
     private final TTNMapper tTNMapper;
 
     private final TTNSearchRepository tTNSearchRepository;
+  
+    private final ProductRepository productRepository;
 
-    @Autowired
+    private TTNRepository ttnRepository;
+
     private UserRepository userRepository;
 
-    public TTNService(TTNRepository tTNRepository, TTNMapper tTNMapper, TTNSearchRepository tTNSearchRepository) {
+
+    public TTNService(TTNRepository tTNRepository, TTNMapper tTNMapper, TTNSearchRepository tTNSearchRepository, ProductRepository productRepository, TTNRepository ttnRepository, UserRepository userRepository) {
         this.tTNRepository = tTNRepository;
         this.tTNMapper = tTNMapper;
         this.tTNSearchRepository = tTNSearchRepository;
+        this.userRepository = userRepository;
+        this.ttnRepository = ttnRepository;
+  this.productRepository = productRepository;
+
     }
 
     /**
@@ -64,13 +71,19 @@ public class TTNService {
         tTNDTO = asignCompanyToDTO(tTNDTO);
         TTN tTN = tTNMapper.toEntity(tTNDTO);
         for (Product product : tTN.getProducts()) {
-            product.setTTN(tTN);
+            if (tTN.getDispatcher() == null && product.getId() != null) {
+                productRepository.deleteById(product.getId());
+                product.setId(null);
+            }
+                product.setTTN(tTN);
         }
+        tTN = asignStatusToProduct(tTN);
         tTN = tTNRepository.save(tTN);
         TTNDTO result = tTNMapper.toDto(tTN);
       //  tTNSearchRepository.save(tTN);
         return result;
     }
+
 
     /**
      * Get all the tTNS.
@@ -163,10 +176,13 @@ public class TTNService {
 
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
         if(user.getAuthorities().contains(dispatcher)){
-            list.addAll( tTNRepository.findAllByStatus(TtnStatus.DECORATED).stream()
+            list.addAll( tTNRepository.findAllByStatus(TtnStatus.EDITING_BY_DISPATCHER).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
             list.addAll( tTNRepository.findAllByStatus(TtnStatus.CHECKED).stream()
+                .map(tTNMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new)));
+            list.addAll( tTNRepository.findAllByStatus(TtnStatus.ACCEPTED_TO_STORAGE).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
             list.addAll( tTNRepository.findAllByStatus(TtnStatus.RELEASE_ALLOWED).stream()
@@ -181,6 +197,9 @@ public class TTNService {
         }
 
         if(user.getAuthorities().contains(manager)){
+            list.addAll( tTNRepository.findAllByStatus(TtnStatus.EDITING_BY_MANAGER).stream()
+                .map(tTNMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new)));
             list.addAll( tTNRepository.findAllByStatus(TtnStatus.REMOVED_FROM_STORAGE).stream()
                 .map(tTNMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new)));
@@ -193,5 +212,50 @@ public class TTNService {
         }
 
         return list;
+    }
+
+    private TTN asignStatusToProduct(TTN ttn){
+        //this is for received
+        if ((ttn.getStatus()==TtnStatus.REGISTERED||ttn.getStatus()==TtnStatus.EDITING_BY_DISPATCHER)&&(ttn.getDispatcher()!=null)){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.REGISTRATED);
+            }
+        }
+        if (ttn.getStatus()==TtnStatus.CHECKED&&(ttn.getDispatcher()!=null)){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.APPROVED);
+            }
+        }
+        if (ttn.getStatus()==TtnStatus.ACCEPTED_TO_STORAGE){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.STORED);
+            }
+        }
+        //this is for arrival ttn
+        if ((ttn.getStatus()==TtnStatus.REGISTERED||ttn.getStatus()==TtnStatus.EDITING_BY_MANAGER)&&(ttn.getManager()!=null)){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.UNSTORED);
+            }
+        }
+        if (ttn.getStatus()==TtnStatus.RELEASE_ALLOWED){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.READY_TO_LEAVE);
+            }
+        }
+        if (ttn.getStatus()==TtnStatus.REMOVED_FROM_STORAGE){
+            for (Product product : ttn.getProducts()) {
+                product.setState(ProductState.REMOVED_FROM_STORAGE);
+            }
+        }
+
+        return ttn;
+    }
+
+    public boolean checkIfExist(String serialNumber){
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        String userCompany = user.getCompany();
+        List<TTN> list = ttnRepository.findAllByTransporter_DispatcherCompanyNameAndSerialNumber(userCompany, serialNumber);
+        if(list.isEmpty()) {return false;}
+        return true;
     }
 }

@@ -60,6 +60,14 @@ public class ProductService {
         return result;
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductDTO> findAllByStorehouseId(Long id){
+        log.debug("Request to get all Products by storehouseID");
+        return productRepository.findAllByStorageRoom_Storehouse_Id(id).stream()
+            .map(productMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
     /**
      * Get all the products.
      *
@@ -78,6 +86,17 @@ public class ProductService {
         TTN ttn = ttnRepository.getOne(id);
         return productRepository.getAllByTTNIs(ttn).stream()
             .map(productMapper::toDto).collect(Collectors.toList());
+}
+
+    public List<ProductDTO> saveAllForTTN(List<ProductDTO> dtos, Long ttnId){
+        log.debug("Request to save products for ttn id: {}, {}", ttnId, dtos);
+        dtos.forEach(product -> product.settTNId(ttnId));
+        log.debug("Update dto list: {}", dtos);
+        List<Product> products = productMapper.toEntity(dtos);
+        products = productRepository.saveAll(products);
+        List<ProductDTO> result = productMapper.toDto(products);
+        productSearchRepository.saveAll(products);
+        return result;
     }
 
 

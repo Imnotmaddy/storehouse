@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { ITTN, defaultValue } from 'app/shared/model/ttn.model';
+import { IStorageRoom } from 'app/shared/model/storage-room.model';
 
 export const ACTION_TYPES = {
   SEARCH_TTNS: 'tTN/SEARCH_TTNS',

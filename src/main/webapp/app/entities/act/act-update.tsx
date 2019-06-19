@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import { RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Input, Label, Row, Table } from 'reactstrap';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -47,6 +49,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
   componentDidMount() {
     const requestParams = new URLSearchParams(this.props.location.search);
     const ttnId = requestParams.get(TTN_ID_PARAM);
+
     if (this.state.isNew) {
       this.props.reset();
     } else {

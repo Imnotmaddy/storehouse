@@ -2,7 +2,8 @@ import React from 'react';
 import { translate, Translate } from 'react-jhipster';
 import { Button, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { AvField, AvForm, AvGroup } from 'availity-reactstrap-validation';
-import { number } from 'prop-types';
+import { IStorageRoom } from 'app/shared/model/storage-room.model';
+import axios from 'axios';
 
 export interface IAddProductModalState {
   nameValue: string;
@@ -10,23 +11,26 @@ export interface IAddProductModalState {
   costValue: string;
   weightValue: string;
   requiredFacilityValue: string;
-  stateValue: string;
+  rooms: IStorageRoom[];
+  roomValue: string;
 }
 
 export interface IAddProductModalProps {
   show: boolean;
   toggle: Function;
   getValues: Function;
+  storehouseId: Function;
 }
 
 export class AddProductModal extends React.Component<IAddProductModalProps, IAddProductModalState> {
   state = {
-    nameValue: null,
-    quantityValue: null,
-    costValue: null,
-    weightValue: null,
-    requiredFacilityValue: null,
-    stateValue: null
+    nameValue: '',
+    quantityValue: '',
+    costValue: '',
+    weightValue: '',
+    requiredFacilityValue: '',
+    rooms: [],
+    roomValue: ''
   };
 
   submit = () => {
@@ -36,7 +40,8 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
       cost: this.state.costValue,
       weight: this.state.weightValue,
       requiredFacility: this.state.requiredFacilityValue,
-      state: this.state.stateValue
+      rooms: this.state.rooms,
+      storageRoomId: this.state.roomValue
     });
     this.setState({
       nameValue: '',
@@ -44,9 +49,23 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
       costValue: '',
       weightValue: '',
       requiredFacilityValue: '',
-      stateValue: ''
+      roomValue: ''
     });
   };
+
+  componentDidMount() {
+    const requestUrl = `/api/storage-rooms/getByStorehouseId/${this.props.storehouseId()}`;
+    axios
+      .get<IStorageRoom[]>(requestUrl)
+      .then(response => {
+        const newState = { ...this.state, rooms: response.data };
+        this.setState(newState);
+      })
+      .catch(error => {
+        console.log('ERROR', error);
+        this.setState({ rooms: [] });
+      });
+  }
 
   handleNameChange = event => {
     this.setState({ nameValue: event.target.value });
@@ -68,11 +87,12 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
     this.setState({ requiredFacilityValue: event.target.value });
   };
 
-  handleStateChange = event => {
-    this.setState({ stateValue: event.target.value });
+  handleRoomChange = event => {
+    this.setState({ roomValue: event.target.value });
   };
 
   render() {
+    const { rooms } = this.state;
     return (
       <Modal isOpen={this.props.show} toggle={this.props.toggle}>
         <AvForm onValidSubmit={this.submit}>
@@ -189,14 +209,13 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
               </AvField>
             </AvGroup>
             <AvGroup>
-              <Label for="state">
-                <Translate contentKey="storeHouseApp.tTN.currentState">Current State</Translate>
+              <Label for="rooms">
+                <span>Storage room</span>
               </Label>
               <AvField
-                name="state"
+                name="rooms"
                 type="select"
-                value={this.state.stateValue}
-                onChange={this.handleStateChange}
+                onChange={this.handleRoomChange}
                 validate={{
                   required: {
                     value: true,
@@ -205,18 +224,13 @@ export class AddProductModal extends React.Component<IAddProductModalProps, IAdd
                 }}
               >
                 <option defaultChecked />
-                <option value="REGISTRATED">REGISTRATED</option>
-                <option value="APPROVED">APPROVED</option>
-                <option value="STORED">STORED</option>
-                <option value="LOST_BY_TRANSPORTER">LOST_BY_TRANSPORTER</option>
-                <option value="GONE_FROM_STORAGE">GONE_FROM_STORAGE</option>
-                <option value="STOLEN_FROM_STORAGE">STOLEN_FROM_STORAGE</option>
-                <option value="TRANSPORTER_SHORTAGE">TRANSPORTER_SHORTAGE</option>
-                <option value="CONFISCATED">CONFISCATED</option>
-                <option value="RECYCLED">RECYCLED</option>
-                <option value="UNSTORED">UNSTORED</option>
-                <option value="READY_TO_LEAVE">READY_TO_LEAVE</option>
-                <option value="REMOVED_FROM_STORAGE">REMOVED_FROM_STORAGE</option>
+                {rooms
+                  ? rooms.map((otherEntity, i) => (
+                      <option value={otherEntity.id} key={i}>
+                        {otherEntity.roomNumber + ' ' + otherEntity.type}
+                      </option>
+                    ))
+                  : null}
               </AvField>
             </AvGroup>
           </ModalBody>

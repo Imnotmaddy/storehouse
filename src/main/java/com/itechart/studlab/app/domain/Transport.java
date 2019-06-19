@@ -29,7 +29,7 @@ public class Transport implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "vehicle_number")
+       @Column(name = "vehicle_number")
     private String vehicleNumber;
 
     @NotNull

@@ -2,7 +2,9 @@ package com.itechart.studlab.app.service;
 
 import com.itechart.studlab.app.domain.StorageRoom;
 import com.itechart.studlab.app.domain.Storehouse;
+import com.itechart.studlab.app.domain.User;
 import com.itechart.studlab.app.repository.StorehouseRepository;
+import com.itechart.studlab.app.repository.UserRepository;
 import com.itechart.studlab.app.repository.search.StorehouseSearchRepository;
 import com.itechart.studlab.app.service.dto.StorehouseDTO;
 import com.itechart.studlab.app.service.mapper.StorageRoomMapper;
@@ -13,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.jws.soap.SOAPBinding;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -36,10 +40,13 @@ public class StorehouseService {
 
     private final StorehouseSearchRepository storehouseSearchRepository;
 
-    public StorehouseService(StorehouseRepository storehouseRepository, StorehouseMapper storehouseMapper, StorehouseSearchRepository storehouseSearchRepository) {
+    private final UserRepository userRepository;
+
+    public StorehouseService(StorehouseRepository storehouseRepository, StorehouseMapper storehouseMapper, StorehouseSearchRepository storehouseSearchRepository, UserRepository userRepository) {
         this.storehouseRepository = storehouseRepository;
         this.storehouseMapper = storehouseMapper;
         this.storehouseSearchRepository = storehouseSearchRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -50,14 +57,16 @@ public class StorehouseService {
      */
     public StorehouseDTO save(StorehouseDTO storehouseDTO) {
         log.debug("Request to save Storehouse : {}", storehouseDTO);
+        storehouseDTO.setEmployees(new ArrayList<>());
         Storehouse storehouse = storehouseMapper.toEntity(storehouseDTO);
         for (StorageRoom room : storehouse.getRooms()) {
             room.setStorehouse(storehouse);
         }
+        storehouse.setEmployees(userRepository.findAllByStorehouse_Name(storehouse.getName()));
         storehouse = storehouseRepository.save(storehouse);
 
         StorehouseDTO result = storehouseMapper.toDto(storehouse);
-        storehouseSearchRepository.save(storehouse);
+       // storehouseSearchRepository.save(storehouse);
         return result;
     }
 

@@ -15,4 +15,6 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> getAllByTTNIs(TTN ttn);
+  
+    List<Product> findAllByStorageRoom_Storehouse_Id(Long storehouseId);
 }
