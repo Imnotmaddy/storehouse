@@ -175,6 +175,7 @@ export class CompaniesUpdate extends React.Component<ICompaniesUpdateProps, ICom
                     <Translate contentKey="userManagement.langKey">Language Key</Translate>
                   </Label>
                   <AvField type="select" className="form-control" name="langKey" value={user.langKey}>
+                    <option defaultChecked />
                     {locales.map(locale => (
                       <option value={locale} key={locale}>
                         {languages[locale].name}

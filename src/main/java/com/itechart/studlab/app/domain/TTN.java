@@ -58,6 +58,7 @@ public class TTN implements Serializable {
     private Instant dateTimeOfRegistration;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private TtnStatus status;
 
     @OneToOne
