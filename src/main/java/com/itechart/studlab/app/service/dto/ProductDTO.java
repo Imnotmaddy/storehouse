@@ -42,6 +42,10 @@ public class ProductDTO implements Serializable {
 
     private String tTNSerialNumber;
 
+    private Long arrivalTTNId;
+
+    private String arrivalTTNSerialNumber;
+
     public Long getId() {
         return id;
     }
@@ -144,6 +148,22 @@ public class ProductDTO implements Serializable {
 
     public void settTNSerialNumber(String tTNSerialNumber) {
         this.tTNSerialNumber = tTNSerialNumber;
+    }
+
+    public Long getArrivalTTNId() {
+        return arrivalTTNId;
+    }
+
+    public void setArrivalTTNId(Long arrivalTTNId) {
+        this.arrivalTTNId = arrivalTTNId;
+    }
+
+    public String getArrivalTTNSerialNumber() {
+        return arrivalTTNSerialNumber;
+    }
+
+    public void setArrivalTTNSerialNumber(String arrivalTTNSerialNumber) {
+        this.arrivalTTNSerialNumber = arrivalTTNSerialNumber;
     }
 
     @Override

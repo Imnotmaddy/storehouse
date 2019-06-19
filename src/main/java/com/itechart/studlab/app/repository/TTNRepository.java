@@ -20,4 +20,5 @@ public interface TTNRepository extends JpaRepository<TTN, Long> {
     List<TTN> findAllByStatus(TtnStatus status);
 
     List<TTN> findAllByTransporter_DispatcherCompanyNameAndSerialNumber(String dispatcherCompanyName, String serialNumber);
+
 }

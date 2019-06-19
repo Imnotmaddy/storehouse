@@ -5,6 +5,7 @@ import com.itechart.studlab.app.domain.TTN;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -17,4 +18,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> getAllByTTNIs(TTN ttn);
   
     List<Product> findAllByStorageRoom_Storehouse_Id(Long storehouseId);
+    HashSet<Product> findAllByArrivalTTNId(Long id);
 }
