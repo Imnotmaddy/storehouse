@@ -23,6 +23,7 @@ import { IStorageRoom } from 'app/shared/model/storage-room.model';
 import axios from 'axios';
 import { ITTN, Status as TTNStatus } from 'app/shared/model/ttn.model';
 import moment from 'moment';
+import { Simulate } from 'react-dom/test-utils';
 
 export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
   isAuthenticated: boolean;
@@ -52,6 +53,7 @@ export interface ITTNUpdateState {
   showAddModal: boolean;
   rows: boolean[];
   isAlertShown: boolean;
+  currentTransporter: string;
 }
 
 export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState> {
@@ -75,7 +77,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       weightValue: '',
       requiredFacilityValue: '',
       showAddModal: false,
-      isAlertShown: false
+      isAlertShown: false,
+      currentTransporter: ''
     };
   }
 
@@ -178,6 +181,28 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
     const newRows = [...this.state.products];
     newRows.splice(elementId, 1); // filter, const value from event
     this.setState({ products: newRows });
+  };
+
+  changeTransports = event => {
+    const target = event.target;
+    const emptyOption = 1;
+    if (!target.value) {
+      this.setState({ currentTransporter: 'empty' });
+      return;
+    }
+    this.setState({ currentTransporter: this.props.transporters[target.value - emptyOption].companyName });
+  };
+
+  generateTransports = () => {
+    if (this.state.currentTransporter !== 'empty') {
+      return this.props.transports
+        .filter(transport => transport.transporterCompanyName == this.state.currentTransporter)
+        .map((transport, i) => (
+          <option value={transport.id} key={transport.id}>
+            {transport.deliveryType + ' ' + transport.vehicleNumber}
+          </option>
+        ));
+    }
   };
 
   handleModalValues = (value: IProduct) => {
@@ -429,33 +454,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     </AvGroup>
                   )}
                 <AvGroup>
-                  <Label for="transport.id">
-                    <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
-                  </Label>
-                  <AvInput
-                    id="ttn-transport"
-                    type="select"
-                    className="form-control"
-                    name="transportId"
-                    validate={{
-                      required: {
-                        value: true,
-                        errorMessage: translate('entity.validation.required')
-                      }
-                    }}
-                    disabled={isSupervisor}
-                  >
-                    <option value="" key="0" defaultChecked />
-                    {transports
-                      ? transports.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.deliveryType + ' ' + otherEntity.vehicleNumber}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
                   <Label for="transporter.companyName">
                     <Translate contentKey="storeHouseApp.tTN.transporter">Transporter</Translate>
                   </Label>
@@ -464,6 +462,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     type="select"
                     className="form-control"
                     name="transporterId"
+                    onChange={this.changeTransports}
                     validate={{
                       required: {
                         value: true,
@@ -480,6 +479,34 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                           </option>
                         ))
                       : null}
+                  </AvInput>
+                </AvGroup>
+                <AvGroup>
+                  <Label for="transport.id">
+                    <Translate contentKey="storeHouseApp.tTN.transport">Transport</Translate>
+                  </Label>
+                  <AvInput
+                    id="ttn-transport"
+                    type="select"
+                    className="form-control"
+                    name="transportId"
+                    validate={{
+                      required: {
+                        value: true,
+                        errorMessage: translate('entity.validation.required')
+                      }
+                    }}
+                    disabled={isSupervisor}
+                  >
+                    <option defaultChecked />
+                    {this.generateTransports()}
+                    {/*transports
+                      ? transports.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.deliveryType + ' ' + otherEntity.vehicleNumber}
+                          </option>
+                        ))
+                      : null*/}
                   </AvInput>
                 </AvGroup>
               </AvForm>
