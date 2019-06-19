@@ -212,6 +212,9 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
     if (this.props.isManager && !this.state.rows.filter(row => row === true).length) {
       this.setState({ isAlertShown: true });
       return false;
+    } else if (this.props.isDispatcher && !this.state.products.length) {
+      this.setState({ isAlertShown: true });
+      return false;
     } else if (errors.length === 0) {
       const { tTNEntity } = this.props;
       const entity = {
@@ -357,9 +360,20 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     }}
                   >
                     <option value="" key="0" defaultChecked />
-                    {isDispatcher && isNew && <option value="EDITING_BY_DISPATCHER">Editing</option>}
-                    {isManager && isNew && <option value="EDITING_BY_MANAGER">Editing</option>}
-                    {(isDispatcher || isManager) && isNew && <option value="REGISTERED">Registered</option>}
+                    {isDispatcher &&
+                      (isNew || this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_DISPATCHER)) && (
+                        <option value="EDITING_BY_DISPATCHER">Editing</option>
+                      )}
+                    {isManager &&
+                      (isNew || this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_MANAGER)) && (
+                        <option value="EDITING_BY_MANAGER">Editing</option>
+                      )}
+
+                    {(isDispatcher || isManager) &&
+                      (isNew ||
+                        this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_DISPATCHER) ||
+                        this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_MANAGER)) && <option value="REGISTERED">Registered</option>}
+
                     {isSupervisor &&
                       tTNEntity.managerId === null &&
                       this.checkTtnStatus(tTNEntity, TTNStatus.REGISTERED) && <option value="CHECKED">Checked</option>}
@@ -512,7 +526,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     {(isDispatcher || isSupervisor) && <tbody>{this.genRows()} </tbody>}
                     {isManager && <tbody>{this.genRowsForManager()}</tbody>}
                   </Table>
-                  <div>{this.state.isAlertShown && <Alert color="danger">Please select products</Alert>}</div>
+                  <div>{isManager && this.state.isAlertShown && <Alert color="danger">Please select products</Alert>}</div>
+                  <div>{isDispatcher && this.state.isAlertShown && <Alert color="danger">Please add products</Alert>}</div>
                   {(isDispatcher || isSupervisor) && (
                     <AddProductModal
                       show={this.state.showAddModal}
