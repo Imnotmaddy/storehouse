@@ -2,6 +2,7 @@ package com.itechart.studlab.app.service.dto;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import com.itechart.studlab.app.domain.enumeration.ActType;
 
@@ -21,6 +22,8 @@ public class ActDTO implements Serializable {
     @NotNull
     private ActType type;
 
+
+    private List<ProductDTO> products;
 
     private Long userId;
 
@@ -64,6 +67,14 @@ public class ActDTO implements Serializable {
         this.userId = userId;
     }
 
+    public List<ProductDTO> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductDTO> products) {
+        this.products = products;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -93,6 +104,7 @@ public class ActDTO implements Serializable {
             ", cost=" + getCost() +
             ", type='" + getType() + "'" +
             ", user=" + getUserId() +
+            ", products=" + getProducts() +
             "}";
     }
 }

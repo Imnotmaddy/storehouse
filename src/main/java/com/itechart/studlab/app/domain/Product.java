@@ -72,6 +72,11 @@ public class Product implements Serializable {
     @JsonIgnoreProperties("products")
     private TTN tTN;
 
+    @ManyToOne
+    @JoinColumn(name = "arrival_ttn_id")
+    @JsonIgnoreProperties("products")
+    private TTN arrivalTTN;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -210,6 +215,41 @@ public class Product implements Serializable {
     public void setTTN(TTN tTN) {
         this.tTN = tTN;
     }
+
+    public TTN gettTN() {
+        return tTN;
+    }
+
+    public void settTN(TTN tTN) {
+        this.tTN = tTN;
+    }
+
+    public TTN getArrivalTTN() {
+        return arrivalTTN;
+    }
+
+    public void setArrivalTTN(TTN arrivalTTN) {
+        this.arrivalTTN = arrivalTTN;
+    }
+
+    public Product arrivalTTN(TTN arrivalTTN){
+        this.arrivalTTN = arrivalTTN;
+        return this;
+    }
+
+    public Product arrivaltTN(TTN arrivalTTN){
+        this.arrivalTTN = arrivalTTN;
+        return this;
+    }
+
+    public TTN getArrivaltTN() {
+        return arrivalTTN;
+    }
+
+    public void setArrivaltTN(TTN arrivalTTN) {
+        this.arrivalTTN = arrivalTTN;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
