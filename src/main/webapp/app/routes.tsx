@@ -19,7 +19,7 @@ import Transport from 'app/entities/transport';
 import Companies from 'app/modules/companies';
 import UserManagement from 'app/modules/administration/user-management';
 import Storehouse from 'app/entities/storehouse';
-import Act from 'app/entities/act/act-update';
+import Act from 'app/entities/act';
 import Product from 'app/entities/product';
 
 // tslint:disable:space-in-parens
