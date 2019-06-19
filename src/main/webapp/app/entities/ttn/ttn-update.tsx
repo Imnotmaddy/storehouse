@@ -23,7 +23,7 @@ import { IStorageRoom } from 'app/shared/model/storage-room.model';
 import axios from 'axios';
 import { ITTN, Status as TTNStatus } from 'app/shared/model/ttn.model';
 import moment from 'moment';
-import { Simulate } from 'react-dom/test-utils';
+import ttn from 'app/entities/ttn/ttn';
 
 export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
   isAuthenticated: boolean;
@@ -54,6 +54,7 @@ export interface ITTNUpdateState {
   rows: boolean[];
   isAlertShown: boolean;
   currentTransporter: string;
+  ttnIsReadOnly: boolean;
 }
 
 export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState> {
@@ -78,7 +79,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       requiredFacilityValue: '',
       showAddModal: false,
       isAlertShown: false,
-      currentTransporter: ''
+      currentTransporter: '',
+      ttnIsReadOnly: false
     };
   }
 
@@ -165,6 +167,14 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
         <td>{row.storageRoomId}</td>
       </tr>
     ));
+
+  isReadonly(ttnEntity) {
+    return !(
+      this.state.isNew ||
+      this.checkTtnStatus(ttnEntity, TTNStatus.EDITING_BY_MANAGER) ||
+      this.checkTtnStatus(ttnEntity, TTNStatus.EDITING_BY_DISPATCHER)
+    );
+  }
 
   parseId = (componentName: string) => parseInt(componentName.charAt(componentName.length - 1), 10);
 
@@ -303,7 +313,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
-                    readOnly={isSupervisor}
+                    readOnly={isSupervisor || this.isReadonly(tTNEntity)}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -321,14 +331,14 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
-                    readOnly={isSupervisor}
+                    readOnly={isSupervisor || this.isReadonly(tTNEntity)}
                   />
                 </AvGroup>
                 <AvGroup>
                   <Label id="descriptionLabel" for="description">
                     <Translate contentKey="storeHouseApp.tTN.description">Description</Translate>
                   </Label>
-                  <AvField id="ttn-description" type="text" name="description" readOnly={isSupervisor} />
+                  <AvField id="ttn-description" type="text" name="description" readOnly={isSupervisor || this.isReadonly(tTNEntity)} />
                 </AvGroup>
                 <AvGroup>
                   <Label id="driverNameLabel" for="driverName">
@@ -338,7 +348,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     id="ttn-driverName"
                     type="text"
                     name="driverName"
-                    readOnly={isSupervisor}
+                    readOnly={isSupervisor || this.isReadonly(tTNEntity)}
                     validate={{
                       required: {
                         value: true,
@@ -383,6 +393,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
+                    disabled={this.isReadonly(tTNEntity)}
                   >
                     <option value="" key="0" defaultChecked />
                     {isDispatcher &&
@@ -423,7 +434,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         id="ttn-sender"
                         type="text"
                         name="sender"
-                        readOnly={isSupervisor}
+                        readOnly={isSupervisor || this.isReadonly(tTNEntity)}
                         validate={{
                           required: {
                             value: true,
@@ -449,7 +460,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                             errorMessage: translate('entity.validation.required')
                           }
                         }}
-                        readOnly={isSupervisor}
+                        readOnly={isSupervisor || this.isReadonly(tTNEntity)}
                       />
                     </AvGroup>
                   )}
@@ -469,7 +480,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
-                    disabled={isSupervisor}
+                    disabled={isSupervisor || this.isReadonly(tTNEntity)}
                   >
                     <option value="" key="0" defaultChecked />
                     {transporters
@@ -496,7 +507,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
-                    disabled={isSupervisor}
+                    disabled={isSupervisor || this.isReadonly(tTNEntity)}
                   >
                     <option defaultChecked />
                     {this.generateTransports()}
@@ -518,7 +529,13 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     <Label className="mr-auto" for="productsTable">
                       <Translate contentKey="storeHouseApp.tTN.products">Products</Translate>
                     </Label>
-                    <Button size="sm" color="primary" className="mb-1" onClick={this.toggleAddModal} hidden={isSupervisor || isManager}>
+                    <Button
+                      size="sm"
+                      color="primary"
+                      className="mb-1"
+                      onClick={this.toggleAddModal}
+                      hidden={isSupervisor || isManager || this.isReadonly(tTNEntity)}
+                    >
                       <Translate contentKey="storeHouseApp.tTN.addProduct">Add product</Translate>
                     </Button>
                   </div>
