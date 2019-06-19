@@ -11,9 +11,17 @@ import { IRootState } from 'app/shared/reducers';
 import { getSearchEntities, getEntities } from './act.reducer';
 import { IAct } from 'app/shared/model/act.model';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
-export interface IActProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IActProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isDispatcher: boolean;
+  isManager: boolean;
+  isStorehouseAdmin: boolean;
+  isOwner: boolean;
+}
 
 export interface IActState {
   search: string;
@@ -43,7 +51,7 @@ export class Act extends React.Component<IActProps, IActState> {
   handleSearch = event => this.setState({ search: event.target.value });
 
   render() {
-    const { actList, match } = this.props;
+    const { actList, match, isDispatcher, isManager, isAuthenticated, isOwner, isStorehouseAdmin, isAdmin } = this.props;
     return (
       <div>
         <h2 id="act-heading">
@@ -118,18 +126,24 @@ export class Act extends React.Component<IActProps, IActState> {
                           <Translate contentKey="entity.action.view">View</Translate>
                         </span>
                       </Button>
-                      <Button tag={Link} to={`${match.url}/${act.id}/edit`} color="primary" size="sm">
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${act.id}/delete`} color="danger" size="sm">
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
-                      </Button>
+                      {isAuthenticated &&
+                        isAdmin && (
+                          <Button tag={Link} to={`${match.url}/${act.id}/edit`} color="primary" size="sm">
+                            <FontAwesomeIcon icon="pencil-alt" />{' '}
+                            <span className="d-none d-md-inline">
+                              <Translate contentKey="entity.action.edit">Edit</Translate>
+                            </span>
+                          </Button>
+                        )}
+                      {isAuthenticated &&
+                        isAdmin && (
+                          <Button tag={Link} to={`${match.url}/${act.id}/delete`} color="danger" size="sm">
+                            <FontAwesomeIcon icon="trash" />{' '}
+                            <span className="d-none d-md-inline">
+                              <Translate contentKey="entity.action.delete">Delete</Translate>
+                            </span>
+                          </Button>
+                        )}
                     </div>
                   </td>
                 </tr>
@@ -142,8 +156,14 @@ export class Act extends React.Component<IActProps, IActState> {
   }
 }
 
-const mapStateToProps = ({ act }: IRootState) => ({
-  actList: act.entities
+const mapStateToProps = ({ act, authentication }: IRootState) => ({
+  actList: act.entities,
+  isAuthenticated: authentication.isAuthenticated,
+  isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isDispatcher: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.DISPATCHER]),
+  isManager: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MANAGER]),
+  isStorehouseAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.STOREHOUSE_ADMIN]),
+  isOwner: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.OWNER])
 });
 
 const mapDispatchToProps = {

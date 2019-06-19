@@ -44,7 +44,8 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path="/reset/request" component={PasswordResetInit} />
       <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
-      <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
+      <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[]} />
+
       <PrivateRoute
         path="/transport"
         component={Transport}
@@ -62,7 +63,6 @@ const Routes = ({ match }) => (
         hasAnyAuthorities={[AUTHORITIES.DISPATCHER, AUTHORITIES.MANAGER, AUTHORITIES.SUPERVISOR, AUTHORITIES.OWNER]}
       />
       <PrivateRoute path="/product" component={Product} hasAnyAuthorities={[AUTHORITIES.SUPERVISOR]} />
-      <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.MANAGER]} />
       <PrivateRoute path="/companies" component={Companies} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/storehouse" component={Storehouse} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN]} />
       <PrivateRoute path="/employees" component={UserManagement} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN, AUTHORITIES.OWNER]} />

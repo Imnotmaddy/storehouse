@@ -19,9 +19,7 @@ export class Home extends React.Component<IHomeProp> {
           <h2>Welcome, {this.props.account.company}</h2>
           <p className="lead">This is your homepage</p>
         </Col>
-        <Col md="3" className="pad">
-          <span className="hipster rounded" />
-        </Col>
+        <Col md="3" className="pad" />
       </Row>
     );
   }
