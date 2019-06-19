@@ -181,6 +181,12 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
             <AvInput bsSize="sm" name={'state' + i} className="form-control" onChange={this.handleState} type="select">
               <option defaultChecked />
               <option value="STORED">STORED</option>
+              <option value="LOST_BY_TRANSPORTER">LOST BY TRANSPORTER</option>
+              <option value="GONE_FROM_STORAGE">GONE FROM STORAGE</option>
+              <option value="STOLEN_FROM_STORAGE">STOLEN_FROM_STORAGE</option>
+              <option value="TRANSPORTER_SHORTAGE">TRANSPORTER SHORTAGE</option>
+              <option value="CONFISCATED">CONFISCATED</option>
+              <option value="RECYCLED">RECYCLED</option>
             </AvInput>
           </AvForm>
         </td>
