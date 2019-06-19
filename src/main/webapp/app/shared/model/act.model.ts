@@ -3,7 +3,7 @@ import { IProduct } from 'app/shared/model/product.model';
 
 export const enum ActType {
   THEFT = 'THEFT',
-  INCONSISTENCE = 'INCONSISTENCE',
+  INCONSISTENCY = 'INCONSISTENCY',
   LOSS = 'LOSS',
   WRITE_OFF = 'WRITE_OFF'
 }

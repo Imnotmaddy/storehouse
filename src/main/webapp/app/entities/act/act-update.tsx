@@ -5,13 +5,15 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Alert, Button, Col, Input, Label, Row, Table } from 'reactstrap';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, translate } from 'react-jhipster';
+import { log, Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { createEntity, getEntity, reset, updateEntity } from './act.reducer';
 import { getTtnProducts } from 'app/entities/product/product.reducer';
-import { IProduct } from 'app/shared/model/product.model';
+import { IProduct, ProductState } from 'app/shared/model/product.model';
+import generate from '@babel/generator';
+import { ActType } from 'app/shared/model/act.model';
 
 // tslint:disable-next-line:no-unused-variable
 
@@ -24,6 +26,7 @@ export interface IActUpdateState {
   products: IProduct[];
   rows: any[];
   isAlertShown: boolean;
+  statusTypes: string[];
 }
 
 const TTN_ID_PARAM = 'ttnId';
@@ -37,6 +40,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
       products: [],
       rows: [],
       isAlertShown: false,
+      statusTypes: [],
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -151,6 +155,41 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
 
   parseId = (componentName: string) => parseInt(componentName.charAt(componentName.length - 1), 10);
 
+  changeOptions = event => {
+    {
+      const target = event.target;
+
+      switch (target.value) {
+        case ActType.THEFT: {
+          const arr = [ProductState.STOLEN_FROM_STORAGE];
+          this.setState({ statusTypes: arr });
+          break;
+        }
+        case ActType.LOSS: {
+          const arr = [ProductState.LOST_BY_TRANSPORTER];
+          this.setState({ statusTypes: arr });
+          break;
+        }
+        case ActType.WRITE_OFF: {
+          const arr = [ProductState.GONE_FROM_STORAGE, ProductState.RECYCLED];
+          this.setState({ statusTypes: arr });
+          break;
+        }
+        case ActType.INCONSISTENCY: {
+          const arr = [ProductState.CONFISCATED, ProductState.RECYCLED, ProductState.TRANSPORTER_SHORTAGE];
+          this.setState({ statusTypes: arr });
+          break;
+        }
+        default: {
+          this.setState({ statusTypes: [] });
+          break;
+        }
+      }
+    }
+  };
+
+  generateStatus = () => this.state.statusTypes.map(status => <option value={status}>{status}</option>);
+
   genRows = () =>
     this.state.products.map((row, i) => (
       <tr key={i}>
@@ -183,13 +222,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
           <AvForm>
             <AvInput bsSize="sm" name={'state' + i} className="form-control" onChange={this.handleState} type="select">
               <option defaultChecked />
-              <option value="STORED">STORED</option>
-              <option value="LOST_BY_TRANSPORTER">LOST BY TRANSPORTER</option>
-              <option value="GONE_FROM_STORAGE">GONE FROM STORAGE</option>
-              <option value="STOLEN_FROM_STORAGE">STOLEN_FROM_STORAGE</option>
-              <option value="TRANSPORTER_SHORTAGE">TRANSPORTER SHORTAGE</option>
-              <option value="CONFISCATED">CONFISCATED</option>
-              <option value="RECYCLED">RECYCLED</option>
+              {this.generateStatus()}
             </AvInput>
           </AvForm>
         </td>
@@ -239,7 +272,10 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
                       className="form-control"
                       name="date"
                       validate={{
-                        required: { value: true, errorMessage: translate('entity.validation.required') }
+                        required: {
+                          value: true,
+                          errorMessage: translate('entity.validation.required')
+                        }
                       }}
                     />
                   </AvGroup>
@@ -255,8 +291,14 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
                       value={this.state.cost}
                       onChange={this.handleCost}
                       validate={{
-                        required: { value: true, errorMessage: translate('entity.validation.required') },
-                        number: { value: true, errorMessage: translate('entity.validation.number') }
+                        required: {
+                          value: true,
+                          errorMessage: translate('entity.validation.required')
+                        },
+                        number: {
+                          value: true,
+                          errorMessage: translate('entity.validation.number')
+                        }
                       }}
                     />
                   </AvGroup>
@@ -264,7 +306,14 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
                     <Label id="typeLabel">
                       <Translate contentKey="storeHouseApp.act.type">Type</Translate>
                     </Label>
-                    <AvInput id="act-type" type="select" className="form-control" name="type" value={(!isNew && actEntity.type) || 'THEFT'}>
+                    <AvInput
+                      id="act-type"
+                      type="select"
+                      className="form-control"
+                      name="type"
+                      value={!isNew && actEntity.type}
+                      onChange={this.changeOptions}
+                    >
                       <option defaultChecked />
                       <option value="THEFT">
                         <Translate contentKey="storeHouseApp.ActType.THEFT" />
