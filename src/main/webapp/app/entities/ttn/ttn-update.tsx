@@ -203,7 +203,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
     this.setState({ currentTransporter: this.props.transporters[target.value - emptyOption].companyName });
   };
 
-  generateTransports = () => {
+  generateTransports = arg => {
     if (this.state.currentTransporter !== 'empty') {
       return this.props.transports
         .filter(transport => transport.transporterCompanyName == this.state.currentTransporter)
@@ -393,7 +393,6 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
-                    disabled={this.isReadonly(tTNEntity)}
                   >
                     <option value="" key="0" defaultChecked />
                     {isDispatcher &&
@@ -510,14 +509,14 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     disabled={isSupervisor || this.isReadonly(tTNEntity)}
                   >
                     <option defaultChecked />
-                    {this.generateTransports()}
-                    {/*transports
+                    {isNew && this.generateTransports(null)}
+                    {!isNew && transports
                       ? transports.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
                             {otherEntity.deliveryType + ' ' + otherEntity.vehicleNumber}
                           </option>
                         ))
-                      : null*/}
+                      : null}
                   </AvInput>
                 </AvGroup>
               </AvForm>
