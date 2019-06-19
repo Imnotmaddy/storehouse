@@ -79,7 +79,9 @@ public class TTNService {
         if (tTN.getDispatcher() == null && (!products.isEmpty() && products.iterator().next().getId() != null)) {
             tTN.setProducts(new HashSet<>());
             tTN = tTNRepository.save(tTN);
-            saveManagerProducts(products, tTN);
+            if (tTN.getStatus() != TtnStatus.EDITING_BY_MANAGER) {
+                saveManagerProducts(products, tTN);
+            }
         } else {
             for (Product product : tTN.getProducts()) {
                 product.setTTN(tTN);

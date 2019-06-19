@@ -352,9 +352,20 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     }}
                   >
                     <option value="" key="0" defaultChecked />
-                    {isDispatcher && isNew && <option value="EDITING_BY_DISPATCHER">Editing</option>}
-                    {isManager && isNew && <option value="EDITING_BY_MANAGER">Editing</option>}
-                    {(isDispatcher || isManager) && isNew && <option value="REGISTERED">Registered</option>}
+                    {isDispatcher &&
+                      (isNew || this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_DISPATCHER)) && (
+                        <option value="EDITING_BY_DISPATCHER">Editing</option>
+                      )}
+                    {isManager &&
+                      (isNew || this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_MANAGER)) && (
+                        <option value="EDITING_BY_MANAGER">Editing</option>
+                      )}
+
+                    {(isDispatcher || isManager) &&
+                      (isNew ||
+                        this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_DISPATCHER) ||
+                        this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_MANAGER)) && <option value="REGISTERED">Registered</option>}
+
                     {isSupervisor &&
                       tTNEntity.managerId === null &&
                       this.checkTtnStatus(tTNEntity, TTNStatus.REGISTERED) && <option value="CHECKED">Checked</option>}
