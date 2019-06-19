@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Input, Label, Row, Table } from 'reactstrap';
+import { Alert, Button, Col, Input, Label, Row, Table } from 'reactstrap';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,6 +23,7 @@ export interface IActUpdateState {
   cost: string;
   products: IProduct[];
   rows: any[];
+  isAlertShown: boolean;
 }
 
 const TTN_ID_PARAM = 'ttnId';
@@ -36,6 +36,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
       cost: '0',
       products: [],
       rows: [],
+      isAlertShown: false,
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -72,7 +73,10 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
   }
 
   saveEntity = (event, errors, values) => {
-    if (errors.length === 0) {
+    if (!this.state.rows.filter(row => row.checked).length) {
+      this.setState({ isAlertShown: true });
+      return false;
+    } else if (errors.length === 0) {
       const { actEntity } = this.props;
       const entity = {
         ...actEntity,
@@ -80,7 +84,6 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
         products: this.getActProducts(),
         userId: this.props.userId
       };
-      console.log('sending act', entity);
       if (this.state.isNew) {
         this.props.createEntity(entity);
       } else {
@@ -210,6 +213,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
               <p>Loading...</p>
             ) : (
               <div>
+                {this.state.isAlertShown && <Alert color="danger">Please select products</Alert>}
                 <AvForm model={isNew ? {} : actEntity} id="form" onSubmit={this.saveEntity}>
                   {!isNew ? (
                     <AvGroup>
