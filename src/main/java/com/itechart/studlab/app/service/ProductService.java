@@ -2,6 +2,7 @@ package com.itechart.studlab.app.service;
 
 import com.itechart.studlab.app.domain.Product;
 import com.itechart.studlab.app.domain.TTN;
+import com.itechart.studlab.app.domain.enumeration.ProductState;
 import com.itechart.studlab.app.repository.ProductRepository;
 import com.itechart.studlab.app.repository.TTNRepository;
 import com.itechart.studlab.app.repository.search.ProductSearchRepository;
@@ -63,7 +64,8 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<ProductDTO> findAllByStorehouseId(Long id){
         log.debug("Request to get all Products by storehouseID");
-        return productRepository.findAllByStorageRoom_Storehouse_Id(id).stream()
+        return productRepository.findAllByStorageRoom_Storehouse_IdAndQuantityGreaterThan(id, 0).stream()
+            .filter(product -> product.getState() == ProductState.STORED)
             .map(productMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }

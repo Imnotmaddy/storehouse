@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row, Table, Input } from 'reactstrap';
+import { Button, Col, Label, Row, Table, Input, Alert } from 'reactstrap';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate } from 'react-jhipster';
@@ -49,6 +49,7 @@ export interface ITTNUpdateState {
   requiredFacilityValue: string;
   showAddModal: boolean;
   rows: boolean[];
+  isAlertShown: boolean;
 }
 
 export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState> {
@@ -71,7 +72,8 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
       costValue: '',
       weightValue: '',
       requiredFacilityValue: '',
-      showAddModal: false
+      showAddModal: false,
+      isAlertShown: false
     };
   }
 
@@ -203,8 +205,10 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
     this.state.rows.forEach((row, i) => {
       if (row === true) products.push(this.state.managerProducts[i]);
     });
-    console.log('PRODUCTS', this.state.products);
-    if (errors.length === 0) {
+    if (this.props.isManager && !this.state.rows.filter(row => row === true).length) {
+      this.setState({ isAlertShown: true });
+      return false;
+    } else if (errors.length === 0) {
       const { tTNEntity } = this.props;
       const entity = {
         ...tTNEntity,
@@ -491,6 +495,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     {(isDispatcher || isSupervisor) && <tbody>{this.genRows()} </tbody>}
                     {isManager && <tbody>{this.genRowsForManager()}</tbody>}
                   </Table>
+                  <div>{this.state.isAlertShown && <Alert color="danger">Please select products</Alert>}</div>
                   {(isDispatcher || isSupervisor) && (
                     <AddProductModal
                       show={this.state.showAddModal}

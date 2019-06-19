@@ -79,6 +79,7 @@ public class ActService {
         productsDTO.forEach(productDTO -> {
             productDTO.setId(null);
             productDTO.setActId(actId);
+            productDTO.settTNId(null);
         });
 
         productRepository.saveAll(productsDTO.stream().map(productMapper::toEntity).collect(Collectors.toList()));

@@ -6,7 +6,7 @@ package com.itechart.studlab.app.domain.enumeration;
 public enum ActType {
     THEFT("THEFT"),
     INCONSISTENCY("INCONSISTENCY"),
-    LOSS("LOSS"), SHORTAGE("SHORTAGE"),
+    LOSS("LOSS"),
     WRITE_OFF("WRITE_OFF");
 
     String name;

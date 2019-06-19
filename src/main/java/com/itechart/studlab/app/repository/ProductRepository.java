@@ -17,6 +17,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> getAllByTTNIs(TTN ttn);
   
-    List<Product> findAllByStorageRoom_Storehouse_Id(Long storehouseId);
+    List<Product> findAllByStorageRoom_Storehouse_IdAndQuantityGreaterThan(Long storehouseId, Integer quantity);
     HashSet<Product> findAllByArrivalTTNId(Long id);
 }

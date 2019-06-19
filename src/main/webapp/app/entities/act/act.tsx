@@ -48,11 +48,6 @@ export class Act extends React.Component<IActProps, IActState> {
       <div>
         <h2 id="act-heading">
           <Translate contentKey="storeHouseApp.act.home.title">Acts</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="storeHouseApp.act.home.createLabel">Create new Act</Translate>
-          </Link>
         </h2>
         <Row>
           <Col sm="12">
