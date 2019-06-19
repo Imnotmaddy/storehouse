@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row, Table, Input, Alert } from 'reactstrap';
+import { Alert, Button, Col, Input, Label, Row, Table } from 'reactstrap';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate } from 'react-jhipster';
@@ -22,6 +22,7 @@ import { AUTHORITIES } from 'app/config/constants';
 import { IStorageRoom } from 'app/shared/model/storage-room.model';
 import axios from 'axios';
 import { ITTN, Status as TTNStatus } from 'app/shared/model/ttn.model';
+import moment from 'moment';
 
 export interface ITTNUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
   isAuthenticated: boolean;
@@ -90,6 +91,7 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
     } else {
       this.props
         .getEntity(this.props.match.params.id)
+        // @ts-ignore
         .then(response => {
           console.log('response', response);
           this.setState({ products: response.value.data.products });
@@ -327,14 +329,17 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                     className="form-control"
                     name="dateTimeOfRegistration"
                     placeholder={'YYYY-MM-DD HH:mm'}
-                    value={isNew ? null : convertDateTimeFromServer(this.props.tTNEntity.dateTimeOfRegistration)}
+                    value={
+                      isNew ? convertDateTimeFromServer(moment()) : convertDateTimeFromServer(this.props.tTNEntity.dateTimeOfRegistration)
+                    }
                     validate={{
                       required: {
                         value: true,
                         errorMessage: translate('entity.validation.required')
                       }
                     }}
-                    readOnly={isSupervisor}
+                    disabled
+                    readOnly
                   />
                 </AvGroup>
                 <AvGroup>
