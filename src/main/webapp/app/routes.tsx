@@ -65,7 +65,7 @@ const Routes = ({ match }) => (
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.MANAGER]} />
       <PrivateRoute path="/companies" component={Companies} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/storehouse" component={Storehouse} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN]} />
-      <PrivateRoute path="/employees" component={UserManagement} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN]} />
+      <PrivateRoute path="/employees" component={UserManagement} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN, AUTHORITIES.OWNER]} />
       <PrivateRoute path="/employees" component={UserManagement} hasAnyAuthorities={[AUTHORITIES.STOREHOUSE_ADMIN, AUTHORITIES.OWNER]} />
       <ErrorBoundaryRoute path="/" component={Home} />
     </Switch>
