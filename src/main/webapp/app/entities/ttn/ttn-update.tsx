@@ -204,6 +204,18 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
   };
 
   generateTransports = arg => {
+    if (arg) {
+      const currCompany = this.props.transporters.filter(transport => transport.id === arg.transporterId)[0];
+      if (!this.state.currentTransporter && currCompany) {
+        return this.props.transports
+          .filter(transport => transport.transporterCompanyName === currCompany.companyName)
+          .map((transport, i) => (
+            <option value={transport.id} key={transport.id}>
+              {transport.deliveryType + ' ' + transport.vehicleNumber}
+            </option>
+          ));
+      }
+    }
     if (this.state.currentTransporter !== 'empty') {
       return this.props.transports
         .filter(transport => transport.transporterCompanyName == this.state.currentTransporter)
@@ -510,13 +522,20 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                   >
                     <option defaultChecked />
                     {isNew && this.generateTransports(null)}
-                    {!isNew && transports
+                    {!isNew &&
+                    !(
+                      this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_MANAGER) ||
+                      this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_DISPATCHER)
+                    ) &&
+                    transports
                       ? transports.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
                             {otherEntity.deliveryType + ' ' + otherEntity.vehicleNumber}
                           </option>
                         ))
                       : null}
+                    {this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_MANAGER) ||
+                      (this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_DISPATCHER) && this.generateTransports(tTNEntity))}
                   </AvInput>
                 </AvGroup>
               </AvForm>
