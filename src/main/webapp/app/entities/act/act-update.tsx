@@ -171,7 +171,7 @@ export class ActUpdate extends React.Component<IActUpdateProps, IActUpdateState>
           break;
         }
         case ActType.WRITE_OFF: {
-          const arr = [ProductState.GONE_FROM_STORAGE, ProductState.RECYCLED];
+          const arr = [ProductState.LOST_FROM_STORAGE, ProductState.RECYCLED];
           this.setState({ statusTypes: arr });
           break;
         }
