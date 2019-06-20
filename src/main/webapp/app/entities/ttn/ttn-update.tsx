@@ -534,8 +534,9 @@ export class TTNUpdate extends React.Component<ITTNUpdateProps, ITTNUpdateState>
                           </option>
                         ))
                       : null}
-                    {this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_MANAGER) ||
-                      (this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_DISPATCHER) && this.generateTransports(tTNEntity))}
+                    {(this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_MANAGER) ||
+                      this.checkTtnStatus(tTNEntity, TTNStatus.EDITING_BY_DISPATCHER)) &&
+                      this.generateTransports(tTNEntity)}
                   </AvInput>
                 </AvGroup>
               </AvForm>
